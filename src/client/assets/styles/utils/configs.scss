@@ -1,0 +1,36 @@
+// Block Element
+@mixin element($element) {
+  &__#{$element} {
+    @content;
+  }
+}
+
+// Block Modifier
+@mixin modifier($modifier) {
+  &--#{$modifier} {
+    @content;
+  }
+}
+
+// Media Queries
+@mixin breakpoint($size) {
+  @if(is-number($size)) {
+    @media only screen and (min-width: $size) { @content; }
+  }
+  @else if $size == small {
+    @media only screen and (min-width: $media-s) { @content; }
+  }
+  @else if $size == medium {
+    @media only screen and (min-width: $media-m) { @content; }
+  }
+  @else if $size == large {
+    @media only screen and (min-width: $media-l) { @content; }
+  }
+  @else if $size == xlarge {
+    @media only screen and (min-width: $media-xl) { @content; }
+  }
+}
+
+// @include breakpoint('small') {
+//   display: flex;
+// }
