@@ -1,10 +1,17 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
-export const Content: React.FC<RouteComponentProps> = () => {
+import RoomList from './content/RoomList';
+import { MessageContent } from './content/MessageContent';
+import { UserList } from './content/UserList';
+
+export const Content: React.FC = () => {
   return (
     <div className="content">
-      <div>TODO Content</div>
+      <div className="content__container">
+        <RoomList />
+        <MessageContent />
+        <UserList />
+      </div>
     </div>
   );
 };

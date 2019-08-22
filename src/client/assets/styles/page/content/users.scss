@@ -1,0 +1,30 @@
+.users {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .ant-card-body {
+    height: 100%;
+    padding: 5px;
+  }
+
+  .scrollarea {
+    height: 100%;
+
+    .scrollarea-content .ant-card-grid {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      background-color: $background-color;
+      cursor: pointer;
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+
+      & > * {
+        margin: 0 10px;
+      }
+    }
+  }
+}

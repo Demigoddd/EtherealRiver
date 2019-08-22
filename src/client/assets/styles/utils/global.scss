@@ -1,9 +1,10 @@
 * {
+  outline: none;
   box-sizing: border-box;
 }
 
 html {
-  font-family: 'Helvetica', 'Roboto Condensed', 'Source Sans Pro', Tahoma, Arial, sans-serif;
+  font-family: 'Roboto Condensed', 'Source Sans Pro', Arial, sans-serif;
   touch-action: manipulation;
 }
 
@@ -11,8 +12,8 @@ body {
   margin: 0;
   padding: 0;
   border: 0;
-  outline: none;
-  background-color: rgb(30,34,39);
+  // background-color: rgb(30,34,39);
+  background-color: #f4f7fd;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -21,29 +22,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-// For Sticky Footer //
 #root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-// Scrollbar style //
-body::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	border-radius: 10px;
-	background-color: #F5F5F5;
-}
-
-body::-webkit-scrollbar
-{
-	width: 12px;
-	background-color: #F5F5F5;
-}
-
-body::-webkit-scrollbar-thumb
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: #555;
+  height: 100%;
 }

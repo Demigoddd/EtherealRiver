@@ -16,7 +16,7 @@ const initConfig = (): any => {
   } else {
     return {
       isProduction,
-      db: process.env.MONGODB_URL || 'mongodb+srv://GOD:Torrent098@etherealriver-beyem.mongodb.net/test?retryWrites=true&w=majority',
+      db: process.env.MONGODB_URL || 'mongodb://localhost:27017/EtherealRiver',
       sessionSecret: 'SECRET',
       facebook: {
         clientID: process.env.facebookClientID || 123,

@@ -2,5 +2,14 @@
 @import './utils/global.scss';
 @import './utils/configs.scss';
 @import './utils/variables.scss';
+@import './utils/override.scss';
 
-// Components Style
+// Component Style
+@import './components/button.scss';
+
+// Page Style
+@import './page/content.scss';
+@import './page/auth.scss';
+@import './page/content/rooms.scss';
+@import './page/content/messages.scss';
+@import './page/content/users.scss';
