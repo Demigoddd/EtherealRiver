@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  border-right: 1px solid #f7f7f7;
+  border-right: 1px solid #e8e8e8;;
 
   @include element('header') {
       display: flex;
@@ -40,10 +40,6 @@
       margin: 0;
       font-size: 12px;
     }
-  }
-
-  & > .ant-divider {
-    margin: 10px 0;
   }
 
   & > .scrollarea  {

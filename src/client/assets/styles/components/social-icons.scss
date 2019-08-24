@@ -1,0 +1,22 @@
+.social-icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+
+  @include modifier('column') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @include modifier('google') {
+    color: dodgerblue;
+    font-size: 3rem;
+  }
+
+  @include modifier('facebook') {
+    color: dodgerblue;
+    font-size: 3rem;
+  }
+}

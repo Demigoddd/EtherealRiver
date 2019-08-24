@@ -1,9 +1,9 @@
 import React from "react";
-import { Form, Icon } from "antd";
+import { Form, Button, Icon } from "antd";
 import { Link } from "react-router-dom";
 
-import Button from "../../../components/Button";
 import FormField from "../../../components/FormField";
+import SocialIcon from "../../../components/SocialIcons";
 
 const success = false;
 
@@ -84,8 +84,12 @@ const RegisterForm: React.FC = (props: any) => {
                 Registation
               </Button>
             </Form.Item>
+            <SocialIcon />
             <Link className="auth__register-link" to="/login">
               Login to account
+            </Link>
+            <Link className="auth__register-link" to="/">
+              Back to Home
             </Link>
           </Form>
         ) : (

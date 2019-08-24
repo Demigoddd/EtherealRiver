@@ -6,7 +6,7 @@ import RoomMenuItem from './roomList/RoomMenuItem';
 import ScrollArea from 'react-scrollbar';
 
 const RoomOne = [{ id: 1, name: 'Room 1' }, { id: 2, name: 'Room 2' }];
-const isAuth = true;
+const isAuth = false;
 
 const RoomList: React.FC = ({ history }: any) => {
   const delay: number = 100;
@@ -51,10 +51,10 @@ const RoomList: React.FC = ({ history }: any) => {
             </Button>
           </Popover>
           : <Button.Group>
-            <Button onClick={() => history.push('/login')}>
+            <Button size="large" onClick={() => history.push('/login')}>
               Login
               </Button>
-            <Button onClick={() => history.push('/register')} type="primary">
+            <Button size="large" onClick={() => history.push('/register')} type="primary">
               Register
               </Button>
           </Button.Group>

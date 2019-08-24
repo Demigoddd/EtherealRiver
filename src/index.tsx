@@ -15,6 +15,7 @@ import { Provider as AccountContextProvider } from './client/utils/contexts/Auth
 // APP CSS
 import 'antd/dist/antd.css';
 import './client/assets/styles/app.scss';
+import "emoji-mart/css/emoji-mart.css";
 
 const App: React.FC = () => {
   return (
