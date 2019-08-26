@@ -26,7 +26,7 @@ const users = [
 
 export const UserList: React.FC = () => {
   return (
-    <Card title="Users" className="users">
+    <Card title={`Users: ${users.length}`} className="users">
       <ScrollArea
         speed={0.8}
         horizontal={false}

@@ -1,34 +1,55 @@
 import React from "react";
 import { Empty, Spin } from "antd";
-import classNames from "classnames";
 import ScrollArea from 'react-scrollbar';
 import Message from './messages/Message';
 
 const isLoading = false;
 
-const Messages: React.FC<any> = ({ items, user }) => {
-  const onRemoveMessage = () => {
-    console.log("Remove Message");
+const items: any[] = [
+  {
+    id: 1,
+    userId: 5,
+    author: 'NickName',
+    avatar: 'Link',
+    contet: 'Super Content',
+    likes: 5,
+    dislikes: 1,
+    emotions: [],
+    reaction: 'liked',
+    createdAt: '',
+    updatedAt: '',
+  },
+  {
+    id: 2,
+    userId: 3,
+    author: 'Super NickName',
+    avatar: 'Link',
+    contet: 'Super Content',
+    likes: 11,
+    dislikes: 2346,
+    emotions: [],
+    reaction: '',
+    createdAt: Date.now(),
+    updatedAt: '',
   }
+];
 
+const Messages: React.FC<any> = ({ user }) => {
   return (
     <ScrollArea
       speed={0.8}
       horizontal={false}
     >
-      <div
-        className={classNames("messages", { "messages--loading": isLoading })}
-      >
+      <div className="messages">
         {isLoading ? (
           <Spin size="large" tip="Loading Messages..." />
         ) : items && !isLoading ? (
           items.length > 0 ? (
             items.map((item: any) => (
               <Message
-                key={item._id}
+                key={item.id}
                 {...item}
-                isMe={user._id === item.user._id}
-                onRemoveMessage={onRemoveMessage}
+                isMe={(user && user.id) === item.userId}
               />
             ))
           ) : (
@@ -38,7 +59,7 @@ const Messages: React.FC<any> = ({ items, user }) => {
               <Empty description="Open Rooms" />
             )}
       </div>
-    </ScrollArea>
+    </ScrollArea >
   );
 };
 

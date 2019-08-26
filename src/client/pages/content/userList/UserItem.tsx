@@ -11,6 +11,9 @@ const UserItem: React.FC<any> = ({ user }) => {
         <Link to="/">View Profile</Link>
       </Menu.Item>
       <Menu.Item>
+        <Link to="/">Send Personal Message</Link>
+      </Menu.Item>
+      <Menu.Item>
         <Link to="/">Remove From Room</Link>
       </Menu.Item>
     </Menu>

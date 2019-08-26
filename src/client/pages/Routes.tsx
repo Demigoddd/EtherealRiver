@@ -1,16 +1,17 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-// import { PrivateRoute } from '../components/PrivateRoute';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 // Component Imports
 import { Content } from './Content';
 import { Auth } from '../index/Auth';
 
+const isAuth = true;
+
 export const Routes: React.FC = () => {
   return (
     <Switch>
-      <Route path="/" exact component={Content} />
-      <Route path={["/login", "/register", "/register/verify"]} component={Auth} />
+      <Route exact path={["/login", "/register", "/register/verify"]} component={Auth} />
+      <Route path="/" render={() => (isAuth ? <Content /> : <Redirect to="/login" />)} />
     </Switch>
   );
 };

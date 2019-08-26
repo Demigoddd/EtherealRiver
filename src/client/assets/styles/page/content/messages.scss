@@ -3,8 +3,8 @@
   flex-direction: column;
   flex: 4;
 
-  .scrollarea, .scrollarea > .scrollarea-content {
-    height: 100%;
+  .scrollarea {
+    margin-bottom: auto;
   }
 }
 
@@ -74,10 +74,4 @@
 .messages {
   height: 100%;
   padding: 1rem 1rem 0 1rem;
-
-  @include modifier('loading') {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 }

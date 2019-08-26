@@ -10,7 +10,6 @@ import { Main } from './client/index/Main';
 import * as serviceWorker from './client/utils/serviceWorker';
 import { history } from './client/utils/history';
 import { store } from './client/utils/state/store';
-import { Provider as AccountContextProvider } from './client/utils/contexts/AuthContext';
 
 // APP CSS
 import 'antd/dist/antd.css';
@@ -21,9 +20,7 @@ const App: React.FC = () => {
   return (
     <Router history={history}>
       <ReduxProvider store={store}>
-        <AccountContextProvider>
-          <Main />
-        </AccountContextProvider>
+        <Main />
       </ReduxProvider>
     </Router>
   );
