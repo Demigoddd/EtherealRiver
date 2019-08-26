@@ -1,8 +1,9 @@
 import * as types from '../constants/actionTypes';
 
 // Other Imports
-import { openNotification } from "../../helpers/openNotification";
-import userApi from "../../api/user";
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { openNotification } from '../../helpers/openNotification';
+import userApi from '../../api/user';
 
 // User Actions
 export const setUserData = (payload: any) => (dispatch: any) => {
@@ -13,14 +14,15 @@ export const setIsAuth = (setIsAuth: boolean) => (dispatch: any) => {
 };
 export const fetchUserData = () => (dispatch: any) => {
   userApi
-    .findById()
+    .getMe()
     .then(({ data }: any) => {
       setUserData(data);
     })
     .catch((err: any) => {
       if (err.response.status === 403) {
+        const [, setAccessToken] = useLocalStorage('accessToken');
         setIsAuth(false);
-        delete window.localStorage.token;
+        setAccessToken('');
       }
     });
 };
@@ -28,7 +30,7 @@ export const fetchUserLogin = (postData: any) => {
   return userApi
     .login(postData)
     .then(({ data }: any) => {
-      const { token } = data;
+      const [accessToken, setAccessToken] = useLocalStorage('accessToken');
 
       openNotification({
         title: "Success!",
@@ -36,8 +38,8 @@ export const fetchUserLogin = (postData: any) => {
         type: "success"
       });
 
-      // window.axios.defaults.headers.common["token"] = token;
-      window.localStorage["token"] = token;
+      (window as any).axios.defaults.headers.common["token"] = accessToken;
+      setAccessToken(data.accessToken);
       fetchUserData();
       setIsAuth(true);
       return data;
@@ -57,12 +59,4 @@ export const fetchUserRegister = (postData: any) => {
     .then(({ data }: any) => {
       return data;
     });
-};
-
-// Flash Message
-export const openFlashMessage = (payload: any) => (dispatch: any) => {
-  dispatch({ type: types.OPEN_FLASH_MESSAGE, payload })
-};
-export const clearFlashMessage = () => (dispatch: any) => {
-  dispatch({ type: types.CLOSE_FLASH_MESSAGE })
 };

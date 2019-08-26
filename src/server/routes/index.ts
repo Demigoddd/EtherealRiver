@@ -30,7 +30,6 @@ router.post('/login', authenticate('local', {
 
 // Register via username and password
 router.post('/register', (req: any, res: any, next: any) => {
-
   const credentials = { 'username': req.body.username, 'password': req.body.password };
 
   if (credentials.username === '' || credentials.password === '') {

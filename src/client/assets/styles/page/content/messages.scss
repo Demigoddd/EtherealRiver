@@ -3,6 +3,26 @@
   flex-direction: column;
   flex: 4;
 
+  @include element('header') {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding: 0 0.5rem;
+
+    @include modifier('title') {
+      margin: 0 !important;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    & > button {
+      color: dodgerblue;
+      border-color: dodgerblue;
+    }
+  }
+
   .scrollarea {
     margin-bottom: auto;
   }

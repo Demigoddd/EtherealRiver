@@ -3,6 +3,33 @@
   flex-direction: column;
   flex: 1;
 
+  @include element('add-user') {
+    display: flex;
+    flex-direction: column;
+
+    & > * {
+      margin: 0.5rem 0;
+    }
+  }
+
+  @include modifier('header') {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include modifier('title') {
+      margin: 0 !important;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    & > button {
+      color: dodgerblue;
+      border-color: dodgerblue;
+    }
+  }
+
   .ant-card-body {
     height: 100%;
     padding: 5px;

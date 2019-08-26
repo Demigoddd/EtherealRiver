@@ -1,15 +1,17 @@
-import React, { useRef, } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom'
-import { Popover, Avatar, Button, Menu, Divider } from 'antd';
+import { Popover, Avatar, Button, Menu, Divider, Icon, Modal } from 'antd';
 import { result } from 'lodash-es';
-import RoomMenuItem from './roomList/RoomMenuItem';
 import ScrollArea from 'react-scrollbar';
+import RoomMenuItem from './roomList/RoomMenuItem';
+import AddRoomController from './roomList/AddRoomController';
 
-const RoomOne = [{ id: 1, name: 'Room 1' }, { id: 2, name: 'Room 2' }];
+const RoomOne = [{ id: 1, name: 'Room 1', type: 'public' }, { id: 2, name: 'Room 2', type: 'public' }];
 
 const RoomList: React.FC<any> = () => {
   const delay: number = 100;
   const ScrollAreaRef = useRef<any>();
+  const [visible, setVisible] = useState(false);
 
   const onSubMenuChange = () => {
     setTimeout(() => {
@@ -30,9 +32,20 @@ const RoomList: React.FC<any> = () => {
         <Link to="/setting">Setting</Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to="/logout">Logout</Link>
+        <Link to="/">Logout</Link>
       </Menu.Item>
     </Menu>
+  );
+
+  const addRoomModal = (
+    <Modal
+      title="Add New Room"
+      visible={visible}
+      onCancel={() => setVisible(!visible)}
+      footer=""
+    >
+      <AddRoomController />
+    </Modal>
   );
 
   return (
@@ -48,7 +61,10 @@ const RoomList: React.FC<any> = () => {
           </Button>
         </Popover>
       </div>
-      <Divider orientation="left">Rooms</Divider>
+      <Divider orientation="left">
+        <span>Rooms</span>
+        <Icon className="rooms--add-icon" type="plus-circle" onClick={() => setVisible(!visible)} />
+      </Divider>
       <ScrollArea
         ref={ScrollAreaRef}
         speed={0.8}
@@ -69,6 +85,7 @@ const RoomList: React.FC<any> = () => {
           <RoomMenuItem title="Personal Rooms" icon="user" rooms={[]}></RoomMenuItem>
         </Menu>
       </ScrollArea>
+      {addRoomModal}
     </div >
   );
 };
