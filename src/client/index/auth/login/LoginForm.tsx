@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import FormField from "../../../components/FormField";
 import SocialIcon from "../../../components/SocialIcons";
 
-const LoginForm: React.FC = (props: any) => {
+const LoginForm = (props: any) => {
   const {
     values,
     touched,
@@ -61,9 +61,6 @@ const LoginForm: React.FC = (props: any) => {
           <SocialIcon />
           <Link className="auth__register-link" to="/register">
             Registration
-          </Link>
-          <Link className="auth__register-link" to="/">
-            Back to Home
           </Link>
         </Form>
       </div>

@@ -4,7 +4,7 @@ import RoomList from './content/RoomList';
 import { MessageContent } from './content/MessageContent';
 import { UserList } from './content/UserList';
 
-export const Content: React.FC = () => {
+const Content: React.FC = () => {
   return (
     <div className="content">
       <div className="content__container">
@@ -15,3 +15,5 @@ export const Content: React.FC = () => {
     </div>
   );
 };
+
+export default Content;

@@ -7,7 +7,7 @@ import SocialIcon from "../../../components/SocialIcons";
 
 const success = false;
 
-const RegisterForm: React.FC = (props: any) => {
+const RegisterForm = (props: any) => {
   const {
     values,
     touched,
@@ -87,9 +87,6 @@ const RegisterForm: React.FC = (props: any) => {
             <SocialIcon />
             <Link className="auth__register-link" to="/login">
               Login to account
-            </Link>
-            <Link className="auth__register-link" to="/">
-              Back to Home
             </Link>
           </Form>
         ) : (

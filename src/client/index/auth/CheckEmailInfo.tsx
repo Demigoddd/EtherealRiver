@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Result, Button } from "antd";
 
-export const renderTextInfo = (hash: any, verified: any) => {
+const renderTextInfo = (hash: any, verified: any) => {
   if (hash) {
     if (verified) {
       return {
@@ -22,7 +22,7 @@ export const renderTextInfo = (hash: any, verified: any) => {
   }
 };
 
-export const CheckEmailInfo = ({ location, history }: any) => {
+const CheckEmailInfo = ({ location, history }: any) => {
   const [verified, setVerified] = useState(false);
   const hash: any = location.search.split("hash=")[1];
   const info: any = renderTextInfo(hash, verified);
@@ -56,3 +56,5 @@ export const CheckEmailInfo = ({ location, history }: any) => {
     </div>
   );
 };
+
+export default CheckEmailInfo;

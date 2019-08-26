@@ -3,9 +3,9 @@ import { Route } from "react-router-dom";
 
 import Login from './auth/Login';
 import Register from './auth/Register';
-import { CheckEmailInfo } from './auth/CheckEmailInfo';
+import CheckEmailInfo from './auth/CheckEmailInfo';
 
-export const Auth: React.FC = () => {
+const Auth: React.FC = () => {
   return (
     <div className="auth">
       <Route exact path="/login" component={Login} />
@@ -14,3 +14,5 @@ export const Auth: React.FC = () => {
     </div>
   );
 };
+
+export default Auth;

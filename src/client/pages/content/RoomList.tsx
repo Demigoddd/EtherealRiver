@@ -1,14 +1,13 @@
 import React, { useRef, } from 'react';
-import { withRouter, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Popover, Avatar, Button, Menu, Divider } from 'antd';
 import { result } from 'lodash-es';
 import RoomMenuItem from './roomList/RoomMenuItem';
 import ScrollArea from 'react-scrollbar';
 
 const RoomOne = [{ id: 1, name: 'Room 1' }, { id: 2, name: 'Room 2' }];
-const isAuth = false;
 
-const RoomList: React.FC = ({ history }: any) => {
+const RoomList: React.FC<any> = () => {
   const delay: number = 100;
   const ScrollAreaRef = useRef<any>();
 
@@ -39,26 +38,15 @@ const RoomList: React.FC = ({ history }: any) => {
   return (
     <div className="rooms">
       <div className="rooms__header">
-        {isAuth
-          ?
-          <Popover placement="bottom" title="Menu" trigger="click" content={profileContent}>
-            <Button className="rooms__avatar">
-              <Avatar size="large" icon="user" />
-              <div>
-                <p><strong>Username</strong></p>
-                <p>Email</p>
-              </div>
-            </Button>
-          </Popover>
-          : <Button.Group>
-            <Button size="large" onClick={() => history.push('/login')}>
-              Login
-              </Button>
-            <Button size="large" onClick={() => history.push('/register')} type="primary">
-              Register
-              </Button>
-          </Button.Group>
-        }
+        <Popover placement="bottom" title="Menu" trigger="click" content={profileContent}>
+          <Button className="rooms__avatar">
+            <Avatar size="large" icon="user" />
+            <div>
+              <p><strong>Username</strong></p>
+              <p>Email</p>
+            </div>
+          </Button>
+        </Popover>
       </div>
       <Divider orientation="left">Rooms</Divider>
       <ScrollArea
@@ -85,4 +73,4 @@ const RoomList: React.FC = ({ history }: any) => {
   );
 };
 
-export default withRouter(RoomList);
+export default RoomList;
