@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
+    "target": "es5",
+    "module": "commonjs",
     "lib": [
-      "esnext",
-      "es6"
+      "es6",
+      "dom"
     ],
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   }
 }

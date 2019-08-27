@@ -1,26 +1,15 @@
-// Main Exports
-import express from 'express';
-import SocketIO from 'socket.io';
 import path from 'path';
-import * as http from 'http';
-import * as bodyparser from 'body-parser';
+import express from "express";
+import { createServer } from "http";
 
-import routes from './server/routes';
-import session from './server/utils/session';
-import passport from './server/utils/auth';
-import ioServer from './server/utils/socket';
+import "./server/core/db";
 import config from './server/utils/config';
+import createRoutes from "./server/core/routes";
+import createSocket from "./server/core/socket";
 
-// Init App
-const app: any = express();
-const server: any = http.createServer(app);
-const io: any = SocketIO(server);
-
-ioServer(io);
-
-// Middlewares
-app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({ extended: false }));
+const app = express();
+const http = createServer(app);
+const io = createSocket(http);
 
 if (config.isProduction) {
   app.use(express.static(path.join(__dirname, '..', 'build')));
@@ -30,13 +19,8 @@ if (config.isProduction) {
   });
 }
 
-app.use(session);
-app.use(passport.initialize());
-app.use(passport.session());
+createRoutes(app, io);
 
-app.use('/', routes);
-
-// Start server
-server.listen(process.env.PORT || 8080, () => {
-  console.log('Listening on port ' + server.address().port);
+http.listen(process.env.PORT || 8080, () => {
+  console.log(`Server: http://localhost:${process.env.PORT || 8080}`);
 });
