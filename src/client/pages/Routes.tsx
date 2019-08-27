@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 // Component Imports
@@ -6,9 +7,8 @@ import Content from './Content';
 import Auth from '../index/Auth';
 import NotFound from '../index/NotFound';
 
-const isAuth = true;
-
-const Routes: React.FC = () => {
+const Routes: React.FC<any> = ({ isAuth }) => {
+  console.log("AUTH: ", isAuth);
   return (
     <Switch>
       <Route exact path="/" render={() => (
@@ -22,4 +22,4 @@ const Routes: React.FC = () => {
   );
 };
 
-export default Routes;
+export default connect(({ user }: any) => ({ isAuth: user.isAuth }))(Routes);

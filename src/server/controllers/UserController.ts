@@ -79,6 +79,7 @@ class UserController {
   };
 
   create = (req: express.Request, res: express.Response) => {
+    debugger
     const postData = {
       email: req.body.email,
       fullname: req.body.fullname,
@@ -158,10 +159,10 @@ class UserController {
       }
 
       if (bcrypt.compareSync(postData.password, user.password)) {
-        const token = createJWToken(user);
+        const accessToken = createJWToken(user);
         res.json({
           status: "success",
-          token
+          accessToken
         });
       } else {
         res.status(403).json({

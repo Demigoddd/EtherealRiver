@@ -6,6 +6,8 @@ const initConfig = (): any => {
       isProduction,
       db: process.env.MONGODB_URL,
       sessionSecret: process.env.sessionSecret,
+      secretJWT: process.env.JWT_SECRET,
+      maxAgeJWT: process.env.JWT_MAX_AGE,
       facebook: {
         clientID: process.env.facebookClientID,
         clientSecret: process.env.facebookClientSecret,
@@ -18,6 +20,8 @@ const initConfig = (): any => {
       isProduction,
       db: process.env.MONGODB_URL || 'mongodb://localhost:27017/EtherealRiver',
       sessionSecret: 'SECRET',
+      secretJWT: 'UpFJfpWKYteH5rMHSxst',
+      maxAgeJWT: 10080,
       facebook: {
         clientID: process.env.facebookClientID || 123,
         clientSecret: process.env.facebookClientSecret || 'abc123',

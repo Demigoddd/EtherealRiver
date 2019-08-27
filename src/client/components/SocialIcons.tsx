@@ -1,5 +1,7 @@
-import React from "react";
-import { Icon, Divider } from "antd";
+import React from 'react';
+import { Divider } from 'antd';
+import { ReactComponent as GoogleIcon } from '../assets/images/socialIcons/google.svg';
+import { ReactComponent as FacebookIcon } from '../assets/images/socialIcons/facebook.svg';
 
 const SocialIcons: React.FC<any> = (props) => {
   const loginGoogle = () => {
@@ -15,10 +17,10 @@ const SocialIcons: React.FC<any> = (props) => {
       <Divider />
       <div className="social-icons">
         <div className="social-icons__column">
-          <Icon className="social-icons--google" type="google" onClick={loginGoogle} />
+          <GoogleIcon className="social-icons--google" onClick={loginGoogle} />
         </div>
         <div className="social-icons__column">
-          <Icon className="social-icons--facebook" type="facebook" onClick={loginFacebook} />
+          <FacebookIcon className="social-icons--facebook" onClick={loginFacebook} />
         </div>
       </div>
       <Divider />

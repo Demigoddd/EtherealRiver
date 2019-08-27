@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
+import config from './config';
 
-export default (token: string) =>
+export default (accessToken: string) =>
   new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.JWT_SECRET || "", (err, decodedData) => {
+    jwt.verify(accessToken, config.secretJWT, (err: any, decodedData: any) => {
       if (err || !decodedData) {
         return reject(err);
       }

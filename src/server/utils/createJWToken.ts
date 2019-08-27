@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { reduce } from 'lodash';
+import config from './config';
 
 interface ILoginData {
   email: string;
@@ -7,7 +8,7 @@ interface ILoginData {
 }
 
 export default (user: any) => {
-  let token = jwt.sign(
+  let accessToken = jwt.sign(
     {
       data: reduce(
         user,
@@ -20,12 +21,12 @@ export default (user: any) => {
         {},
       ),
     },
-    process.env.JWT_SECRET || '',
+    config.secretJWT,
     {
-      expiresIn: process.env.JWT_MAX_AGE,
+      expiresIn: config.maxAgeJWT,
       algorithm: 'HS256',
     },
   );
 
-  return token;
+  return accessToken;
 };

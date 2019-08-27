@@ -12,7 +12,7 @@ export const setUserData = (payload: any) => (dispatch: any) => {
 export const setIsAuth = (setIsAuth: boolean) => (dispatch: any) => {
   dispatch({ type: types.USER_SET_IS_AUTH, setIsAuth });
 };
-export const fetchUserData = () => (dispatch: any) => {
+export const fetchUserData = () => {
   userApi
     .getMe()
     .then(({ data }: any) => {
@@ -38,7 +38,7 @@ export const fetchUserLogin = (postData: any) => {
         type: "success"
       });
 
-      (window as any).axios.defaults.headers.common["token"] = accessToken;
+      (window as any).axios.defaults.headers.common["accessToken"] = accessToken;
       setAccessToken(data.accessToken);
       fetchUserData();
       setIsAuth(true);
@@ -55,7 +55,7 @@ export const fetchUserLogin = (postData: any) => {
     });
 };
 export const fetchUserRegister = (postData: any) => {
-  return userApi.login(postData)
+  return userApi.register(postData)
     .then(({ data }: any) => {
       return data;
     });

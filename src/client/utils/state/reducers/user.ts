@@ -5,8 +5,8 @@ import {
 
 const initialState = {
   data: null,
-  token: window.localStorage.token,
-  isAuth: !!window.localStorage.token
+  accessToken: window.localStorage.accessToken,
+  isAuth: !!window.localStorage.accessToken
 };
 
 export default (state: any = initialState, action: any) => {
@@ -16,7 +16,7 @@ export default (state: any = initialState, action: any) => {
         ...state,
         data: action.payload,
         isAuth: true,
-        token: window.localStorage.token
+        accessToken: window.localStorage.accessToken
       };
     case USER_SET_IS_AUTH:
       return {

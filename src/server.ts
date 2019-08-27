@@ -7,6 +7,7 @@ import config from './server/utils/config';
 import createRoutes from "./server/core/routes";
 import createSocket from "./server/core/socket";
 
+const port = (process.env.PORT || 3003);
 const app = express();
 const http = createServer(app);
 const io = createSocket(http);
@@ -21,6 +22,6 @@ if (config.isProduction) {
 
 createRoutes(app, io);
 
-http.listen(process.env.PORT || 8080, () => {
-  console.log(`Server: http://localhost:${process.env.PORT || 8080}`);
+http.listen(port, () => {
+  console.log(`Server: http://localhost:${port}`);
 });

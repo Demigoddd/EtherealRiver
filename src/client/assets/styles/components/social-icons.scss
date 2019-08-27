@@ -10,13 +10,8 @@
     align-items: center;
   }
 
-  @include modifier('google') {
-    color: dodgerblue;
-    font-size: 3rem;
-  }
-
-  @include modifier('facebook') {
-    color: dodgerblue;
-    font-size: 3rem;
+  &--google, &--facebook {
+    width: 3rem;
+    cursor: pointer;
   }
 }
