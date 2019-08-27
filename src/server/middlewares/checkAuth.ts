@@ -9,9 +9,9 @@ export default (req: any, res: any, next: any) => {
     return next();
   }
 
-  const accessToken = req.headers.accessToken;
+  const token = req.headers.token;
 
-  verifyJWTToken(accessToken)
+  verifyJWTToken(token)
     .then((user: any) => {
       req.user = user.data._doc;
       next();

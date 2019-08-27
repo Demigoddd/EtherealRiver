@@ -8,14 +8,13 @@ import Auth from '../index/Auth';
 import NotFound from '../index/NotFound';
 
 const Routes: React.FC<any> = ({ isAuth }) => {
-  console.log("AUTH: ", isAuth);
   return (
     <Switch>
       <Route exact path="/" render={() => (
-        isAuth ?  <Content /> : <Redirect to="/login" />
+        isAuth ? <Content /> : <Redirect to="/login" />
       )} />
       <Route exact path={["/login", "/register", "/register/verify"]} render={() => (
-        isAuth ?  <Redirect to="/" /> : <Auth />
+        isAuth ? <Redirect to="/" /> : <Auth />
       )} />
       <Route component={NotFound} />
     </Switch>

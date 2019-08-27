@@ -1,7 +1,6 @@
 import * as types from '../constants/actionTypes';
 
 // Other Imports
-import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { openNotification } from '../../helpers/openNotification';
 import userApi from '../../api/user';
 
@@ -12,25 +11,24 @@ export const setUserData = (payload: any) => (dispatch: any) => {
 export const setIsAuth = (setIsAuth: boolean) => (dispatch: any) => {
   dispatch({ type: types.USER_SET_IS_AUTH, setIsAuth });
 };
-export const fetchUserData = () => {
+export const fetchUserData = () => (dispatch: any) => {
   userApi
     .getMe()
     .then(({ data }: any) => {
-      setUserData(data);
+      setUserData(data)(dispatch);
     })
     .catch((err: any) => {
       if (err.response.status === 403) {
-        const [, setAccessToken] = useLocalStorage('accessToken');
         setIsAuth(false);
-        setAccessToken('');
+        delete window.localStorage.token;
       }
     });
 };
-export const fetchUserLogin = (postData: any) => {
+export const fetchUserLogin = (postData: any) => (dispatch: any) => {
   return userApi
     .login(postData)
     .then(({ data }: any) => {
-      const [accessToken, setAccessToken] = useLocalStorage('accessToken');
+      const { token } = data;
 
       openNotification({
         title: "Success!",
@@ -38,9 +36,9 @@ export const fetchUserLogin = (postData: any) => {
         type: "success"
       });
 
-      (window as any).axios.defaults.headers.common["accessToken"] = accessToken;
-      setAccessToken(data.accessToken);
-      fetchUserData();
+      (window as any).axios.defaults.headers.common["token"] = token;
+      window.localStorage["token"] = token;
+      fetchUserData()(dispatch);
       setIsAuth(true);
       return data;
     })
@@ -54,7 +52,7 @@ export const fetchUserLogin = (postData: any) => {
       }
     });
 };
-export const fetchUserRegister = (postData: any) => {
+export const fetchUserRegister = (postData: any) => (dispatch: any) => {
   return userApi.register(postData)
     .then(({ data }: any) => {
       return data;

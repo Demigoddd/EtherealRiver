@@ -1,4 +1,5 @@
 import { withFormik } from "formik";
+import store from "../../utils/state/store";
 
 import LoginForm from "./login/LoginForm";
 
@@ -17,7 +18,7 @@ const Login = withFormik({
     return errors;
   },
   handleSubmit: (values: any, { setSubmitting, props }: any) => {
-    fetchUserLogin(values)
+    store.dispatch(fetchUserLogin(values))
       .then(({ status }: any) => {
         if (status === "success") {
           props.history.push("/");
@@ -30,5 +31,7 @@ const Login = withFormik({
   },
   displayName: "LoginForm"
 })(LoginForm);
+
+
 
 export default Login;

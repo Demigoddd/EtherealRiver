@@ -35,6 +35,7 @@ class UserController {
 
   getMe = (req: any, res: express.Response) => {
     const id: string = req.user._id;
+
     UserModel.findById(id, (err, user: any) => {
       if (err || !user) {
         return res.status(404).json({
@@ -79,7 +80,6 @@ class UserController {
   };
 
   create = (req: express.Request, res: express.Response) => {
-    debugger
     const postData = {
       email: req.body.email,
       fullname: req.body.fullname,
@@ -159,10 +159,10 @@ class UserController {
       }
 
       if (bcrypt.compareSync(postData.password, user.password)) {
-        const accessToken = createJWToken(user);
+        const token = createJWToken(user);
         res.json({
           status: "success",
-          accessToken
+          token
         });
       } else {
         res.status(403).json({

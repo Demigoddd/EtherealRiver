@@ -1,4 +1,5 @@
 import { withFormik } from "formik";
+import store from "../../utils/state/store";
 
 import RegisterForm from "./register/RegisterForm";
 
@@ -19,13 +20,11 @@ const Register = withFormik({
     return errors;
   },
   handleSubmit: (values: any, { setSubmitting, props }: any) => {
-    fetchUserRegister(values)
-      .then(({ status }: any) => {
-        if (status === "success") {
-          setTimeout(() => {
-            props.history.push("/");
-          }, 50);
-        }
+    store.dispatch(fetchUserRegister(values))
+      .then(() => {
+        setTimeout(() => {
+          props.history.push("/");
+        }, 50);
         setSubmitting(false);
       })
       .catch(() => {

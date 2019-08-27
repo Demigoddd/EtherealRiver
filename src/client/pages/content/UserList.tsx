@@ -11,7 +11,7 @@ const users = [
     userName: 'Super Username',
     email: 'first@last.com',
     isOnline: true,
-    image: 'https://link'
+    image: ''
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ const users = [
     userName: 'Username',
     email: 'first@last.com',
     isOnline: false,
-    image: 'https://link'
+    image: ''
   }
 ]
 
@@ -37,7 +37,7 @@ const UserList: React.FC = () => {
         placeholder="Enter username"
         prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
         value={username || ''}
-        onChange={(e: any) => setUsername(e.target.value)}/>
+        onChange={(e: any) => setUsername(e.target.value)} />
       <Button onClick={() => addUser(username)} type="primary" block>Add user to room</Button>
     </div>
   );
