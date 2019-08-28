@@ -3,8 +3,8 @@ import {
   USER_SET_IS_AUTH
 } from '../constants/actionTypes';
 
-const initialState = {
-  data: null,
+const initialState: InitialUserState = {
+  data: {},
   token: window.localStorage.token,
   isAuth: !!window.localStorage.token
 };
@@ -27,3 +27,18 @@ export default (state: any = initialState, action: any) => {
       return state;
   }
 };
+
+interface InitialUserState {
+  data: User;
+  token: string;
+  isAuth: boolean;
+}
+interface User {
+  email?: string;
+  fullname?: string;
+  password?: string;
+  confirmed?: boolean;
+  avatar?: string;
+  confirm_hash?: string;
+  last_seen?: Date;
+}

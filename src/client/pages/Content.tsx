@@ -6,15 +6,15 @@ import RoomList from './content/RoomList';
 import MessageContent from './content/MessageContent';
 import UserList from './content/UserList';
 
-const Content: React.FC = (props: any) => {
+const Content: React.FC<any> = ({ user, fetchUserData }) => {
   useEffect(() => {
-    props.fetchUserData();
-  }, [props]);
+    fetchUserData();
+  }, [fetchUserData]);
 
   return (
     <div className="content">
       <div className="content__container">
-        <RoomList />
+        <RoomList user={user}/>
         <MessageContent />
         <UserList />
       </div>
@@ -22,4 +22,12 @@ const Content: React.FC = (props: any) => {
   );
 };
 
-export default connect(null, { fetchUserData })(Content);
+const mapStateToProps = (state: any) => ({
+  user: state.user.data
+});
+
+const mapDispatchToProps = {
+  fetchUserData
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Content);

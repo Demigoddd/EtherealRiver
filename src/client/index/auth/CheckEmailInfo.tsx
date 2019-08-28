@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Result, Button } from "antd";
+import userApi from "../../utils/api/user";
 
 const renderTextInfo = (hash: any, verified: any) => {
   if (hash) {
@@ -24,19 +25,18 @@ const renderTextInfo = (hash: any, verified: any) => {
 
 const CheckEmailInfo = ({ location, history }: any) => {
   const [verified, setVerified] = useState(false);
-  const hash: any = location.search.split("hash=")[1];
+  const hash: any = location.hash.split("hash=")[1];
   const info: any = renderTextInfo(hash, verified);
 
   useEffect(() => {
-    let hash = false;
-    let data = { status: 'success' };
-
     if (hash) {
-      if (data.status === "success") {
-        setVerified(true);
-      }
+      userApi.verifyHash(hash).then(({ data }) => {
+        if (data.status === "success") {
+          setVerified(true);
+        }
+      });
     }
-  }, []);
+  });
 
   return (
     <div className="auth__block">

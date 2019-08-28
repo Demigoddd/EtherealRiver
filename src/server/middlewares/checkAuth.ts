@@ -4,6 +4,7 @@ export default (req: any, res: any, next: any) => {
   if (
     req.path === "/user/login" ||
     req.path === "/user/register" ||
+    req.path === "/user/sendVerifyEmail" ||
     req.path === "/user/verify"
   ) {
     return next();

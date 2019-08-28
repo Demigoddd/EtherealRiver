@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom'
 import { Popover, Avatar, Button, Menu, Divider, Icon, Modal } from 'antd';
 import { result } from 'lodash-es';
 import ScrollArea from 'react-scrollbar';
+
+import { fetchUserLogout } from '../../utils/state/actions/index';
 import RoomMenuItem from './roomList/RoomMenuItem';
 import AddRoomController from './roomList/AddRoomController';
 
 const RoomOne = [{ id: 1, name: 'Room 1', type: 'public' }, { id: 2, name: 'Room 2', type: 'public' }];
 
-const RoomList: React.FC<any> = () => {
+const RoomList: React.FC<any> = ({ user }) => {
   const delay: number = 100;
   const ScrollAreaRef = useRef<any>();
   const [visible, setVisible] = useState(false);
@@ -26,13 +28,10 @@ const RoomList: React.FC<any> = () => {
   const profileContent = (
     <Menu className="rooms--menu">
       <Menu.Item>
-        <Link to="/profile">Profile</Link>
+        <Link to={`/profile/${user._id}`}>Profile</Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to="/setting">Setting</Link>
-      </Menu.Item>
-      <Menu.Item>
-        <Link to="/">Logout</Link>
+        <Link to="/" onClick={fetchUserLogout}>Logout</Link>
       </Menu.Item>
     </Menu>
   );
@@ -55,8 +54,8 @@ const RoomList: React.FC<any> = () => {
           <Button className="rooms__avatar">
             <Avatar size="large" icon="user" />
             <div>
-              <p><strong>Username</strong></p>
-              <p>Email</p>
+              <p><strong>{user.fullname}</strong></p>
+              <p>{user.email}</p>
             </div>
           </Button>
         </Popover>

@@ -5,9 +5,15 @@ const initConfig = (): any => {
     return {
       isProduction,
       db: process.env.MONGODB_URL,
+      baseUrl: process.env.baseUrl,
       sessionSecret: process.env.sessionSecret,
       secretJWT: process.env.JWT_SECRET,
       maxAgeJWT: process.env.JWT_MAX_AGE,
+      email: {
+        service: process.env.service,
+        emailUsername: process.env.emailUsername,
+        emailPassword: process.env.emailPassword
+      },
       facebook: {
         clientID: process.env.facebookClientID,
         clientSecret: process.env.facebookClientSecret,
@@ -19,9 +25,15 @@ const initConfig = (): any => {
     return {
       isProduction,
       db: process.env.MONGODB_URL || 'mongodb://localhost:27017/EtherealRiver',
+      baseUrl: 'http://localhost:3000',
       sessionSecret: 'SECRET',
       secretJWT: 'UpFJfpWKYteH5rMHSxst',
       maxAgeJWT: 10080,
+      email: {
+        service: 'gmail',
+        emailUsername: 'etherealriversupp@gmail.com',
+        emailPassword: '123456qwe!'
+      },
       facebook: {
         clientID: process.env.facebookClientID || 123,
         clientSecret: process.env.facebookClientSecret || 'abc123',

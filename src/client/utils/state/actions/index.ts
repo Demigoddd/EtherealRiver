@@ -11,6 +11,21 @@ export const setUserData = (payload: any) => (dispatch: any) => {
 export const setIsAuth = (setIsAuth: boolean) => (dispatch: any) => {
   dispatch({ type: types.USER_SET_IS_AUTH, setIsAuth });
 };
+export const fetchUserDataById = (id: any) => {
+  return userApi.show(id)
+    .then(({ data }: any) => {
+      return data;
+    })
+    .catch((err: any) => {
+      if (err.response.status === 404) {
+        openNotification({
+          title: "Error.",
+          text: "User not find.",
+          type: "error"
+        });
+      }
+    });
+};
 export const fetchUserData = () => (dispatch: any) => {
   userApi
     .getMe()
@@ -49,6 +64,12 @@ export const fetchUserLogin = (postData: any) => (dispatch: any) => {
           text: "Incorrect Login or Password.",
           type: "error"
         });
+      } else if (response.status === 409) {
+        openNotification({
+          title: "Authorization Error.",
+          text: "Sorry user not confirmed.",
+          type: "error"
+        });
       }
     });
 };
@@ -57,4 +78,8 @@ export const fetchUserRegister = (postData: any) => (dispatch: any) => {
     .then(({ data }: any) => {
       return data;
     });
+};
+export const fetchUserLogout = () => {
+  window.localStorage.removeItem('token');
+  window.location.href = '/';
 };

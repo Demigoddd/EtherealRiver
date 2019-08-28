@@ -4,7 +4,8 @@ import store from "../../utils/state/store";
 import RegisterForm from "./register/RegisterForm";
 
 import { Validate } from "../../utils/helpers/validate";
-import { fetchUserRegister } from '../../utils/state/actions/index';
+import { fetchUserRegister } from "../../utils/state/actions/index";
+import userApi from "../../utils/api/user";
 
 const Register = withFormik({
   enableReinitialize: true,
@@ -22,10 +23,15 @@ const Register = withFormik({
   handleSubmit: (values: any, { setSubmitting, props }: any) => {
     store.dispatch(fetchUserRegister(values))
       .then(() => {
-        setTimeout(() => {
-          props.history.push("/");
-        }, 50);
-        setSubmitting(false);
+        userApi.sendVerifyEmail({ email: values.email }).then(() => {
+          setTimeout(() => {
+            props.history.push("/register/verify");
+          }, 50);
+          setSubmitting(false);
+        })
+        .catch(() => {
+          setSubmitting(false);
+        });
       })
       .catch(() => {
         setSubmitting(false);

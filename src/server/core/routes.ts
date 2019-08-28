@@ -17,6 +17,7 @@ const createRoutes = (app: Express, io: Server) => {
 
   app.get("/user/me", UserController.getMe);
   app.get("/user/verify", UserController.verify);
+  app.post("/user/sendVerifyEmail", UserController.sendVerifyEmail);
   app.post("/user/register", registerValidation, UserController.create);
   app.post("/user/login", loginValidation, UserController.login);
   app.get("/user/find", UserController.findUsers);
