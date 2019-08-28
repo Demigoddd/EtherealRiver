@@ -8,6 +8,7 @@ export interface IUser extends Document {
   fullname?: string;
   password?: string;
   confirmed?: boolean;
+  socialId?: string;
   avatar?: string;
   confirm_hash?: string;
   last_seen?: Date;
@@ -33,6 +34,7 @@ const UserSchema = new Schema(
       type: Boolean,
       default: false
     },
+    socialId: String,
     avatar: String,
     confirm_hash: String,
     last_seen: {

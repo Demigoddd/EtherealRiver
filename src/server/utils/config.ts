@@ -14,6 +14,12 @@ const initConfig = (): any => {
         emailUsername: process.env.emailUsername,
         emailPassword: process.env.emailPassword
       },
+      google: {
+        clientID: process.env.facebookClientID,
+        clientSecret: process.env.facebookClientSecret,
+        callbackURL: "/auth/google/callback",
+        profileFields: ['id', 'displayName', 'photos']
+      },
       facebook: {
         clientID: process.env.facebookClientID,
         clientSecret: process.env.facebookClientSecret,
@@ -33,6 +39,12 @@ const initConfig = (): any => {
         service: 'gmail',
         emailUsername: 'etherealriversupp@gmail.com',
         emailPassword: '123456qwe!'
+      },
+      google: {
+        clientID: '91060208258-vu7ji6pjn39ge5c6c3lpup2d8o7og2un.apps.googleusercontent.com',
+        clientSecret: '8TjhvLWmYRM-IoR6pijvV51i',
+        callbackURL: "/auth/google/callback",
+        profileFields: ['id', 'displayName', 'photos']
       },
       facebook: {
         clientID: process.env.facebookClientID || 123,

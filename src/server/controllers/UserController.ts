@@ -57,6 +57,30 @@ class UserController {
       });
   };
 
+  findOrCreate = (data: any, res: any) => {
+    UserModel.findOne({'socialId': data.id}, (err, user) => {
+      if (err) return res.json({ error: err, message: 'Error.' });
+
+      if (user) {
+        return res.json({ error: err, user: user });
+      } else {
+        let userData = {
+          fullname: data.displayName,
+          socialId: data.id,
+          avatar: data.photos[0].value || null
+        };
+
+        if (data.provider == "facebook" && userData.avatar) {
+          userData.avatar = "http://graph.facebook.com/" + data.id + "/picture?type=large";
+        }
+
+        UserModel.create(userData, (err: any, newUser: any) => {
+          res.json({ error: err, user: newUser });
+        });
+      }
+    });
+  }
+
   delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
     UserModel.findOneAndRemove({ _id: id })
