@@ -10,7 +10,7 @@ export interface IMessage extends Document {
     ref: string;
     require: true;
   };
-  dialog: {
+  room: {
     type: Schema.Types.ObjectId;
     ref: string;
     require: true;
@@ -26,7 +26,7 @@ export interface IMessage extends Document {
 const MessageSchema = new Schema(
   {
     text: { type: String, require: Boolean },
-    dialog: { type: Schema.Types.ObjectId, ref: "Dialog", require: true },
+    room: { type: Schema.Types.ObjectId, ref: "Room", require: true },
     user: { type: Schema.Types.ObjectId, ref: "User", require: true },
     unread: {
       type: Boolean,

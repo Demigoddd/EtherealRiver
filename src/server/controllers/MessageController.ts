@@ -1,7 +1,7 @@
 import express from "express";
 import socket from "socket.io";
 
-import { MessageModel, DialogModel } from "../models";
+import { MessageModel, RoomModel } from "../models";
 
 class MessageController {
   io: socket.Server;
@@ -11,11 +11,11 @@ class MessageController {
   }
 
   index = (req: express.Request, res: express.Response) => {
-    const dialogId: string = req.query.dialog;
+    const roomId: string = req.query.room;
 
-    MessageModel.find({ dialog: dialogId })
-      .populate(["dialog", "user"])
-      .exec(function(err, messages) {
+    MessageModel.find({ room: roomId })
+      .populate(["room", "user"])
+      .exec(function (err, messages) {
         if (err) {
           return res.status(404).json({
             message: "Messages not found"
@@ -30,7 +30,7 @@ class MessageController {
 
     const postData = {
       text: req.body.text,
-      dialog: req.body.dialog_id,
+      room: req.body.room_id,
       user: userId
     };
 
@@ -39,7 +39,7 @@ class MessageController {
     message
       .save()
       .then((obj: any) => {
-        obj.populate(["dialog", "user"], (err: any, message: any) => {
+        obj.populate(["room", "user"], (err: any, message: any) => {
           if (err) {
             return res.status(500).json({
               status: "error",
@@ -47,11 +47,11 @@ class MessageController {
             });
           }
 
-          DialogModel.findOneAndUpdate(
-            { _id: postData.dialog },
+          RoomModel.findOneAndUpdate(
+            { _id: postData.room },
             { lastMessage: message._id },
             { upsert: true },
-            function(err) {
+            function (err) {
               if (err) {
                 return res.status(500).json({
                   status: "error",

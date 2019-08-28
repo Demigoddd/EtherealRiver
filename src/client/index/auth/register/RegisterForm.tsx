@@ -81,7 +81,7 @@ const RegisterForm = (props: any) => {
                 type="primary"
                 size="large"
               >
-                Registation
+                Registration
               </Button>
             </Form.Item>
             <SocialIcon />

@@ -1,9 +1,9 @@
 import express from "express";
 import socket from "socket.io";
 
-import { DialogModel, MessageModel } from "../models";
+import { RoomModel, MessageModel } from "../models";
 
-class DialogController {
+class RoomController {
   io: socket.Server;
 
   constructor(io: socket.Server) {
@@ -13,7 +13,7 @@ class DialogController {
   index = (req: any, res: express.Response) => {
     const userId = req.user._id;
 
-    DialogModel.find()
+    RoomModel.find()
       .or([{ author: userId }, { partner: userId }])
       .populate(["author", "partner"])
       .populate({
@@ -22,13 +22,13 @@ class DialogController {
           path: "user"
         }
       })
-      .exec(function (err, dialogs) {
+      .exec((err, rooms) => {
         if (err) {
           return res.status(404).json({
-            message: "Dialogs not found"
+            message: "Rooms not found."
           });
         }
-        return res.json(dialogs);
+        return res.json(rooms);
       });
   };
 
@@ -38,26 +38,26 @@ class DialogController {
       partner: req.body.partner
     };
 
-    const dialog = new DialogModel(postData);
+    const room = new RoomModel(postData);
 
-    dialog
+    room
       .save()
-      .then((dialogObj: any) => {
+      .then((roomObj: any) => {
         const message = new MessageModel({
           text: req.body.text,
           user: req.user._id,
-          dialog: dialogObj._id
+          room: roomObj._id
         });
 
         message
           .save()
           .then(() => {
-            dialogObj.lastMessage = message._id;
-            dialogObj.save().then(() => {
-              res.json(dialogObj);
-              this.io.emit("SERVER:DIALOG_CREATED", {
+            roomObj.lastMessage = message._id;
+            roomObj.save().then(() => {
+              res.json(roomObj);
+              this.io.emit("SERVER:ROOM_CREATED", {
                 ...postData,
-                dialog: dialogObj
+                room: roomObj
               });
             });
           })
@@ -72,20 +72,21 @@ class DialogController {
 
   delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
-    DialogModel.findOneAndRemove({ _id: id })
-      .then(dialog => {
-        if (dialog) {
+
+    RoomModel.findOneAndRemove({ _id: id })
+      .then(rooms => {
+        if (rooms) {
           res.json({
-            message: `Dialog deleted`
+            message: `Room deleted`
           });
         }
       })
       .catch(() => {
         res.json({
-          message: `Dialog not found`
+          message: `Room not found`
         });
       });
   };
 }
 
-export default DialogController;
+export default RoomController;

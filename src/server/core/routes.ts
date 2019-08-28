@@ -4,11 +4,11 @@ import { Server } from "socket.io";
 
 import { updateLastSeen, checkAuth } from "../middlewares";
 import { loginValidation, registerValidation } from "../utils/validations";
-import { UserCtrl, DialogCtrl, MessageCtrl } from "../controllers";
+import { UserCtrl, RoomCtrl, MessageCtrl } from "../controllers";
 
 const createRoutes = (app: Express, io: Server) => {
   const UserController = new UserCtrl(io);
-  const DialogController = new DialogCtrl(io);
+  const RoomController = new RoomCtrl(io);
   const MessageController = new MessageCtrl(io);
 
   app.use(bodyParser.json());
@@ -24,9 +24,9 @@ const createRoutes = (app: Express, io: Server) => {
   app.get("/user/:id", UserController.show);
   app.delete("/user/:id", UserController.delete);
 
-  app.get("/dialogs", DialogController.index);
-  app.delete("/dialogs/:id", DialogController.delete);
-  app.post("/dialogs", DialogController.create);
+  app.get("/roomroom", RoomController.index);
+  app.delete("/room/:id", RoomController.delete);
+  app.post("/room", RoomController.create);
 
   app.get("/messages", MessageController.index);
   app.post("/messages", MessageController.create);

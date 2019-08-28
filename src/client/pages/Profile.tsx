@@ -27,8 +27,8 @@ const Profile: React.FC<any> = ({ match, history }: any) => {
           <Descriptions bordered title="User Info" column={1}>
             <Descriptions.Item label="UserName">{user.email}</Descriptions.Item>
             <Descriptions.Item label="Email">{user.fullname}</Descriptions.Item>
-            <Descriptions.Item label="isOnline">{user.isOnline ? 'Yes' : 'No'}</Descriptions.Item>
-            <Descriptions.Item label="AccountCreated">{moment(user.createdAt).format("DD-MM-YYYY")}</Descriptions.Item>
+            <Descriptions.Item label="Is online">{user.isOnline ? 'Yes' : 'No'}</Descriptions.Item>
+            <Descriptions.Item label="Account created">{moment(user.createdAt).format("DD-MM-YYYY")}</Descriptions.Item>
           </Descriptions>
         </div>
       </div>
