@@ -20,7 +20,7 @@ export const fetchUserDataById = (id: any) => {
       if (err.response.status === 404) {
         openNotification({
           title: "Error.",
-          text: "User not find.",
+          text: "User is not found.",
           type: "error"
         });
       }
@@ -62,6 +62,12 @@ export const fetchUserLogin = (postData: any) => (dispatch: any) => {
         openNotification({
           title: "Authorization Error.",
           text: "Incorrect Login or Password.",
+          type: "error"
+        });
+      } else if (response.status === 404) {
+        openNotification({
+          title: "Authorization Error.",
+          text: "User is not found.",
           type: "error"
         });
       } else if (response.status === 409) {
