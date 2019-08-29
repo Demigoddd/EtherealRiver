@@ -89,8 +89,7 @@ class UserController {
 
     const user = new UserModel(postData);
 
-    user
-      .save()
+    user.save()
       .then((obj: any) => {
         res.json(obj);
       })

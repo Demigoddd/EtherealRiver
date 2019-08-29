@@ -24,7 +24,7 @@ const AddRoomForm = (props: any) => {
     // Reset Form
     values.roomName = '';
     values.password = '';
-    values.userName = '';
+    values.email = '';
     resetForm();
 
     // Set values
@@ -71,16 +71,15 @@ const AddRoomForm = (props: any) => {
       {
         (values.roomType === 'personal')
         && <FormField
-          name="userName"
-          icon="user"
-          placeholder="Username"
-          type="text"
-          handleChange={handleChange}
-          handleBlur={handleBlur}
-          touched={touched}
-          errors={errors}
-          values={values}
-        />
+        name="email"
+        icon="mail"
+        placeholder="E-Mail"
+        handleChange={handleChange}
+        handleBlur={handleBlur}
+        touched={touched}
+        errors={errors}
+        values={values}
+      />
       }
 
       <Divider />
@@ -88,6 +87,7 @@ const AddRoomForm = (props: any) => {
       <Form.Item>
         <Button
           disabled={isSubmitting || !isValid}
+          loading={isSubmitting}
           onClick={handleSubmit}
           type="primary"
           size="large"

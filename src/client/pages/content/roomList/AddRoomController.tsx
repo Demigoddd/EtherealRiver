@@ -1,11 +1,13 @@
 import { withFormik } from 'formik';
 import AddRoomForm from './AddRoomForm';
+import store from "../../../utils/state/store";
+import { createRoom } from '../../../utils/state/actions/index';
 
 const AddRoomController = withFormik({
   enableReinitialize: true,
   mapPropsToValues: () => ({
     roomName: '',
-    userName: '',
+    email: '',
     password: '',
     roomType: 'public'
   }),
@@ -16,8 +18,8 @@ const AddRoomController = withFormik({
     if (!values.roomName && (values.roomType === 'public' || values.roomType === 'private')) {
       errors.roomName = 'Required';
     }
-    if (!values.userName && (values.roomType === 'personal')) {
-      errors.userName = 'Required';
+    if (!values.email && (values.roomType === 'personal')) {
+      errors.email = 'Required';
     }
     if (!values.password && (values.roomType === 'private')) {
       errors.password = 'Required';
@@ -28,9 +30,16 @@ const AddRoomController = withFormik({
     return errors;
   },
   handleSubmit: (values: any, { setSubmitting, props }: any) => {
-    // addRoom(values.roomName, values.userName, values.password, values.roomType);
-    console.log("Redux Dispatch", values.roomName, values.userName, values.password, values.roomType);
-    setSubmitting(false);
+    store.dispatch(createRoom(values))
+      .then(({ status }: any) => {
+        if (status === "success") {
+          props.history.push("/");
+        }
+        setSubmitting(false);
+      })
+      .catch(() => {
+        setSubmitting(false);
+      });
   },
   displayName: "AddRoomForm"
 })(AddRoomForm);

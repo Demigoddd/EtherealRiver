@@ -3,6 +3,7 @@ import * as types from '../constants/actionTypes';
 // Other Imports
 import { openNotification } from '../../helpers/openNotification';
 import userApi from '../../api/user';
+import roomApi from '../../api/room';
 
 // User Actions
 export const setUserData = (payload: any) => (dispatch: any) => {
@@ -24,19 +25,19 @@ export const fetchUserDataById = (id: any) => {
           type: "error"
         });
       }
+      throw Error(err);
     });
 };
 export const fetchUserData = () => (dispatch: any) => {
-  userApi
-    .getMe()
+  userApi.getMe()
     .then(({ data }: any) => {
       setUserData(data)(dispatch);
     })
     .catch((err: any) => {
-      if (err.response.status === 403) {
-        setIsAuth(false);
-        delete window.localStorage.token;
-      }
+      setIsAuth(false);
+      window.localStorage.removeItem('token');
+      window.location.href = '/';
+      throw Error(err);
     });
 };
 export const fetchUserLogin = (postData: any) => (dispatch: any) => {
@@ -77,15 +78,69 @@ export const fetchUserLogin = (postData: any) => (dispatch: any) => {
           type: "error"
         });
       }
+      throw Error(response);
     });
 };
 export const fetchUserRegister = (postData: any) => (dispatch: any) => {
   return userApi.register(postData)
     .then(({ data }: any) => {
       return data;
+    })
+    .catch((err: any) => {
+      openNotification({
+        title: "Error.",
+        text: "Sorry there was an error",
+        type: "error"
+      });
+      throw Error(err);
     });
 };
 export const fetchUserLogout = () => {
+  setIsAuth(false);
   window.localStorage.removeItem('token');
   window.location.href = '/';
+};
+
+// Room Actions
+export const fetchRoomData = (type: string = 'all') => (dispatch: any) => {
+  roomApi.findRooms(type)
+    .then(({ data }: any) => {
+      if (type === 'all') {
+        dispatch({ type: types.ROOM_SET_ALL, payload: data });
+      } else if (type === 'public') {
+        dispatch({ type: types.ROOM_SET_PUBLIC, payload: data });
+      } else if (type === 'private') {
+        dispatch({ type: types.ROOM_SET_PRIVATE, payload: data });
+      } else if (type === 'personal') {
+        dispatch({ type: types.ROOM_SET_PERSONAL, payload: data });
+      }
+    })
+    .catch((err: any) => {
+      openNotification({
+        title: "Error.",
+        text: "Sorry there was an error",
+        type: "error"
+      });
+      throw Error(err);
+    });
+};
+export const createRoom = (postData: any) => (dispatch: any) => {
+  return roomApi.create(postData)
+    .then(({ data }: any) => {
+      openNotification({
+        title: "Success!",
+        text: "Room created.",
+        type: "success"
+      });
+
+      return fetchRoomData()(dispatch);
+    })
+    .catch((err: any) => {
+      openNotification({
+        title: "Error.",
+        text: "Sorry there was an error",
+        type: "error"
+      });
+      throw Error(err);
+    });
 };

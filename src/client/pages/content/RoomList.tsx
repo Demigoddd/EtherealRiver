@@ -8,9 +8,7 @@ import { fetchUserLogout } from '../../utils/state/actions/index';
 import RoomMenuItem from './roomList/RoomMenuItem';
 import AddRoomController from './roomList/AddRoomController';
 
-const RoomOne = [{ id: 1, name: 'Room 1', type: 'public' }, { id: 2, name: 'Room 2', type: 'public' }];
-
-const RoomList: React.FC<any> = ({ user }) => {
+const RoomList: React.FC<any> = ({ user, room }) => {
   const delay: number = 100;
   const ScrollAreaRef = useRef<any>();
   const [visible, setVisible] = useState(false);
@@ -41,6 +39,7 @@ const RoomList: React.FC<any> = ({ user }) => {
       title="Add New Room"
       visible={visible}
       onCancel={() => setVisible(!visible)}
+      maskClosable={false}
       footer=""
     >
       <AddRoomController />
@@ -74,14 +73,12 @@ const RoomList: React.FC<any> = ({ user }) => {
           mode="inline"
           onClick={(event) => roomSelected(event)}
           onOpenChange={() => onSubMenuChange()}
-          defaultSelectedKeys={['1']}
-          defaultOpenKeys={['Private Rooms']}
           subMenuOpenDelay={delay}
           subMenuCloseDelay={delay}
         >
-          <RoomMenuItem title="Public Rooms" icon="wechat" rooms={RoomOne}></RoomMenuItem>
-          <RoomMenuItem title="Private Rooms" icon="unlock" rooms={[]}></RoomMenuItem>
-          <RoomMenuItem title="Personal Rooms" icon="user" rooms={[]}></RoomMenuItem>
+          <RoomMenuItem title="Public Rooms" icon="wechat" rooms={room.public}></RoomMenuItem>
+          <RoomMenuItem title="Private Rooms" icon="unlock" rooms={room.private}></RoomMenuItem>
+          <RoomMenuItem title="Personal Rooms" icon="user" rooms={room.personal}></RoomMenuItem>
         </Menu>
       </ScrollArea>
       {addRoomModal}

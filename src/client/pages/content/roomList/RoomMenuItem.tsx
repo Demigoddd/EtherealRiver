@@ -20,7 +20,7 @@ const RoomMenuItem: React.FC<RoomMenuItem> = ({ title, icon, rooms, ...other }) 
     >
       {
         rooms.length
-          ? rooms.map((room: any) => <Menu.Item key={room.id}>{room.name}</Menu.Item>)
+          ? rooms.map((room: any) => <Menu.Item key={room._id}>{room.name}</Menu.Item>)
           : <> <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> </>
       }
     </Menu.SubMenu>

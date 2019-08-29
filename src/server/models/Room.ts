@@ -4,6 +4,7 @@ export interface IRoom extends Document {
   name: {
     type: Schema.Types.String;
     ref: string;
+    unique: true;
     require: true;
   };
   type: {
@@ -16,17 +17,13 @@ export interface IRoom extends Document {
     ref: string;
     require: true;
   };
-  partner: {
-    type: Schema.Types.ObjectId;
-    ref: string;
-  };
   password: {
     type: Schema.Types.String;
     ref: string;
   };
   users: [
     {
-      type: Schema.Types.String;
+      type: Schema.Types.ObjectId;
       ref: string;
     }
   ];
@@ -40,13 +37,16 @@ export interface IRoom extends Document {
 
 const RoomSchema = new Schema(
   {
-    name: { type: Schema.Types.String },
-    type: { type: Schema.Types.String },
-    author: { type: Schema.Types.ObjectId, ref: "User" },
-    partner: { type: Schema.Types.ObjectId, ref: "User" },
+    name: { type: Schema.Types.String, require: true, unique: true, dropDups: true },
+    type: { type: Schema.Types.String, require: true },
+    author: { type: Schema.Types.ObjectId, require: true, ref: "User" },
     password: { type: Schema.Types.String },
+    users: [{
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }],
     messages: [{
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Message'
     }]
   },

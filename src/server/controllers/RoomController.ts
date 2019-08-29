@@ -1,7 +1,8 @@
 import express from "express";
 import socket from "socket.io";
 
-import { RoomModel, MessageModel } from "../models";
+import { RoomModel } from "../models";
+import { UserModel } from "../models";
 
 class RoomController {
   io: socket.Server;
@@ -10,64 +11,115 @@ class RoomController {
     this.io = io;
   }
 
-  index = (req: any, res: express.Response) => {
-    const userId = req.user._id;
+  index = (req: express.Request, res: express.Response) => {
+    const id: string = req.params.id;
 
-    RoomModel.find()
-      .or([{ author: userId }, { partner: userId }])
-      .populate(["author", "partner"])
-      .populate({
-        path: "lastMessage",
-        populate: {
-          path: "user"
-        }
-      })
-      .exec((err, rooms) => {
-        if (err) {
+    RoomModel.findById(id, (err, room) => {
+      if (err) {
+        return res.status(404).json({
+          message: "Room not found"
+        });
+      }
+      res.json(room);
+    });
+  };
+
+  findRooms = (req: any, res: express.Response) => {
+    const query: string = req.query.query;
+
+    if (query === 'all') {
+      RoomModel.find({})
+        .then((rooms: any) => {
+          const publicRoom = rooms.filter((r: any) => r.type === 'public');
+          const privateRoom = rooms.filter((r: any) => r.type === 'private');
+          const personalRoom = rooms.filter((r: any) => r.type === 'personal');
+
+          const allRoomsData = {
+            public: publicRoom,
+            private: privateRoom,
+            personal: personalRoom
+          };
+
+          res.json(allRoomsData);
+        })
+        .catch((err: any) => {
           return res.status(404).json({
-            message: "Rooms not found."
+            status: "error",
+            message: err
           });
-        }
-        return res.json(rooms);
-      });
+        });
+    } else {
+      RoomModel.find()
+        .or([
+          { type: new RegExp(query, "i") },
+        ])
+        .then((rooms: any) => res.json(rooms))
+        .catch((err: any) => {
+          return res.status(404).json({
+            status: "error",
+            message: err
+          });
+        });
+    }
   };
 
   create = (req: express.Request, res: express.Response) => {
-    const postData = {
-      author: req.user._id,
-      partner: req.body.partner
-    };
+    let postData = {};
 
-    const room = new RoomModel(postData);
+    // lastname95@inbox.ru
+    if (req.body.email) {
+      UserModel.find({email: req.body.email}, (err: any, user: any) => {
+        if (err || !user) {
+          return res.status(404).json({
+            message: "User not found"
+          });
+        }
 
-    room
-      .save()
-      .then((roomObj: any) => {
-        const message = new MessageModel({
-          text: req.body.text,
-          user: req.user._id,
-          room: roomObj._id
-        });
+        postData = {
+          name: user.fullname,
+          type: req.body.roomType,
+          author: req.user._id,
+          users: [user._id]
+        };
 
-        message
-          .save()
-          .then(() => {
-            roomObj.lastMessage = message._id;
-            roomObj.save().then(() => {
-              res.json(roomObj);
-              this.io.emit("SERVER:ROOM_CREATED", {
-                ...postData,
-                room: roomObj
-              });
+        new RoomModel(postData).save()
+          .then((roomObj: any) => {
+            res.json({
+              data: roomObj,
+              status: 'success',
+              message: 'Room created'
             });
           })
           .catch((reason: any) => {
-            res.json(reason);
+            res.status(500).json({
+              status: "error",
+              message: reason
+            });
           });
-      })
-      .catch(reason => {
-        res.json(reason);
       });
+    } else {
+      postData = {
+        name: req.body.roomName,
+        type: req.body.roomType,
+        author: req.user._id,
+        password: req.body.password,
+      };
+
+      new RoomModel(postData).save()
+        .then((roomObj: any) => {
+          res.json({
+            data: roomObj,
+            status: 'success',
+            message: 'Room created'
+          });
+        })
+        .catch((reason: any) => {
+          res.status(500).json({
+            status: "error",
+            message: reason
+          });
+        });
+    }
   };
 
   delete = (req: express.Request, res: express.Response) => {
@@ -77,13 +129,13 @@ class RoomController {
       .then(rooms => {
         if (rooms) {
           res.json({
-            message: `Room deleted`
+            message: 'Room deleted'
           });
         }
       })
       .catch(() => {
         res.json({
-          message: `Room not found`
+          message: 'Room not found'
         });
       });
   };

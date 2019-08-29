@@ -7,5 +7,5 @@ export default {
   verifyHash: (hash: any) => axios.get("/user/verify?hash=" + hash),
   getMe: () => axios.get("/user/me"),
   show: (id: any) => axios.get(`/user/${id}`),
-  findUsers: (query: any) => axios.get("/user/findUsers?query=" + query)
+  findUsers: (query: any) => axios.get("/user/find?query=" + query)
 };
