@@ -66,9 +66,21 @@ class RoomController {
   create = (req: express.Request, res: express.Response) => {
     let postData = {};
 
-    // lastname95@inbox.ru
-    if (req.body.email) {
-      UserModel.find({email: req.body.email}, (err: any, user: any) => {
+    if (req.body.roomType === "public") {
+      postData = {
+        name: req.body.roomName,
+        type: req.body.roomType,
+        author: req.user._id
+      };
+    } else if (req.body.roomType === "private") {
+      postData = {
+        name: req.body.roomName,
+        type: req.body.roomType,
+        author: req.user._id,
+        password: req.body.password,
+      };
+    } else if (req.body.roomType === "personal") {
+      UserModel.findOne({ email: req.body.email }, (err: any, user: any) => {
         if (err || !user) {
           return res.status(404).json({
             message: "User not found"
@@ -81,45 +93,23 @@ class RoomController {
           author: req.user._id,
           users: [user._id]
         };
-
-        new RoomModel(postData).save()
-          .then((roomObj: any) => {
-            res.json({
-              data: roomObj,
-              status: 'success',
-              message: 'Room created'
-            });
-          })
-          .catch((reason: any) => {
-            res.status(500).json({
-              status: "error",
-              message: reason
-            });
-          });
       });
-    } else {
-      postData = {
-        name: req.body.roomName,
-        type: req.body.roomType,
-        author: req.user._id,
-        password: req.body.password,
-      };
-
-      new RoomModel(postData).save()
-        .then((roomObj: any) => {
-          res.json({
-            data: roomObj,
-            status: 'success',
-            message: 'Room created'
-          });
-        })
-        .catch((reason: any) => {
-          res.status(500).json({
-            status: "error",
-            message: reason
-          });
-        });
     }
+
+    new RoomModel(postData).save()
+      .then((roomObj: any) => {
+        res.json({
+          data: roomObj,
+          status: 'success',
+          message: 'Room created'
+        });
+      })
+      .catch((reason: any) => {
+        res.status(500).json({
+          status: "error",
+          message: reason
+        });
+      });
   };
 
   delete = (req: express.Request, res: express.Response) => {
