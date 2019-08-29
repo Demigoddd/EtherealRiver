@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Button, Divider } from "antd";
+import { Form, Button } from "antd";
 import { Link } from "react-router-dom";
 
 import FormField from "../../../components/FormField";
@@ -58,8 +58,7 @@ const LoginForm = (props: any) => {
               Login to account
             </Button>
           </Form.Item>
-          {/* <SocialIcon /> */}
-          <Divider />
+          <SocialIcon />
           <Link className="auth__register-link" to="/register">
             Registration
           </Link>

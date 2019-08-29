@@ -1,21 +1,21 @@
 import React from 'react';
 import { Divider } from 'antd';
-import { ReactComponent as GoogleIcon } from '../assets/images/socialIcons/google.svg';
-import { ReactComponent as FacebookIcon } from '../assets/images/socialIcons/facebook.svg';
+// import { ReactComponent as GoogleIcon } from '../assets/images/socialIcons/google.svg';
+// import { ReactComponent as FacebookIcon } from '../assets/images/socialIcons/facebook.svg';
 
 const SocialIcons: React.FC<any> = (props) => {
-  const loginGoogle = () => {
-    console.log('Google');
-  };
+  // const loginGoogle = () => {
+  //   console.log('Google');
+  // };
 
-  const loginFacebook = () => {
-    console.log('Facbook');
-  };
+  // const loginFacebook = () => {
+  //   console.log('Facbook');
+  // };
 
   return (
     <React.Fragment>
       <Divider />
-      <div className="social-icons">
+      {/* <div className="social-icons">
         <div className="social-icons__column">
           <GoogleIcon className="social-icons--google" onClick={loginGoogle} />
         </div>
@@ -23,7 +23,7 @@ const SocialIcons: React.FC<any> = (props) => {
           <FacebookIcon className="social-icons--facebook" onClick={loginFacebook} />
         </div>
       </div>
-      <Divider />
+      <Divider /> */}
     </React.Fragment>
   );
 };
