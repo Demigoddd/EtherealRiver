@@ -1,6 +1,7 @@
 import axios from "../axios";
 
 export default {
+  googleAuth: () => axios.post("/user/google"),
   login: (postData: any) => axios.post("/user/login", postData),
   register: (postData: any) => axios.post("/user/register", postData),
   sendVerifyEmail: (email: any) => axios.post("/user/sendVerifyEmail", email),

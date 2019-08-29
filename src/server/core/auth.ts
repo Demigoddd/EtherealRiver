@@ -1,12 +1,27 @@
 import passport from 'passport';
-import GoogleStrategy from 'passport-google-oauth';
 import config from '../utils/config';
-import { UserCtrl } from "../controllers";
+import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
+import { UserModel } from '../models';
 
-const verifySocialAccount = (token: any, tokenSecret: any, profile: any, done: any) => {
-  UserCtrl.findOrCreate({ googleId: profile.id }, (err: any, user: any) => {
-    return done(err, user);
+passport.use(new GoogleStrategy(config.google, (accessToken: any, refreshToken: any, profile: any, done: any) => {
+  const email = profile.emails[0].value;
+
+  // check if user already exists
+  UserModel.findOne({socialId: profile.id}, (err: any, user: any) => {
+    if (err) {
+      return done(err);
+    }
+
+    if (user) {
+      return done(null, user);
+    } else {
+      new UserModel({email: email, fullname: profile.displayName, socialId: profile.id}).save()
+        .then((obj: any) => {
+          return done(null, obj);
+        })
+        .catch((err: any) => {
+          return done(err);
+        });
+    }
   });
-};
-
-passport.use(new GoogleStrategy(config.google, verifySocialAccount));
+}));

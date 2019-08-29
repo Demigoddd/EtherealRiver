@@ -2,6 +2,9 @@ import { verifyJWTToken } from "../utils";
 
 export default (req: any, res: any, next: any) => {
   if (
+    req.path === "/user/google" ||
+    req.path === "/user/google/callback" ||
+    req.path === "/user/google/success" ||
     req.path === "/user/login" ||
     req.path === "/user/register" ||
     req.path === "/user/sendVerifyEmail" ||

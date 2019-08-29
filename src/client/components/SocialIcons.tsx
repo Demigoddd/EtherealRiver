@@ -3,9 +3,17 @@ import { Divider } from 'antd';
 import { ReactComponent as GoogleIcon } from '../assets/images/socialIcons/google.svg';
 import { ReactComponent as FacebookIcon } from '../assets/images/socialIcons/facebook.svg';
 
+import userApi from "../utils/api/user";
+
 const SocialIcons: React.FC<any> = (props) => {
   const loginGoogle = () => {
-    console.log('Google');
+    userApi.googleAuth()
+      .then((respone: any) => {
+        console.log(respone);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      })
   };
 
   const loginFacebook = () => {
