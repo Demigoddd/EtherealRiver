@@ -3,7 +3,6 @@ import express from "express";
 import { createServer } from "http";
 
 import "./server/core/db";
-import "./server/core/auth";
 import config from './server/utils/config';
 import createRoutes from "./server/core/routes";
 import createSocket from "./server/core/socket";

@@ -1,6 +1,5 @@
 import bodyParser from "body-parser";
 import cors from "cors";
-import passport from "passport";
 import { Express } from "express";
 import { Server } from "socket.io";
 
@@ -17,16 +16,12 @@ const createRoutes = (app: Express, io: Server) => {
   app.use(bodyParser.json());
   app.use(checkAuth);
   app.use(updateLastSeen);
-  app.use(passport.initialize());
-
-  // Google Auth
-  app.post("/user/google", UserController.authGoogle);
-  app.post("/user/google/callback", UserController.authGoogleCallback);
-  app.post("/user/google/success", UserController.authGoogleSuccess);
 
   // User Auth
   app.post("/user/login", loginValidation, UserController.login);
+  app.post("/user/socialLogin", loginValidation, UserController.socialLogin);
   app.post("/user/register", registerValidation, UserController.create);
+  app.post("/user/socialRegister", registerValidation, UserController.socialRegister);
   app.post("/user/sendVerifyEmail", UserController.sendVerifyEmail);
 
   // Other API

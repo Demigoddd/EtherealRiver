@@ -1,35 +1,80 @@
-import React from 'react';
-import { Divider } from 'antd';
-import { ReactComponent as GoogleIcon } from '../assets/images/socialIcons/google.svg';
-import { ReactComponent as FacebookIcon } from '../assets/images/socialIcons/facebook.svg';
+import React from "react";
+import { Divider } from "antd";
+import SocialLogin from "./SocialLogin";
 
-import userApi from "../utils/api/user";
+import store from "../utils/state/store";
+import { fetchUserRegister, fetchUserLogin } from "../utils/state/actions/index";
+import { openNotification } from "../utils/helpers/openNotification";
 
 const SocialIcons: React.FC<any> = (props) => {
-  const loginGoogle = () => {
-    userApi.googleAuth()
-      .then((respone: any) => {
-        console.log(respone);
-      })
-      .catch((error: any) => {
-        console.log(error);
-      })
+
+  const handleGoogleLogin = (user: any) => {
+    const postData = {
+      email: user._profile.email,
+      socialId: user._profile.id,
+      fullname: user._profile.name,
+      avatar: user._profile.profilePicURL
+    };
+
+    store.dispatch(fetchUserRegister(postData))
+      .then((response: any) => {
+        store.dispatch(fetchUserLogin(postData));
+      });
   };
 
-  const loginFacebook = () => {
-    console.log('Facbook');
+  const handleGoogleLoginFailure = (err: any) => {
+    openNotification({
+      title: "Authorization Error.",
+      text: "Google Auth Error.",
+      type: "error"
+    });
   };
+
+  // const handleFacebookLogin = (user: any) => {
+  //   console.log('Facbook', user);
+  //   openNotification({
+  //     title: "Success!",
+  //     text: "Authorization Success.",
+  //     type: "success"
+  //   });
+  // };
+
+  // const handleFacebookLoginFailure = (err: any) => {
+  //   openNotification({
+  //     title: "Authorization Error.",
+  //     text: "Facebook Auth Error.",
+  //     type: "error"
+  //   });
+  // };
 
   return (
     <React.Fragment>
       <Divider />
       <div className="social-icons">
         <div className="social-icons__column">
-          <GoogleIcon className="social-icons--google" onClick={loginGoogle} />
+          <SocialLogin
+            className="social-icons--google"
+            type="google"
+            provider="google"
+            appId='91060208258-vu7ji6pjn39ge5c6c3lpup2d8o7og2un.apps.googleusercontent.com'
+            onLoginSuccess={handleGoogleLogin}
+            onLoginFailure={handleGoogleLoginFailure}
+          >
+            Login with Google
+          </SocialLogin>
         </div>
-        <div className="social-icons__column">
-          <FacebookIcon className="social-icons--facebook" onClick={loginFacebook} />
-        </div>
+        {/* <div className="social-icons__column">
+          <SocialLogin
+            className="social-icons--facebook"
+            type="facebook"
+            provider="facebook"
+            appId="id"
+            onLoginSuccess={handleFacebookLogin}
+            onLoginFailure={handleFacebookLoginFailure}
+          >
+            Login with Google
+          </SocialLogin>
+        </div> */}
       </div>
       <Divider />
     </React.Fragment>

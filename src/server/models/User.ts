@@ -28,7 +28,6 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: "Password is required"
     },
     confirmed: {
       type: Boolean,
@@ -57,6 +56,8 @@ UserSchema.set("toJSON", {
 
 UserSchema.pre("save", function(next) {
   const user: IUser = this;
+
+  if (user.socialId) return next();
 
   if (!user.isModified("password")) return next();
 

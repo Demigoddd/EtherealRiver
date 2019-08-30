@@ -40,8 +40,22 @@ export const fetchUserData = () => (dispatch: any) => {
     });
 };
 export const fetchUserLogin = (postData: any) => (dispatch: any) => {
-  return userApi
-    .login(postData)
+  let callback: any = {};
+
+  if (postData.password) {
+    callback = userApi.login(postData);
+  } else if (postData.email && !postData.password) {
+    callback = userApi.socialLogin(postData);
+  } else {
+    openNotification({
+      title: "Authorization Error.",
+      text: "Incorrect Data.",
+      type: "error"
+    });
+    throw Error("Authorization Error.");
+  }
+
+  return callback
     .then(({ data }: any) => {
       const { token } = data;
 
@@ -76,13 +90,42 @@ export const fetchUserLogin = (postData: any) => (dispatch: any) => {
           text: "Sorry user not confirmed.",
           type: "error"
         });
+      } else if (response.status === 500) {
+        openNotification({
+          title: "Authorization Error.",
+          text: "Server Error.",
+          type: "error"
+        });
       }
     });
 };
 export const fetchUserRegister = (postData: any) => (dispatch: any) => {
-  return userApi.register(postData)
+  let callback: any = {};
+
+  if (postData.password) {
+    callback = userApi.register(postData);
+  } else if (postData.email && !postData.password) {
+    callback = userApi.socialRegister(postData);
+  } else {
+    openNotification({
+      title: "Authorization Error.",
+      text: "Incorrect Data.",
+      type: "error"
+    });
+    throw Error("Authorization Error.");
+  }
+
+  return callback
     .then(({ data }: any) => {
       return data;
+    })
+    .catch((err: any) => {
+      openNotification({
+        title: "Registration Error.",
+        text: "Error.",
+        type: "error"
+      });
+      throw Error(err);
     });
 };
 export const fetchUserLogout = () => {
