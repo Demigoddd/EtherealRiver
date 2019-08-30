@@ -94,4 +94,10 @@
 .messages {
   height: 100%;
   padding: 1rem 1rem 0 1rem;
+
+  @include modifier('loading') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

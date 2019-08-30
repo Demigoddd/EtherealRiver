@@ -76,9 +76,10 @@ const RoomList: React.FC<any> = ({ user, room }) => {
           subMenuOpenDelay={delay}
           subMenuCloseDelay={delay}
         >
+          <RoomMenuItem title="My Rooms" icon="star" rooms={room.my}></RoomMenuItem>
+          <RoomMenuItem title="Personal Rooms" icon="user" rooms={room.personal}></RoomMenuItem>
           <RoomMenuItem title="Public Rooms" icon="wechat" rooms={room.public}></RoomMenuItem>
           <RoomMenuItem title="Private Rooms" icon="unlock" rooms={room.private}></RoomMenuItem>
-          <RoomMenuItem title="Personal Rooms" icon="user" rooms={room.personal}></RoomMenuItem>
         </Menu>
       </ScrollArea>
       {addRoomModal}

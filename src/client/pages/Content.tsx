@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchUserData, fetchRoomData } from '../utils/state/actions/index';
+import { fetchUserData, fetchAllRoom } from '../utils/state/actions/index';
 
 import RoomList from './content/RoomList';
 import MessageContent from './content/MessageContent';
 import UserList from './content/UserList';
 
-const Content: React.FC<any> = ({ user, room, fetchUserData, fetchRoomData }) => {
+const Content: React.FC<any> = ({ user, room, fetchUserData, fetchAllRoom }) => {
   useEffect(() => {
     fetchUserData();
-    fetchRoomData();
-  }, [fetchUserData, fetchRoomData]);
+    fetchAllRoom();
+  }, [fetchUserData, fetchAllRoom]);
 
   return (
     <div className="content">
@@ -30,7 +30,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = {
   fetchUserData,
-  fetchRoomData
+  fetchAllRoom
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Content);

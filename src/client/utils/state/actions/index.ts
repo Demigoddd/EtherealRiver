@@ -102,26 +102,19 @@ export const fetchUserLogout = () => {
 };
 
 // Room Actions
-export const fetchRoomData = (type: string = 'all') => (dispatch: any) => {
-  roomApi.findRooms(type)
+export const fetchAllRoom = () => (dispatch: any) => {
+  roomApi.getAll()
     .then(({ data }: any) => {
-      if (type === 'all') {
-        dispatch({ type: types.ROOM_SET_ALL, payload: data });
-      } else if (type === 'public') {
-        dispatch({ type: types.ROOM_SET_PUBLIC, payload: data });
-      } else if (type === 'private') {
-        dispatch({ type: types.ROOM_SET_PRIVATE, payload: data });
-      } else if (type === 'personal') {
-        dispatch({ type: types.ROOM_SET_PERSONAL, payload: data });
-      }
+      dispatch({ type: types.ROOM_SET_ALL, payload: data });
     })
-    .catch((err: any) => {
-      openNotification({
-        title: "Error.",
-        text: "Sorry there was an error",
-        type: "error"
-      });
-      throw Error(err);
+    .catch(({ response }: any) => {
+      if (response.status === 404) {
+        openNotification({
+          title: "Error.",
+          text: "Sorry rooms is not found.",
+          type: "error"
+        });
+      }
     });
 };
 export const createRoom = (postData: any) => (dispatch: any) => {
@@ -133,7 +126,7 @@ export const createRoom = (postData: any) => (dispatch: any) => {
         type: "success"
       });
 
-      return fetchRoomData()(dispatch);
+      fetchAllRoom()(dispatch);
     })
     .catch((err: any) => {
       openNotification({

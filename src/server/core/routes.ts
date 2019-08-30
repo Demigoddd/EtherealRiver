@@ -24,7 +24,7 @@ const createRoutes = (app: Express, io: Server) => {
   app.get("/user/:id", UserController.show);
   app.delete("/user/:id", UserController.delete);
 
-  app.get("/room/find", RoomController.findRooms);
+  app.get("/room/getAll", RoomController.getAll);
   app.get("/room/:id", RoomController.index);
   app.delete("/room/:id", RoomController.delete);
   app.post("/room/create", RoomController.create);

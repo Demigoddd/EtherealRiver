@@ -1,7 +1,9 @@
 import React from "react";
-import { Empty, Spin } from "antd";
+import { Empty, Spin, Button } from "antd";
 import ScrollArea from 'react-scrollbar';
 import Message from './messages/Message';
+
+const isJoinRoom = false;
 
 const isLoading = false;
 
@@ -40,25 +42,41 @@ const Messages: React.FC<any> = ({ user }) => {
       speed={0.8}
       horizontal={false}
     >
-      <div className="messages">
-        {isLoading ? (
-          <Spin size="large" tip="Loading Messages..." />
-        ) : items && !isLoading ? (
-          items.length > 0 ? (
-            items.map((item: any) => (
-              <Message
-                key={item.id}
-                {...item}
-                isMe={(user && user.id) === item.userId}
-              />
-            ))
-          ) : (
-              <Empty description="Messages is Empty" />
-            )
-        ) : (
-              <Empty description="Open Rooms" />
-            )}
-      </div>
+      {
+        isJoinRoom
+        ? <Empty
+          description={
+              <span>
+                Do you want to join this room ?
+              </span>
+            }
+          >
+          <Button type="primary">Join Now</Button>
+        </Empty>
+        : <div className="messages">
+          {
+            isLoading ? (
+              <div className="messages--loading">
+                <Spin size="large" tip="Loading Messages..." />
+              </div>
+            ) : items && !isLoading ? (
+              items.length > 0 ? (
+                items.map((item: any) => (
+                  <Message
+                    key={item.id}
+                    {...item}
+                    isMe={(user && user.id) === item.userId}
+                  />
+                ))
+              ) : (
+                  <Empty description="Messages is Empty" />
+                )
+            ) : (
+                  <Empty description="Open Rooms" />
+                )
+          }
+        </div>
+      }
     </ScrollArea >
   );
 };
