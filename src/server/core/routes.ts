@@ -1,4 +1,5 @@
 import bodyParser from "body-parser";
+import cors from "cors";
 import { Express } from "express";
 import { Server } from "socket.io";
 
@@ -11,15 +12,21 @@ const createRoutes = (app: Express, io: Server) => {
   const RoomController = new RoomCtrl(io);
   const MessageController = new MessageCtrl(io);
 
+  app.use(cors());
   app.use(bodyParser.json());
   app.use(checkAuth);
   app.use(updateLastSeen);
 
+  // User Auth
+  app.post("/user/login", loginValidation, UserController.login);
+  app.post("/user/socialLogin", loginValidation, UserController.socialLogin);
+  app.post("/user/register", registerValidation, UserController.create);
+  app.post("/user/socialRegister", registerValidation, UserController.socialRegister);
+  app.post("/user/sendVerifyEmail", UserController.sendVerifyEmail);
+
+  // Other API
   app.get("/user/me", UserController.getMe);
   app.get("/user/verify", UserController.verify);
-  app.post("/user/sendVerifyEmail", UserController.sendVerifyEmail);
-  app.post("/user/register", registerValidation, UserController.create);
-  app.post("/user/login", loginValidation, UserController.login);
   app.get("/user/find", UserController.findUsers);
   app.get("/user/:id", UserController.show);
   app.delete("/user/:id", UserController.delete);

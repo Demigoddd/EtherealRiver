@@ -75,30 +75,102 @@ class UserController {
   };
 
   create = (req: express.Request, res: express.Response) => {
-    const postData = {
-      email: req.body.email,
-      fullname: req.body.fullname,
-      password: req.body.password
-    };
-
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
 
-    const user = new UserModel(postData);
+    const newUser = new UserModel({
+      email: req.body.email,
+      fullname: req.body.fullname,
+      password: req.body.password,
+    });
 
+<<<<<<< HEAD
     user.save()
+=======
+    newUser.save()
+>>>>>>> auth
       .then((obj: any) => {
         res.json(obj);
       })
-      .catch(reason => {
+      .catch((reason: any) => {
         res.status(500).json({
           status: "error",
           message: reason
         });
       });
+  };
+
+  socialRegister = (req: express.Request, res: express.Response) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    UserModel.findOne({email: req.body.email}, (err: any, user: any) => {
+      if (err) {
+        res.status(500).json({
+          status: "Error when creating New User."
+        });
+      }
+
+      if (user) {
+        if (!user.socialId) {
+          UserModel.findOne({_id: user._id}, (err: any, user: any) => {
+            if (err || !user) {
+              return res.status(404).json({
+                message: "User not found"
+              });
+            }
+
+            user.socialId = req.body.socialId;
+
+            user.save()
+              .then((obj: any) => {
+                res.json({
+                  data: obj,
+                  message: 'User Updated.'
+                })
+              })
+              .catch((reason: any) => {
+                res.status(500).json({
+                  status: "error",
+                  message: reason
+                });
+              });
+          });
+        } else {
+          res.json({
+            data: user,
+            message: 'User already exist.'
+          });
+        }
+      }
+
+      if (!user) {
+        let newUser = new UserModel({
+          email: req.body.email,
+          fullname: req.body.fullname,
+          socialId: req.body.socialId,
+          avatar: req.body.imageUrl,
+          confirmed: true,
+        });
+
+        newUser.save()
+          .then((obj: any) => {
+            res.json({data: obj});
+          })
+          .catch((reason: any) => {
+            res.status(500).json({
+              status: "error",
+              message: reason
+            });
+          });
+      }
+    });
   };
 
   sendVerifyEmail = (req: express.Request, res: express.Response) => {
@@ -111,7 +183,7 @@ class UserController {
         });
       }
 
-      const confirmLink = (config.baseUrl + "/register/verify#hash=" + user.confirm_hash);
+      const confirmLink = (config.clientBaseUrl + "/register/verify#hash=" + user.confirm_hash);
 
       const emailBody = {
         to: email,
@@ -183,7 +255,7 @@ class UserController {
     }
 
     UserModel.findOne({ email: postData.email }, (err, user: any) => {
-      if (err || !user) {
+      if (err || !user || (!user.password && user.socialId)) {
         return res.status(404).json({
           message: "User not found"
         });
@@ -206,6 +278,29 @@ class UserController {
         res.status(409).json({
           status: "error",
           message: "Sorry user not confirmed"
+        });
+      }
+    });
+  };
+
+  socialLogin = (req: express.Request, res: express.Response) => {
+    UserModel.findOne({ email: req.body.email }, (err, user: any) => {
+      if (err || !user) {
+        return res.status(404).json({
+          message: "User not found"
+        });
+      }
+
+      if (user.socialId) {
+        const token = createJWToken(user);
+        res.json({
+          status: "success",
+          token
+        });
+      } else {
+        res.status(500).json({
+          status: "error",
+          message: "Incorrect SocialId."
         });
       }
     });

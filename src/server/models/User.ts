@@ -8,6 +8,7 @@ export interface IUser extends Document {
   fullname?: string;
   password?: string;
   confirmed?: boolean;
+  socialId?: string;
   avatar?: string;
   confirm_hash?: string;
   last_seen?: Date;
@@ -27,12 +28,12 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: "Password is required"
     },
     confirmed: {
       type: Boolean,
       default: false
     },
+    socialId: String,
     avatar: String,
     confirm_hash: String,
     last_seen: {
@@ -55,6 +56,8 @@ UserSchema.set("toJSON", {
 
 UserSchema.pre("save", function(next) {
   const user: IUser = this;
+
+  if (user.socialId) return next();
 
   if (!user.isModified("password")) return next();
 
