@@ -30,22 +30,28 @@ const SocialIcons: React.FC<any> = (props) => {
     });
   };
 
-  // const handleFacebookLogin = (user: any) => {
-  //   console.log('Facbook', user);
-  //   openNotification({
-  //     title: "Success!",
-  //     text: "Authorization Success.",
-  //     type: "success"
-  //   });
-  // };
+  const handleFacebookLogin = (user: any) => {
+    console.log('Facbook', user);
+    const postData = {
+      email: user._profile.email,
+      socialId: user._profile.id,
+      fullname: user._profile.name,
+      avatar: user._profile.profilePicURL
+    };
 
-  // const handleFacebookLoginFailure = (err: any) => {
-  //   openNotification({
-  //     title: "Authorization Error.",
-  //     text: "Facebook Auth Error.",
-  //     type: "error"
-  //   });
-  // };
+    store.dispatch(fetchUserRegister(postData))
+      .then((response: any) => {
+        store.dispatch(fetchUserLogin(postData));
+      });
+  };
+
+  const handleFacebookLoginFailure = (err: any) => {
+    openNotification({
+      title: "Authorization Error.",
+      text: "Facebook Auth Error.",
+      type: "error"
+    });
+  };
 
   return (
     <React.Fragment>
@@ -56,25 +62,25 @@ const SocialIcons: React.FC<any> = (props) => {
             className="social-icons--google"
             type="google"
             provider="google"
-            appId='91060208258-vu7ji6pjn39ge5c6c3lpup2d8o7og2un.apps.googleusercontent.com'
+            appId="91060208258-vu7ji6pjn39ge5c6c3lpup2d8o7og2un.apps.googleusercontent.com"
             onLoginSuccess={handleGoogleLogin}
             onLoginFailure={handleGoogleLoginFailure}
           >
             Login with Google
           </SocialLogin>
         </div>
-        {/* <div className="social-icons__column">
+        <div className="social-icons__column">
           <SocialLogin
             className="social-icons--facebook"
             type="facebook"
             provider="facebook"
-            appId="id"
+            appId="2354301384840712"
             onLoginSuccess={handleFacebookLogin}
             onLoginFailure={handleFacebookLoginFailure}
           >
-            Login with Google
+            Login with Facebook
           </SocialLogin>
-        </div> */}
+        </div>
       </div>
       <Divider />
     </React.Fragment>
