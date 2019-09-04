@@ -2,6 +2,7 @@ import { withFormik } from 'formik';
 import AddRoomForm from './AddRoomForm';
 import store from "../../../utils/state/store";
 import { createRoom } from '../../../utils/state/actions/index';
+import socket from "../../../utils/socket";
 
 const AddRoomController = withFormik({
   enableReinitialize: true,
@@ -30,16 +31,8 @@ const AddRoomController = withFormik({
     return errors;
   },
   handleSubmit: (values: any, { setSubmitting, props }: any) => {
-    store.dispatch(createRoom(values))
-      .then(({ status }: any) => {
-        if (status === "success") {
-          props.history.push("/");
-        }
-        setSubmitting(false);
-      })
-      .catch(() => {
-        setSubmitting(false);
-      });
+    socket.emit('createRoom', values);
+    setSubmitting(false);
   },
   displayName: "AddRoomForm"
 })(AddRoomForm);
