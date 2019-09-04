@@ -87,11 +87,7 @@ class UserController {
       password: req.body.password,
     });
 
-<<<<<<< HEAD
-    user.save()
-=======
     newUser.save()
->>>>>>> auth
       .then((obj: any) => {
         res.json(obj);
       })

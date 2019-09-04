@@ -21,11 +21,7 @@ export const fetchUserDataById = (id: any) => {
       if (err.response.status === 404) {
         openNotification({
           title: "Error.",
-<<<<<<< HEAD
           text: "User is not found.",
-=======
-          text: "User is not found",
->>>>>>> auth
           type: "error"
         });
       }
@@ -86,11 +82,7 @@ export const fetchUserLogin = (postData: any) => (dispatch: any) => {
       } else if (response.status === 404) {
         openNotification({
           title: "Authorization Error.",
-<<<<<<< HEAD
           text: "User is not found.",
-=======
-          text: "User is not found",
->>>>>>> auth
           type: "error"
         });
       } else if (response.status === 409) {
@@ -131,13 +123,8 @@ export const fetchUserRegister = (postData: any) => (dispatch: any) => {
     })
     .catch((err: any) => {
       openNotification({
-<<<<<<< HEAD
-        title: "Error.",
-        text: "Sorry there was an error",
-=======
         title: "Registration Error.",
         text: "Error.",
->>>>>>> auth
         type: "error"
       });
       throw Error(err);
