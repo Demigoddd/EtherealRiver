@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchUserData, fetchAllRoom } from '../utils/state/actions/index';
+import socket from '../utils/socket';
 
 import RoomList from './content/RoomList';
 import MessageContent from './content/MessageContent';
@@ -10,6 +11,8 @@ const Content: React.FC<any> = ({ user, room, fetchUserData, fetchAllRoom }) => 
   useEffect(() => {
     fetchUserData();
     fetchAllRoom();
+
+    socket.on("OOMS:UpdateRoomsList", onNewMessage);
   }, [fetchUserData, fetchAllRoom]);
 
   return (

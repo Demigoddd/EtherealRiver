@@ -152,23 +152,3 @@ export const fetchAllRoom = () => (dispatch: any) => {
       }
     });
 };
-export const createRoom = (postData: any) => (dispatch: any) => {
-  return roomApi.create(postData)
-    .then(({ data }: any) => {
-      openNotification({
-        title: "Success!",
-        text: "Room created.",
-        type: "success"
-      });
-
-      fetchAllRoom()(dispatch);
-    })
-    .catch((err: any) => {
-      openNotification({
-        title: "Error.",
-        text: "Sorry there was an error",
-        type: "error"
-      });
-      throw Error(err);
-    });
-};

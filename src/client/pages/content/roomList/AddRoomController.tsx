@@ -1,7 +1,5 @@
 import { withFormik } from 'formik';
 import AddRoomForm from './AddRoomForm';
-import store from "../../../utils/state/store";
-import { createRoom } from '../../../utils/state/actions/index';
 import socket from "../../../utils/socket";
 
 const AddRoomController = withFormik({
@@ -31,7 +29,7 @@ const AddRoomController = withFormik({
     return errors;
   },
   handleSubmit: (values: any, { setSubmitting, props }: any) => {
-    socket.emit('createRoom', values);
+    socket.emit('ROOMS:Create', values);
     setSubmitting(false);
   },
   displayName: "AddRoomForm"

@@ -80,20 +80,20 @@ class RoomController {
       });
     }
 
-    new RoomModel(postData).save()
-      .then((roomObj: any) => {
-        res.json({
-          data: roomObj,
-          status: 'success',
-          message: 'Room created'
-        });
-      })
-      .catch((reason: any) => {
-        res.status(500).json({
-          status: "error",
-          message: reason
-        });
-      });
+    new RoomModel(postData).save();
+      // .then((roomObj: any) => {
+      //   res.json({
+      //     data: roomObj,
+      //     status: 'success',
+      //     message: 'Room created'
+      //   });
+      // })
+      // .catch((reason: any) => {
+      //   res.status(500).json({
+      //     status: "error",
+      //     message: reason
+      //   });
+      // });
   };
 
   delete = (req: any, res: any) => {
