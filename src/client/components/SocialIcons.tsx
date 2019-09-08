@@ -3,7 +3,7 @@ import { Divider } from "antd";
 import SocialLogin from "./SocialLogin";
 
 import store from "../utils/state/store";
-import { fetchUserRegister, fetchUserLogin } from "../utils/state/actions/index";
+import { UserAction } from "../utils/state/actions";
 import { openNotification } from "../utils/helpers/openNotification";
 
 const SocialIcons: React.FC<any> = (props: any) => {
@@ -16,9 +16,9 @@ const SocialIcons: React.FC<any> = (props: any) => {
       avatar: user._profile.profilePicURL
     };
 
-    store.dispatch(fetchUserRegister(postData))
+    store.dispatch(UserAction.fetchUserRegister(postData))
       .then((response: any) => {
-        store.dispatch(fetchUserLogin(postData));
+        store.dispatch(UserAction.fetchUserLogin(postData));
       });
   };
 
@@ -39,9 +39,9 @@ const SocialIcons: React.FC<any> = (props: any) => {
       avatar: user._profile.profilePicURL
     };
 
-    store.dispatch(fetchUserRegister(postData))
+    store.dispatch(UserAction.fetchUserRegister(postData))
       .then((response: any) => {
-        store.dispatch(fetchUserLogin(postData));
+        store.dispatch(UserAction.fetchUserLogin(postData));
       });
   };
 

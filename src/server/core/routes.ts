@@ -33,7 +33,6 @@ const createRoutes = (app: Express, io: Server) => {
   app.get("/room/getAll", RoomController.getAll);
   app.get("/room/:id", RoomController.index);
   app.delete("/room/:id", RoomController.delete);
-  app.post("/room/create", RoomController.create);
 };
 
 export default createRoutes;

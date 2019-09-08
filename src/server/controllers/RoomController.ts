@@ -23,11 +23,71 @@ class RoomController {
     });
   };
 
+  addUser = (room: any, userId: number, callback: any) => {
+    const isUserExist = room.users.some((u: any) => u._id === userId);
+
+    if (isUserExist) return callback;
+
+    UserModel.findById(userId, (err: any, user: any) => {
+      if (err || !user) {
+        return callback(err);
+      }
+
+      const newUser = {
+        _id: user._id,
+        email: user.email,
+        fullname: user.fullname,
+        avatar: user.avatar,
+        isOnline: user.isOnline,
+      };
+
+      room.users.push(newUser);
+      room.save(callback);
+    });
+  };
+
+  findRoom = (roomName: string, callback: any) => {
+    RoomModel.findOne({ name: roomName }, callback);
+  };
+
+  findById = (id: any, callback: any) => {
+    RoomModel.findById(id, callback);
+  };
+
+  getUsers = (users: any, userId: number, callback: any) => {
+    let loadedUsers: number = 0;
+    const isUserNotExist = !users.some((u: any) => u._id === userId);
+
+    if (isUserNotExist) return callback(null, []);
+
+    users.forEach((userId: number, i: any) => {
+      UserModel.findById(userId, (err: any, user: any) => {
+        if (err || !user) {
+          return callback(err);
+        }
+
+        const newUser = {
+          _id: user._id,
+          email: user.email,
+          fullname: user.fullname,
+          avatar: user.avatar,
+          isOnline: user.isOnline,
+        };
+
+        users[i] = newUser;
+
+        if (++loadedUsers === users.length) {
+          return callback(null, users);
+        }
+      });
+    });
+  };
+
   getAll = (req: any, res: any) => {
     RoomModel.find({})
       .then((rooms: any) => {
-        const myRoom = rooms.filter((r: any) => r.users.includes(req.user._id));
-        const personalRoom = rooms.filter((r: any) => r.type === 'personal').filter((pr: any) => pr.authors.includes(req.user._id));
+        const myRoom = rooms.filter((r: any) => r.users.some((u: any) => u._id === req.user._id));
+        const personalRoom = rooms.filter((r: any) => r.type === 'personal' && r.authors.includes(req.user._id));
         const publicRoom = rooms.filter((r: any) => r.type === 'public');
         const privateRoom = rooms.filter((r: any) => r.type === 'private');
 
@@ -48,52 +108,37 @@ class RoomController {
       });
   };
 
-  create = (req: any, res: any) => {
+  create = (values: any) => {
     let postData = {};
 
-    if (req.body.roomType === "public") {
+    if (values.roomType === "public") {
       postData = {
-        name: req.body.roomName,
-        type: req.body.roomType,
-        authors: [req.user._id]
+        name: values.roomName,
+        type: values.roomType,
+        authors: [values.userId]
       };
-    } else if (req.body.roomType === "private") {
+    } else if (values.roomType === "private") {
       postData = {
-        name: req.body.roomName,
-        type: req.body.roomType,
-        password: req.body.password,
-        authors: [req.user._id],
+        name: values.roomName,
+        type: values.roomType,
+        password: values.password,
+        authors: [values.userId],
       };
-    } else if (req.body.roomType === "personal") {
-      UserModel.findOne({ email: req.body.email }, (err: any, user: any) => {
+    } else if (values.roomType === "personal") {
+      UserModel.findOne({ email: values.email }, (err: any, user: any) => {
         if (err || !user) {
-          return res.status(404).json({
-            message: "User not found"
-          });
+          throw Error(err);
         }
 
         postData = {
           name: user.fullname,
-          type: req.body.roomType,
-          authors: [req.user._id]
+          type: values.roomType,
+          authors: [values.userId, user._id]
         };
       });
     }
 
-    new RoomModel(postData).save();
-      // .then((roomObj: any) => {
-      //   res.json({
-      //     data: roomObj,
-      //     status: 'success',
-      //     message: 'Room created'
-      //   });
-      // })
-      // .catch((reason: any) => {
-      //   res.status(500).json({
-      //     status: "error",
-      //     message: reason
-      //   });
-      // });
+    return new RoomModel(postData).save();
   };
 
   delete = (req: any, res: any) => {

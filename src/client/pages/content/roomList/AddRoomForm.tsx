@@ -71,15 +71,15 @@ const AddRoomForm = (props: any) => {
       {
         (values.roomType === 'personal')
         && <FormField
-        name="email"
-        icon="mail"
-        placeholder="E-Mail"
-        handleChange={handleChange}
-        handleBlur={handleBlur}
-        touched={touched}
-        errors={errors}
-        values={values}
-      />
+          name="email"
+          icon="mail"
+          placeholder="E-Mail"
+          handleChange={handleChange}
+          handleBlur={handleBlur}
+          touched={touched}
+          errors={errors}
+          values={values}
+        />
       }
 
       <Divider />

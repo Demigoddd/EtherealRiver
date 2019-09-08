@@ -4,7 +4,7 @@ import store from "../../utils/state/store";
 import LoginForm from "./login/LoginForm";
 
 import { Validate } from "../../utils/helpers/validate";
-import { fetchUserLogin } from '../../utils/state/actions/index';
+import { UserAction } from '../../utils/state/actions';
 
 const Login = withFormik({
   enableReinitialize: true,
@@ -18,7 +18,7 @@ const Login = withFormik({
     return errors;
   },
   handleSubmit: (values: any, { setSubmitting, props }: any) => {
-    store.dispatch(fetchUserLogin(values))
+    store.dispatch(UserAction.fetchUserLogin(values))
       .then(({ status }: any) => {
         if (status === "success") {
           props.history.push("/");

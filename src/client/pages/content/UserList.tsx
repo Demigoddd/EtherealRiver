@@ -1,35 +1,16 @@
 import React, { useState } from 'react';
+import { get } from 'lodash-es';
 import { Card, Popover, Button, Input, Icon } from 'antd';
 import UserItem from './userList/UserItem';
 import ScrollArea from 'react-scrollbar';
 
-const users = [
-  {
-    id: 1,
-    firstName: 'first',
-    lastName: 'last',
-    userName: 'Super Username',
-    email: 'first@last.com',
-    isOnline: true,
-    image: ''
-  },
-  {
-    id: 2,
-    firstName: 'username',
-    lastName: 'last',
-    userName: 'Username',
-    email: 'first@last.com',
-    isOnline: false,
-    image: ''
-  }
-]
-
-const UserList: React.FC = () => {
+const UserList: React.FC<any> = ({ user, currentRoom }) => {
   const [username, setUsername] = useState('');
+  const roomUsers = get(currentRoom, 'users', []);
 
   const addUser = (username: string) => {
     console.log(username, "User add");
-  }
+  };
 
   const addUserContent = (
     <div className="users__add-user">
@@ -44,7 +25,7 @@ const UserList: React.FC = () => {
 
   const cardHeader = (
     <div className="users--header">
-      <span className="user-header--title">User: {users.length}</span>
+      <span className="user-header--title">User: {roomUsers.length}</span>
       <Popover placement="leftTop" title="Add User" content={addUserContent} trigger="click">
         <Button size="small" shape="circle" icon="plus" />
       </Popover>
@@ -57,7 +38,7 @@ const UserList: React.FC = () => {
         speed={0.8}
         horizontal={false}
       >
-        {users.map((user: any) => <UserItem key={user.id} user={user} />)}
+        {get(currentRoom, 'users', []).map((user: any) => <UserItem key={user._id} user={user} />)}
       </ScrollArea>
     </Card>
   );

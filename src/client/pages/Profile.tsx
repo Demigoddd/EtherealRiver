@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import { Button, Divider, Avatar, Descriptions } from 'antd';
-import { fetchUserDataById } from '../utils/state/actions/index';
+import { UserAction } from '../utils/state/actions';
 
 const Profile: React.FC<any> = ({ match, history }: any) => {
   const [user, setUser]: any = useState({});
 
   useEffect(() => {
-    fetchUserDataById(match.params.id)
+    UserAction.fetchUserDataById(match.params.id)
       .then((data) => {
         setUser(data);
       });
@@ -25,8 +25,8 @@ const Profile: React.FC<any> = ({ match, history }: any) => {
         <div className="profile__container--content">
           <Avatar shape="square" size={300} icon="user" />
           <Descriptions bordered title="User Info" column={1}>
-            <Descriptions.Item label="UserName">{user.email}</Descriptions.Item>
-            <Descriptions.Item label="Email">{user.fullname}</Descriptions.Item>
+            <Descriptions.Item label="UserName">{user.fullname}</Descriptions.Item>
+            <Descriptions.Item label="Email">{user.email}</Descriptions.Item>
             <Descriptions.Item label="Is online">{user.isOnline ? 'Yes' : 'No'}</Descriptions.Item>
             <Descriptions.Item label="Account created">{moment(user.createdAt).format("DD-MM-YYYY")}</Descriptions.Item>
           </Descriptions>

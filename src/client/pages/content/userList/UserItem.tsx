@@ -5,6 +5,7 @@ import { Popover, Avatar, Menu, Typography, Badge, Card, Skeleton } from 'antd';
 const isLoading = false;
 
 const UserItem: React.FC<any> = ({ user }) => {
+  console.log(user)
   const userMenuContent = (
     <Menu>
       <Menu.Item>
@@ -24,9 +25,9 @@ const UserItem: React.FC<any> = ({ user }) => {
       <Popover placement="bottom" title="User Menu" trigger="click" content={userMenuContent}>
         <Card.Grid>
           <Badge dot status={user.isOnline ? 'success' : 'default'}>
-            <Avatar size="large" icon={user.image} />
+            <Avatar size="large" icon={user.avatar} />
           </Badge>
-          <Typography.Text type="secondary" strong>{user.userName}</Typography.Text>
+          <Typography.Text type="secondary" strong>{user.fullname}</Typography.Text>
         </Card.Grid>
       </Popover>
     </Skeleton>

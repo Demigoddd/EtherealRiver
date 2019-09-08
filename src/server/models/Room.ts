@@ -21,10 +21,7 @@ export interface IRoom extends Document {
     ref: string;
     require: true;
   }];
-  users: [{
-    type: Schema.Types.ObjectId;
-    ref: string;
-  }];
+  users: any,
   messages: [{
     type: Schema.Types.ObjectId;
     ref: string;
@@ -49,12 +46,25 @@ const RoomSchema = new Schema(
     },
     authors: [{
       type: Schema.Types.ObjectId,
+      ref: 'User',
       require: true,
-      ref: "User"
     }],
     users: [{
-        type: Schema.Types.ObjectId,
-        ref: "User"
+      _id: {
+        type: Schema.Types.Number
+      },
+      email: {
+        type: Schema.Types.String
+      },
+      fullname: {
+        type: Schema.Types.String
+      },
+      avatar: {
+        type: Schema.Types.String
+      },
+      isOnline: {
+        type: Schema.Types.String
+      },
     }],
     messages: [{
       type: Schema.Types.ObjectId,

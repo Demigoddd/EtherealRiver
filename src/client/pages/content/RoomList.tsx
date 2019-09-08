@@ -1,14 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom'
-import { Popover, Avatar, Button, Menu, Divider, Icon, Modal } from 'antd';
+import { Popover, Avatar, Button, Menu, Divider, Icon, Modal, Spin } from 'antd';
 import { result } from 'lodash-es';
 import ScrollArea from 'react-scrollbar';
+import { roomsSocket } from '../../utils/socket';
 
-import { fetchUserLogout } from '../../utils/state/actions/index';
+import { UserAction } from '../../utils/state/actions';
 import RoomMenuItem from './roomList/RoomMenuItem';
 import AddRoomController from './roomList/AddRoomController';
 
-const RoomList: React.FC<any> = ({ user, room }) => {
+const RoomList: React.FC<any> = ({ user, rooms }) => {
   const delay: number = 100;
   const ScrollAreaRef = useRef<any>();
   const [visible, setVisible] = useState(false);
@@ -20,7 +21,7 @@ const RoomList: React.FC<any> = ({ user, room }) => {
   };
 
   const roomSelected = (event: any) => {
-    console.log('click ', event);
+    roomsSocket.emit('GetCurrentRoom', event.item.props.children, user._id);
   };
 
   const profileContent = (
@@ -29,7 +30,7 @@ const RoomList: React.FC<any> = ({ user, room }) => {
         <Link to={`/profile/${user._id}`}>Profile</Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to="/" onClick={fetchUserLogout}>Logout</Link>
+        <Link to="/" onClick={UserAction.fetchUserLogout}>Logout</Link>
       </Menu.Item>
     </Menu>
   );
@@ -68,19 +69,25 @@ const RoomList: React.FC<any> = ({ user, room }) => {
         speed={0.8}
         horizontal={false}
       >
-        <Menu
-          className="rooms--menu"
-          mode="inline"
-          onClick={(event) => roomSelected(event)}
-          onOpenChange={() => onSubMenuChange()}
-          subMenuOpenDelay={delay}
-          subMenuCloseDelay={delay}
-        >
-          <RoomMenuItem title="My Rooms" icon="star" rooms={room.my}></RoomMenuItem>
-          <RoomMenuItem title="Personal Rooms" icon="user" rooms={room.personal}></RoomMenuItem>
-          <RoomMenuItem title="Public Rooms" icon="wechat" rooms={room.public}></RoomMenuItem>
-          <RoomMenuItem title="Private Rooms" icon="unlock" rooms={room.private}></RoomMenuItem>
-        </Menu>
+        {
+          (typeof rooms === 'object')
+            ? <Menu
+              className="rooms--menu"
+              mode="inline"
+              onClick={(event) => roomSelected(event)}
+              onOpenChange={() => onSubMenuChange()}
+              subMenuOpenDelay={delay}
+              subMenuCloseDelay={delay}
+              defaultSelectedKeys={['My Rooms']}
+              defaultOpenKeys={['My Rooms']}
+            >
+              <RoomMenuItem title="My Rooms" icon="star" rooms={rooms.my}></RoomMenuItem>
+              <RoomMenuItem title="Personal Rooms" icon="user" rooms={rooms.personal}></RoomMenuItem>
+              <RoomMenuItem title="Public Rooms" icon="wechat" rooms={rooms.public}></RoomMenuItem>
+              <RoomMenuItem title="Private Rooms" icon="unlock" rooms={rooms.private}></RoomMenuItem>
+            </Menu>
+            : <Spin size="large" style={{ display: 'flex', justifyContent: 'center' }} />
+        }
       </ScrollArea>
       {addRoomModal}
     </div >

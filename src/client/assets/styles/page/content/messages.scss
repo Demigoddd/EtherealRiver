@@ -3,6 +3,18 @@
   flex-direction: column;
   flex: 4;
 
+  @include element('join-room') {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    p {
+      font-size: 1rem;
+    }
+  }
+
   @include element('header') {
     display: flex;
     justify-content: space-between;
@@ -21,6 +33,18 @@
       color: dodgerblue;
       border-color: dodgerblue;
     }
+  }
+
+  @include modifier('empty') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 100%;
+    font-size: 3rem;
+    text-shadow: 2px 2px lightsteelblue;
+    color:rgba(173,216,230, 0.5);
+    opacity: 0.5;
+    user-select: none;
   }
 
   .scrollarea {
