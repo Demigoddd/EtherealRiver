@@ -15,6 +15,9 @@ class UserController {
     this.io = io;
   }
 
+  /**
+   * REQUEST METHODS
+   */
   show = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
 

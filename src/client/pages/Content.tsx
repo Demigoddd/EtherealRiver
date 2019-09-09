@@ -12,6 +12,7 @@ const Content: React.FC<any> = ({ user, rooms, fetchUserData, fetchAllRoom }) =>
   const [currentRoom, setCurrentRoom] = useState<any>({});
 
   const joinHandle = (data: any) => {
+    console.log("Room", data.room);
     if (data.status === 'success') {
       setCurrentRoom(data.room);
     } else {
@@ -23,27 +24,12 @@ const Content: React.FC<any> = ({ user, rooms, fetchUserData, fetchAllRoom }) =>
     }
   };
 
-  const setRoom = (data: any) => {
-    console.log("SetRoom", data.room)
-    if (data.status === 'success') {
-      setCurrentRoom(data.room);
-    } else {
-      openNotification({
-        title: "Error.",
-        text: "Error when finding the room.",
-        type: "error"
-      });
-    }
-  };
-
   useEffect((): any => {
     fetchUserData();
     fetchAllRoom();
 
     roomsSocket.on("UpdateRoomsList", ({ status }: any) => fetchAllRoom(status));
-    roomsSocket.on("SetCurrentRoom", (data: any) => setRoom(data));
     roomsSocket.on("JoinHandle", (data: any) => joinHandle(data));
-    return () => roomsSocket.removeListener("UpdateRoomsList", fetchAllRoom);
   }, [fetchUserData, fetchAllRoom]);
 
   return (

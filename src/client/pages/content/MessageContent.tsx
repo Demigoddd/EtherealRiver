@@ -7,22 +7,20 @@ import { roomsSocket } from '../../utils/socket';
 import JoinRoom from './messageContent/JoinRoom';
 
 const MessageContent: React.FC<any> = ({ user, currentRoom }) => {
-  const isNotExistionRoom = () => {
-    return currentRoom.users.some((u: any) => u._id === user._id);
-  };
+  const userExistInRoom = currentRoom.users.some((u: any) => u._id === user._id);
 
   const joinRoomCallback = () => {
-    roomsSocket.emit("Join", currentRoom._id, user._id);
+    roomsSocket.emit("Join", null, currentRoom._id, user._id);
   };
 
   return (
     <div className="message-content">
       {
-        (isEmpty(currentRoom))
+        isEmpty(currentRoom)
           ? <p className="message-content--empty">Ethereal River</p>
           : <>
             {
-              isNotExistionRoom()
+              userExistInRoom
                 ? <>
                   <MessageHeader />
                   <Messages />

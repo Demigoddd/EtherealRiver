@@ -13,47 +13,58 @@ export default (http: http.Server) => {
   rooms.on('connection', (socket: socket.Socket) => {
 
     socket.on('Create', (values: any) => {
-
       RoomController.create(values)
-        .then((newRoom: any) => {
-          socket.emit('UpdateRoomsList', { status: 'success', message: 'Room Created' });
-          socket.broadcast.emit('UpdateRoomsList', { status: 'success', message: 'Room Created' });
+        .then((room: any) => {
+          RoomController.addUser(room, values.userId, (error: any, newRoom: any) => {
+            if (error || !newRoom) {
+              socket.emit('UpdateRoomsList', { status: 'error', message: error });
+              throw error;
+            }
+
+            socket.join(newRoom.id);
+
+            socket.emit('JoinHandle', { status: 'success', room: newRoom });
+            socket.emit('UpdateRoomsList', { status: 'success', message: 'Room Created' });
+            socket.broadcast.emit('UpdateRoomsList', { status: 'success', message: 'Room Created' });
+          });
         })
         .catch((error: any) => {
           socket.emit('UpdateRoomsList', { status: 'error', message: error });
         });
     });
 
-    socket.on('GetCurrentRoom', (roomName: any, userId: number) => {
-      RoomController.findRoom(roomName, (err: any, room: any) => {
-        if (err || !room) {
-          socket.emit('SetCurrentRoom', { status: 'error', message: err });
-          throw err;
-        }
-
-        socket.emit('SetCurrentRoom', { status: 'success', room });
-      });
-    });
-
-    socket.on('Join', (roomId: number, userId: number) => {
-      RoomController.findById(roomId, (err: any, room: any) => {
-        if (err || !room) {
-          socket.emit('JoinHandle', { status: 'error', error: err });
-          throw err;
-        }
-
-        RoomController.addUser(room, userId, (err: any, newRoom: any) => {
-          if (err || !newRoom) {
-            socket.emit('JoinHandle', { status: 'error', error: err });
-            throw err;
+    socket.on('Join', (roomName: any, roomId: number, userId: number) => {
+      if (roomName) {
+        RoomController.findRoom(roomName, (error: any, room: any) => {
+          if (error || !room) {
+            socket.emit('JoinHandle', { status: 'error', message: error });
+            throw error;
           }
 
-          socket.join(newRoom.id);
-
-          socket.emit('JoinHandle', { status: 'success', room: newRoom });
-          socket.emit('UpdateRoomsList', { status: 'success', message: 'Joined Room' });
+          socket.emit('JoinHandle', { status: 'success', room });
         });
-      });
+      } else if (roomId && userId) {
+        RoomController.findById(roomId, (error: any, room: any) => {
+          if (error || !room) {
+            socket.emit('JoinHandle', { status: 'error', error: error });
+            throw error;
+          }
+
+          RoomController.addUser(room, userId, (error: any, newRoom: any) => {
+            if (error || !newRoom) {
+              socket.emit('JoinHandle', { status: 'error', error: error });
+              throw error;
+            }
+
+            socket.join(newRoom.id);
+
+            socket.emit('JoinHandle', { status: 'success', room: newRoom });
+            socket.emit('UpdateRoomsList', { status: 'success', message: 'Joined Room' });
+          });
+        });
+      } else {
+        socket.emit('JoinHandle', { status: 'error', error: { message: "Error when joined the room"} });
+      }
     });
 
   });

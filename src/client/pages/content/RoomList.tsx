@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom'
 import { Popover, Avatar, Button, Menu, Divider, Icon, Modal, Spin } from 'antd';
-import { result } from 'lodash-es';
+import { isEmpty, result } from 'lodash-es';
 import ScrollArea from 'react-scrollbar';
 import { roomsSocket } from '../../utils/socket';
 
@@ -21,7 +21,7 @@ const RoomList: React.FC<any> = ({ user, rooms }) => {
   };
 
   const roomSelected = (event: any) => {
-    roomsSocket.emit('GetCurrentRoom', event.item.props.children, user._id);
+    roomsSocket.emit('Join', event.item.props.children);
   };
 
   const profileContent = (
@@ -70,8 +70,9 @@ const RoomList: React.FC<any> = ({ user, rooms }) => {
         horizontal={false}
       >
         {
-          (typeof rooms === 'object')
-            ? <Menu
+          isEmpty(rooms)
+            ? <Spin size="large" style={{ display: 'flex', justifyContent: 'center' }} />
+            : <Menu
               className="rooms--menu"
               mode="inline"
               onClick={(event) => roomSelected(event)}
@@ -86,7 +87,6 @@ const RoomList: React.FC<any> = ({ user, rooms }) => {
               <RoomMenuItem title="Public Rooms" icon="wechat" rooms={rooms.public}></RoomMenuItem>
               <RoomMenuItem title="Private Rooms" icon="unlock" rooms={rooms.private}></RoomMenuItem>
             </Menu>
-            : <Spin size="large" style={{ display: 'flex', justifyContent: 'center' }} />
         }
       </ScrollArea>
       {addRoomModal}
