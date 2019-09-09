@@ -18,7 +18,7 @@ const Content: React.FC<any> = ({ user, rooms, fetchUserData, fetchAllRoom }) =>
     } else {
       openNotification({
         title: "Error.",
-        text: "Error when join the room.",
+        text: "Handle Error.",
         type: "error"
       });
     }

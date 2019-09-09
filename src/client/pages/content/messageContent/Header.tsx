@@ -11,7 +11,7 @@ const MessageHeader: React.FC<any> = ({ user, currentRoom }) => {
   }
 
   const confirmDeleteRomm = () => {
-    console.log("Removed");
+    roomsSocket.emit("Destroy", currentRoom._id);
   }
 
   return (
