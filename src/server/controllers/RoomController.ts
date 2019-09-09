@@ -30,15 +30,13 @@ class RoomController {
     RoomModel.find({})
       .then((rooms: any) => {
         const myRoom = rooms.filter((room: any) => this.userExistInRoom(room.users, req.user._id));
-        const personalRoom = rooms.filter((room: any) => room.type === 'personal' && room.authors.includes(req.user._id));
         const publicRoom = rooms.filter((room: any) => room.type === 'public' && !this.userExistInRoom(room.users, req.user._id));
         const privateRoom = rooms.filter((room: any) => room.type === 'private' && !this.userExistInRoom(room.users, req.user._id));
 
         const allRoomsData = {
           my: myRoom,
           public: publicRoom,
-          private: privateRoom,
-          personal: personalRoom
+          private: privateRoom
         };
 
         res.json(allRoomsData);
@@ -143,23 +141,9 @@ class RoomController {
       };
 
       return new RoomModel(postData).save();
-    } else if (values.roomType === "personal") {
-      UserModel.findOne({ email: values.email }, (err: any, user: any) => {
-        if (err || !user) {
-          throw Error(err);
-        }
-
-        postData = {
-          name: user.fullname,
-          type: values.roomType,
-          authors: [values.userId, user._id]
-        };
-
-        return new RoomModel(postData).save();
-      });
+    } else {
+      throw new Error("Room when creating Room");
     }
-
-    throw new Error("Room when creating Room");
   };
 }
 

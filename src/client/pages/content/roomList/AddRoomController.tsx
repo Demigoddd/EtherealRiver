@@ -14,13 +14,10 @@ const AddRoomController = withFormik({
   }),
   validate: values => {
     let errors: any = {};
-    let roomTypes: any[] = ['public', 'private', 'personal'];
+    let roomTypes: any[] = ['public', 'private'];
 
     if (!values.roomName && (values.roomType === 'public' || values.roomType === 'private')) {
       errors.roomName = 'Required';
-    }
-    if (!values.email && (values.roomType === 'personal')) {
-      errors.email = 'Required';
     }
     if (!values.password && (values.roomType === 'private')) {
       errors.password = 'Required';

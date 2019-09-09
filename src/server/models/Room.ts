@@ -39,7 +39,7 @@ const RoomSchema = new Schema(
     type: {
       type: Schema.Types.String,
       require: true,
-      enum: ['public', 'private', 'personal']
+      enum: ['public', 'private']
     },
     password: {
       type: Schema.Types.String

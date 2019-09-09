@@ -4,7 +4,6 @@ import {
 
 const initialState: InitialRoomState = {
   my: [],
-  personal: [],
   public: [],
   private: [],
 };
@@ -23,13 +22,12 @@ export default (state: any = initialState, action: any) => {
 
 interface InitialRoomState {
   my: Room[],
-  personal: Room[];
   public: Room[];
   private: Room[];
 }
 interface Room {
   name: string;
-  type: 'all' | 'public' | 'private' | 'personal';
+  type: 'all' | 'public' | 'private';
   author: string;
   password: string;
   users: string[];

@@ -83,7 +83,6 @@ const RoomList: React.FC<any> = ({ user, rooms }) => {
               defaultOpenKeys={['My Rooms']}
             >
               <RoomMenuItem title="My Rooms" icon="star" rooms={rooms.my}></RoomMenuItem>
-              <RoomMenuItem title="Personal Rooms" icon="user" rooms={rooms.personal}></RoomMenuItem>
               <RoomMenuItem title="Public Rooms" icon="wechat" rooms={rooms.public}></RoomMenuItem>
               <RoomMenuItem title="Private Rooms" icon="unlock" rooms={rooms.private}></RoomMenuItem>
             </Menu>
