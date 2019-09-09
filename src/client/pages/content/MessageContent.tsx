@@ -7,7 +7,7 @@ import { roomsSocket } from '../../utils/socket';
 import JoinRoom from './messageContent/JoinRoom';
 
 const MessageContent: React.FC<any> = ({ user, currentRoom }) => {
-  const userExistInRoom = currentRoom.users.some((u: any) => u._id === user._id);
+  const userExistInRoom = (currentRoom.users || []).some((u: any) => u._id === user._id);
 
   const joinRoomCallback = () => {
     roomsSocket.emit("Join", null, currentRoom._id, user._id);
@@ -22,7 +22,7 @@ const MessageContent: React.FC<any> = ({ user, currentRoom }) => {
             {
               userExistInRoom
                 ? <>
-                  <MessageHeader />
+                  <MessageHeader user={user} currentRoom={currentRoom} />
                   <Messages />
                   <ChatInput />
                 </>

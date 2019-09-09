@@ -73,7 +73,7 @@ class RoomController {
    * PUBLIC METHODS
    */
   userExistInRoom = (users: any, userId: any) => {
-    return users.some((u: any) => u._id === userId)
+    return (users|| []).some((user: any) => user._id === userId)
   };
 
   addUser = (room: any, userId: number, callback: any) => {
@@ -98,6 +98,20 @@ class RoomController {
         room.users.push(newUser);
         room.save(callback);
       });
+    }
+  };
+
+  removeUser = (room: any, userId: number, callback: any) => {
+    const isUserExist = this.userExistInRoom(room.users, userId);
+
+    if (isUserExist) {
+      const updatedUsers = room.users.filter((user: any) => user._id !== userId);
+
+      Object.assign(room, {users: updatedUsers});
+
+      room.save(callback);
+    } else {
+      return callback();
     }
   };
 

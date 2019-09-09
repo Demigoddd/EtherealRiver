@@ -51,7 +51,7 @@ const RoomSchema = new Schema(
     }],
     users: [{
       _id: {
-        type: Schema.Types.Number
+        type: Schema.Types.String
       },
       email: {
         type: Schema.Types.String

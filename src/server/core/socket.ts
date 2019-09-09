@@ -17,7 +17,7 @@ export default (http: http.Server) => {
         .then((room: any) => {
           RoomController.addUser(room, values.userId, (error: any, newRoom: any) => {
             if (error || !newRoom) {
-              socket.emit('UpdateRoomsList', { status: 'error', message: error });
+              socket.emit('JoinHandle', { status: 'error', message: error });
               throw error;
             }
 
@@ -33,7 +33,7 @@ export default (http: http.Server) => {
         });
     });
 
-    socket.on('Join', (roomName: any, roomId: number, userId: number) => {
+    socket.on('Join', (roomName: any, roomId: any, userId: any) => {
       if (roomName) {
         RoomController.findRoom(roomName, (error: any, room: any) => {
           if (error || !room) {
@@ -41,7 +41,13 @@ export default (http: http.Server) => {
             throw error;
           }
 
-          socket.emit('JoinHandle', { status: 'success', room });
+          if (RoomController.userExistInRoom(room.users, userId)) {
+            socket.emit('JoinHandle', { status: 'success', room });
+          } else {
+            // if user not exist in room, Hilde all Users from Room.
+            const newRoom = Object.assign(room, {users: []});
+            socket.emit('JoinHandle', { status: 'success', room: newRoom });
+          }
         });
       } else if (roomId && userId) {
         RoomController.findById(roomId, (error: any, room: any) => {
@@ -59,12 +65,34 @@ export default (http: http.Server) => {
             socket.join(newRoom.id);
 
             socket.emit('JoinHandle', { status: 'success', room: newRoom });
-            socket.emit('UpdateRoomsList', { status: 'success', message: 'Joined Room' });
+            socket.emit('UpdateRoomsList', { status: 'success', message: 'Room Updated' });
           });
         });
       } else {
         socket.emit('JoinHandle', { status: 'error', error: { message: "Error when joined the room"} });
       }
+    });
+
+    socket.on('Leave', (roomId: any, userId: any) => {
+      RoomController.findById(roomId, (error: any, room: any) => {
+        if (error || !room) {
+          socket.emit('JoinHandle', { status: 'error', error: error });
+          throw error;
+        }
+
+        RoomController.removeUser(room, userId, (error: any, newRoom: any) => {
+          if (error || !newRoom) {
+            socket.emit('JoinHandle', { status: 'error', error: error });
+            throw error;
+          }
+
+          socket.leave(room.id);
+
+          socket.emit('JoinHandle', { status: 'success', room: newRoom });
+          socket.emit('UpdateRoomsList', { status: 'success', message: 'User Leaved the Room' });
+          socket.broadcast.emit('UpdateRoomsList', { status: 'success', message: 'Room Updated' });
+        });
+      });
     });
 
   });

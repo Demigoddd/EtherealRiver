@@ -21,7 +21,7 @@ const RoomList: React.FC<any> = ({ user, rooms }) => {
   };
 
   const roomSelected = (event: any) => {
-    roomsSocket.emit('Join', event.item.props.children);
+    roomsSocket.emit('Join', event.item.props.children, null, user._id);
   };
 
   const profileContent = (

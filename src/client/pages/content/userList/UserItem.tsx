@@ -5,7 +5,6 @@ import { Popover, Avatar, Menu, Typography, Badge, Card, Skeleton } from 'antd';
 const isLoading = false;
 
 const UserItem: React.FC<any> = ({ user }) => {
-  console.log(user)
   const userMenuContent = (
     <Menu>
       <Menu.Item>

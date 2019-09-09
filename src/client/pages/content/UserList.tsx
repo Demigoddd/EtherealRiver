@@ -24,7 +24,7 @@ const UserList: React.FC<any> = ({ user, currentRoom }) => {
 
   const cardHeader = (
     <div className="users--header">
-      <span className="user-header--title">User: {get(currentRoom, 'users', []).length}</span>
+      <span className="user-header--title">Users: {get(currentRoom, 'users', []).length}</span>
       <Popover placement="leftTop" title="Add User" content={addUserContent} trigger="click">
         <Button size="small" shape="circle" icon="plus" />
       </Popover>
