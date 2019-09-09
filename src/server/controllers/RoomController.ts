@@ -70,11 +70,15 @@ class RoomController {
   /**
    * PUBLIC METHODS
    */
-  userExistInRoom = (users: any, userId: any) => {
-    return (users|| []).some((user: any) => user._id === userId)
+  userIsRoomAdmin = (authors: any, userId: any) => {
+    return (authors || []).includes(userId);
   };
 
-  addUser = (room: any, userId: number, callback: any) => {
+  userExistInRoom = (users: any, userId: any) => {
+    return (users || []).some((user: any) => user._id === userId)
+  };
+
+  addUser = (room: any, userId: number, socketId: any, callback: any) => {
     const isUserExist = this.userExistInRoom(room.users, userId);
 
     if (isUserExist) {
@@ -87,6 +91,7 @@ class RoomController {
 
         const newUser = {
           _id: user._id,
+          socketId: socketId,
           email: user.email,
           fullname: user.fullname,
           avatar: user.avatar,
@@ -105,7 +110,7 @@ class RoomController {
     if (isUserExist) {
       const updatedUsers = room.users.filter((user: any) => user._id !== userId);
 
-      Object.assign(room, {users: updatedUsers});
+      Object.assign(room, { users: updatedUsers });
 
       room.save(callback);
     } else {
@@ -119,6 +124,12 @@ class RoomController {
 
   findById = (id: any, callback: any) => {
     RoomModel.findById(id, callback);
+  };
+
+  updateRoomPropert = (room: any, property: any, data: any, callback: any) => {
+    Object.assign(room, { [property]: data });
+
+    room.save(callback);
   };
 
   create = (values: any) => {

@@ -20,7 +20,12 @@ const MessageContent: React.FC<any> = ({ userId, currentRoomId, currentRoomName,
             {
               userExistInRoom
                 ? <>
-                  <MessageHeader userId={userId} currentRoomId={currentRoomId} isUserRoomAdmin={isUserRoomAdmin} />
+                  <MessageHeader
+                    userId={userId}
+                    currentRoomName={currentRoomName}
+                    currentRoomId={currentRoomId}
+                    isUserRoomAdmin={isUserRoomAdmin}
+                  />
                   <Messages />
                   <ChatInput />
                 </>

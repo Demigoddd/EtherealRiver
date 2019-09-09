@@ -10,7 +10,7 @@ const fetchAllRoom = (status: string = '') => (dispatch: any) => {
   if (status === 'error') {
     openNotification({
       title: "Error.",
-      text: "Error when adding room.",
+      text: "Error.",
       type: "error"
     });
     return;
@@ -18,7 +18,7 @@ const fetchAllRoom = (status: string = '') => (dispatch: any) => {
   if (status === 'success') {
     openNotification({
       title: "Success.",
-      text: "Success when adding room.",
+      text: "Success.",
       type: "success"
     });
   };

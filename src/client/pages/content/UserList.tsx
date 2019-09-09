@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty} from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import { Card } from 'antd';
 import UserItem from './userList/UserItem';
 import ScrollArea from 'react-scrollbar';
@@ -19,22 +19,24 @@ const UserList: React.FC<any> = ({ userId, currentRoomId, roomUsers, isUserRoomA
         isEmpty(currentRoomId)
           ? <></>
           : <Card title={isEmpty(roomUsers) ? <></> : cardHeader} className="users">
-              <ScrollArea
-                speed={0.8}
-                horizontal={false}
-              >
-                {
-                  roomUsers.map((user: any) => {
-                    <UserItem
-                      key={user._id}
-                      user={user}
-                      isUserRoomAdmin={isUserRoomAdmin}
-                      isLoading={isLoading}
-                    />
-                  })
-                }
-              </ScrollArea>
-            </Card>
+            <ScrollArea
+              speed={0.8}
+              horizontal={false}
+            >
+              {
+                roomUsers.map((user: any) =>
+                  <UserItem
+                    key={user._id}
+                    user={user}
+                    currentRoomId={currentRoomId}
+                    isAdmin={user._id === userId}
+                    isUserRoomAdmin={isUserRoomAdmin}
+                    isLoading={isLoading}
+                  />
+                )
+              }
+            </ScrollArea>
+          </Card>
       }
     </>
   );

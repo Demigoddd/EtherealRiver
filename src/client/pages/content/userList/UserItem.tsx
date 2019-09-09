@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import { Popover, Avatar, Menu, Typography, Badge, Card, Skeleton, Button } from 'antd';
+import { Popover, Avatar, Menu, Typography, Badge, Card, Skeleton } from 'antd';
+import { roomsSocket } from '../../../utils/socket';
 
-const UserItem: React.FC<any> = ({ user, isUserRoomAdmin, isLoading }) => {
-  const removeUser = () => {
-    console.log("Remove user from Room");
+const UserItem: React.FC<any> = ({ user, currentRoomId, isAdmin, isUserRoomAdmin, isLoading }) => {
+  const removeUser = (event: any) => {
+    event.preventDefault();
+    roomsSocket.emit("Leave", currentRoomId, user._id);
   };
 
   const userMenuContent = (
@@ -13,10 +15,10 @@ const UserItem: React.FC<any> = ({ user, isUserRoomAdmin, isLoading }) => {
         <Link to={`/profile/${user._id}`}>View Profile</Link>
       </Menu.Item>
       {
-        isUserRoomAdmin
-          &&  <Menu.Item>
-                <Button type="link" onClick={removeUser}>Remove From Room</Button>
-              </Menu.Item>
+        (isUserRoomAdmin && !isAdmin)
+        && <Menu.Item>
+          <Link to="/" onClick={removeUser}>Remove From Room</Link>
+        </Menu.Item>
       }
     </Menu>
   );

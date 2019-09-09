@@ -15,7 +15,7 @@ export default (http: http.Server) => {
     socket.on('Create', (values: any) => {
       RoomController.create(values)
         .then((room: any) => {
-          RoomController.addUser(room, values.userId, (error: any, newRoom: any) => {
+          RoomController.addUser(room, values.userId, socket.id, (error: any, newRoom: any) => {
             if (error || !newRoom) {
               socket.emit('JoinHandle', { status: 'error', message: error });
             } else {
@@ -30,6 +30,25 @@ export default (http: http.Server) => {
         .catch((error: any) => {
           socket.emit('UpdateRoomsList', { status: 'error', message: error });
         });
+    });
+
+    socket.on('Update', (roomId: any, property: any, roomName: any) => {
+      RoomController.findById(roomId, (error: any, room: any) => {
+        if (error || !room) {
+          socket.emit('JoinHandle', { status: 'error', message: error });
+        } else {
+          RoomController.updateRoomPropert(room, property, roomName, (error: any, newRoom: any) => {
+            if (error || !newRoom) {
+              socket.emit('JoinHandle', { status: 'error', message: error });
+            } else {
+              socket.emit('JoinHandle', { status: 'success', room: newRoom });
+              socket.emit('UpdateRoomsList', { status: 'success', message: 'Room Updated' });
+              socket.broadcast.emit('JoinHandle', { status: 'success', room: newRoom });
+              socket.broadcast.emit('UpdateRoomsList', { status: 'success', message: 'Room Updated' });
+            }
+          });
+        }
+      });
     });
 
     socket.on('Destroy', (roomId: any) => {
@@ -56,7 +75,7 @@ export default (http: http.Server) => {
               socket.emit('JoinHandle', { status: 'success', room });
             } else {
               // if user not exist in room, Hilde all Users from Room.
-              const roomWithoutUsers = Object.assign(room, {users: []});
+              const roomWithoutUsers = Object.assign(room, { users: [] });
 
               socket.emit('JoinHandle', { status: 'success', room: roomWithoutUsers });
             }
@@ -67,20 +86,21 @@ export default (http: http.Server) => {
           if (error || !room) {
             socket.emit('JoinHandle', { status: 'error', error: error });
           } else {
-            RoomController.addUser(room, userId, (error: any, newRoom: any) => {
+            RoomController.addUser(room, userId, socket.id, (error: any, newRoom: any) => {
               if (error || !newRoom) {
                 socket.emit('JoinHandle', { status: 'error', error: error });
               } else {
-                socket.join(newRoom.id);
+                socket.join(newRoom._id);
 
                 socket.emit('JoinHandle', { status: 'success', room: newRoom });
+                socket.broadcast.emit('JoinHandle', { status: 'success', room: newRoom });
                 socket.emit('UpdateRoomsList', { status: 'success', message: 'Room Updated' });
               }
             });
           }
         });
       } else {
-        socket.emit('JoinHandle', { status: 'error', error: { message: "Error when joined the room"} });
+        socket.emit('JoinHandle', { status: 'error', error: { message: "Error when joined the room" } });
       }
     });
 
@@ -93,13 +113,28 @@ export default (http: http.Server) => {
             if (error || !newRoom) {
               socket.emit('JoinHandle', { status: 'error', error: error });
             } else {
-              socket.leave(room.id);
+              if (RoomController.userIsRoomAdmin(newRoom.authors, userId)) {
+                socket.emit('JoinHandle', { status: 'success', room: newRoom });
+                socket.broadcast.emit('JoinHandle', { status: 'success', room: newRoom });
 
-              // if user leave the Room, Hilde all Users from Room.
-              const roomWithoutUsers = Object.assign(room, {users: []});
+                // Find specific User.
+                let socketId = newRoom.users.find((user: any) => user._id === userId).socketId;
+                let leaveSocket = rooms.connected[socketId];
+                const roomWithoutUsers = Object.assign(newRoom, { users: [] });
 
-              socket.emit('JoinHandle', { status: 'success', room: roomWithoutUsers });
-              socket.emit('UpdateRoomsList', { status: 'success', message: 'User Leaved the Room' });
+                // Emit specific User.
+                socket.emit('JoinHandle', { status: 'success', room: roomWithoutUsers });
+                leaveSocket.leave(newRoom._id);
+              } else {
+                // if user leave the Room, Hilde all Users from Room.
+                const roomWithoutUsers = Object.assign(newRoom, { users: [] });
+                console.log("users", newRoom.users.length);
+                socket.emit('JoinHandle', { status: 'success', room: roomWithoutUsers });
+                socket.broadcast.emit('JoinHandle', { status: 'success', room: newRoom });
+                socket.emit('UpdateRoomsList', { status: 'success', message: 'User Leaved the Room' });
+
+                socket.leave(room._id);
+              }
             }
           });
         }
@@ -118,3 +153,4 @@ export default (http: http.Server) => {
 
   return io;
 };
+

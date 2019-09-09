@@ -53,6 +53,9 @@ const RoomSchema = new Schema(
       _id: {
         type: Schema.Types.String
       },
+      socketId: {
+        type: Schema.Types.String
+      },
       email: {
         type: Schema.Types.String
       },

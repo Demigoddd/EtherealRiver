@@ -14,6 +14,7 @@ const Content: React.FC<any> = ({ user, rooms, fetchUserData, fetchAllRoom }) =>
   const isUserRoomAdmin = (currentRoom.authors || []).includes(user._id);
 
   const joinHandle = (data: any) => {
+    console.log(data.room)
     if (data.status === 'success') {
       setCurrentRoom(data.room);
     } else {
@@ -29,8 +30,15 @@ const Content: React.FC<any> = ({ user, rooms, fetchUserData, fetchAllRoom }) =>
     fetchUserData();
     fetchAllRoom();
 
-    roomsSocket.on("UpdateRoomsList", ({ status }: any) => fetchAllRoom(status));
-    roomsSocket.on("JoinHandle", (data: any) => joinHandle(data));
+    const UpdateRoomsListHandler = ({ status }: any) => { fetchAllRoom(status) };
+    const JoinHandle = (data: any) => { joinHandle(data) };
+    roomsSocket.on("UpdateRoomsList", UpdateRoomsListHandler);
+    roomsSocket.on("JoinHandle", JoinHandle);
+
+    return () => {
+      roomsSocket.off("UpdateRoomsList", UpdateRoomsListHandler);
+      roomsSocket.off("JoinHandle", JoinHandle);
+    };
   }, [fetchUserData, fetchAllRoom]);
 
   return (
