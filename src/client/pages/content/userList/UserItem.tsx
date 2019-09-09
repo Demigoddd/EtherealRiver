@@ -1,18 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import { Popover, Avatar, Menu, Typography, Badge, Card, Skeleton } from 'antd';
+import { Popover, Avatar, Menu, Typography, Badge, Card, Skeleton, Button } from 'antd';
 
-const isLoading = false;
+const UserItem: React.FC<any> = ({ user, isUserRoomAdmin, isLoading }) => {
+  const removeUser = () => {
+    console.log("Remove user from Room");
+  };
 
-const UserItem: React.FC<any> = ({ user }) => {
   const userMenuContent = (
     <Menu>
       <Menu.Item>
-        <Link to="/">View Profile</Link>
+        <Link to={`/profile/${user._id}`}>View Profile</Link>
       </Menu.Item>
-      <Menu.Item>
-        <Link to="/">Remove From Room</Link>
-      </Menu.Item>
+      {
+        isUserRoomAdmin
+          &&  <Menu.Item>
+                <Button type="link" onClick={removeUser}>Remove From Room</Button>
+              </Menu.Item>
+      }
     </Menu>
   );
 

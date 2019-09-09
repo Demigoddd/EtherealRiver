@@ -14,7 +14,7 @@
 
   @include modifier('header') {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 
     @include modifier('title') {

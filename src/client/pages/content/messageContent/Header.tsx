@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { Popconfirm, Divider, Button, Typography } from 'antd';
 import { roomsSocket } from '../../../utils/socket';
 
-const MessageHeader: React.FC<any> = ({ user, currentRoom }) => {
+const MessageHeader: React.FC<any> = ({ userId, currentRoomId, isUserRoomAdmin }) => {
   const [title, setTitle] = useState('Room Title');
-  const isUserRoomAdmin = (currentRoom.authors || []).includes(user._id);
 
   const leaveTheRoom = () => {
-    roomsSocket.emit("Leave", currentRoom._id, user._id);
+    roomsSocket.emit("Leave", currentRoomId, userId);
   }
 
   const confirmDeleteRomm = () => {
-    roomsSocket.emit("Destroy", currentRoom._id);
+    roomsSocket.emit("Destroy", currentRoomId);
   }
 
   return (

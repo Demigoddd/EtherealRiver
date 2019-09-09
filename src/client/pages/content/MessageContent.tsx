@@ -6,27 +6,25 @@ import MessageHeader from './messageContent/Header';
 import { roomsSocket } from '../../utils/socket';
 import JoinRoom from './messageContent/JoinRoom';
 
-const MessageContent: React.FC<any> = ({ user, currentRoom }) => {
-  const userExistInRoom = (currentRoom.users || []).some((u: any) => u._id === user._id);
-
+const MessageContent: React.FC<any> = ({ userId, currentRoomId, currentRoomName, userExistInRoom, isUserRoomAdmin }) => {
   const joinRoomCallback = () => {
-    roomsSocket.emit("Join", null, currentRoom._id, user._id);
+    roomsSocket.emit("Join", null, currentRoomId, userId);
   };
 
   return (
     <div className="message-content">
       {
-        isEmpty(currentRoom)
+        isEmpty(currentRoomId)
           ? <p className="message-content--empty">Ethereal River</p>
           : <>
             {
               userExistInRoom
                 ? <>
-                  <MessageHeader user={user} currentRoom={currentRoom} />
+                  <MessageHeader userId={userId} currentRoomId={currentRoomId} isUserRoomAdmin={isUserRoomAdmin} />
                   <Messages />
                   <ChatInput />
                 </>
-                : <JoinRoom joinRoomCallback={joinRoomCallback} roomTitle={currentRoom.name} />
+                : <JoinRoom joinRoomCallback={joinRoomCallback} roomTitle={currentRoomName} />
             }
           </>
       }
