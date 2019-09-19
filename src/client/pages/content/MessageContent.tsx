@@ -3,37 +3,28 @@ import { isEmpty } from 'lodash-es';
 import Messages from './messageContent/Messages';
 import ChatInput from './messageContent/ChatInput';
 import MessageHeader from './messageContent/Header';
-import { roomsSocket } from '../../utils/socket';
 import JoinRoom from './messageContent/JoinRoom';
 
-const MessageContent: React.FC<any> = ({ userId, currentRoomId, currentRoomName, userExistInRoom, isUserRoomAdmin }) => {
-  const joinRoomCallback = () => {
-    roomsSocket.emit("Join", null, currentRoomId, userId);
-  };
+const MessageContent: React.FC<any> = ({ currentRoom, userId }) => {
+  const userExistInRoom = (currentRoom.users || []).some((u: any) => u._id === userId);
 
   return (
     <div className="message-content">
       {
-        isEmpty(currentRoomId)
+        isEmpty(currentRoom)
           ? <p className="message-content--empty">Ethereal River</p>
           : <>
             {
               userExistInRoom
                 ? <>
-                  <MessageHeader
-                    userId={userId}
-                    currentRoomName={currentRoomName}
-                    currentRoomId={currentRoomId}
-                    isUserRoomAdmin={isUserRoomAdmin}
-                  />
+                  <MessageHeader />
                   <Messages />
                   <ChatInput />
                 </>
-                : <JoinRoom joinRoomCallback={joinRoomCallback} roomTitle={currentRoomName} />
+                : <JoinRoom />
             }
           </>
       }
-
     </div>
   );
 };

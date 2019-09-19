@@ -3,13 +3,12 @@ import { Link } from 'react-router-dom'
 import { Popover, Avatar, Button, Menu, Divider, Icon, Modal, Spin } from 'antd';
 import { isEmpty, result } from 'lodash-es';
 import ScrollArea from 'react-scrollbar';
-import { roomsSocket } from '../../utils/socket';
 
 import { UserAction } from '../../utils/state/actions';
 import RoomMenuItem from './roomList/RoomMenuItem';
 import AddRoomController from './roomList/AddRoomController';
 
-const RoomList: React.FC<any> = ({ user, rooms }) => {
+const RoomList: React.FC<any> = ({ user, rooms, fetchFindRoomById }) => {
   const delay: number = 100;
   const ScrollAreaRef = useRef<any>();
   const [visible, setVisible] = useState(false);
@@ -21,7 +20,7 @@ const RoomList: React.FC<any> = ({ user, rooms }) => {
   };
 
   const roomSelected = (event: any) => {
-    roomsSocket.emit('Join', event.item.props.children, null, user._id);
+    fetchFindRoomById(event.key, user._id);
   };
 
   const profileContent = (
@@ -52,7 +51,7 @@ const RoomList: React.FC<any> = ({ user, rooms }) => {
       <div className="rooms__header">
         <Popover placement="bottom" title="Menu" trigger="click" content={profileContent}>
           <Button className="rooms__avatar">
-            <Avatar size="large" icon="user" />
+            <Avatar size="large" icon="user" src={user.avatar} />
             <div>
               <p><strong>{user.fullname}</strong></p>
               <p>{user.email}</p>

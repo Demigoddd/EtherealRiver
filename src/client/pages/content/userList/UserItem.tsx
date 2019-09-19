@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { Popover, Avatar, Menu, Typography, Badge, Card, Skeleton } from 'antd';
-import { roomsSocket } from '../../../utils/socket';
 
-const UserItem: React.FC<any> = ({ user, currentRoomId, isAdmin, isUserRoomAdmin, isLoading }) => {
+const UserItem: React.FC<any> = ({ user, currentUserId, currentRoomId, isAdmin, isUserRoomAdmin, isLoading, fetchRemoveUserFromRoom }) => {
   const removeUser = (event: any) => {
     event.preventDefault();
-    roomsSocket.emit("Leave", currentRoomId, user._id);
+    fetchRemoveUserFromRoom({ currentRoomId: currentRoomId, adminId: currentUserId, userId: user._id });
   };
 
   const userMenuContent = (
@@ -28,9 +27,9 @@ const UserItem: React.FC<any> = ({ user, currentRoomId, isAdmin, isUserRoomAdmin
       <Popover placement="bottom" title="User Menu" trigger="click" content={userMenuContent}>
         <Card.Grid>
           <Badge dot status={user.isOnline ? 'success' : 'default'}>
-            <Avatar size="large" icon={user.avatar} />
+            <Avatar size="large" icon="user" src={user.avatar} />
           </Badge>
-          <Typography.Text type="secondary" strong>{user.fullname}</Typography.Text>
+          <Typography.Text type="secondary" strong className="users--name">{user.fullname}</Typography.Text>
         </Card.Grid>
       </Popover>
     </Skeleton>

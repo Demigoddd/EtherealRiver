@@ -1,4 +1,3 @@
-
 import * as types from '../constants/actionTypes';
 
 // Other Imports
@@ -9,9 +8,11 @@ import userApi from '../../api/user';
 const setUserData = (payload: any) => (dispatch: any) => {
   dispatch({ type: types.USER_SET_DATA, payload });
 };
+
 const setIsAuth = (setIsAuth: boolean) => (dispatch: any) => {
   dispatch({ type: types.USER_SET_IS_AUTH, setIsAuth });
 };
+
 const fetchUserDataById = (id: any) => {
   return userApi.show(id)
     .then(({ data }: any) => {
@@ -28,6 +29,7 @@ const fetchUserDataById = (id: any) => {
       throw Error(err);
     });
 };
+
 const fetchUserData = () => (dispatch: any) => {
   userApi.getMe()
     .then(({ data }: any) => {
@@ -40,6 +42,7 @@ const fetchUserData = () => (dispatch: any) => {
       throw Error(err);
     });
 };
+
 const fetchUserLogin = (postData: any) => (dispatch: any) => {
   let callback: any = {};
 
@@ -101,6 +104,7 @@ const fetchUserLogin = (postData: any) => (dispatch: any) => {
       throw Error(response);
     });
 };
+
 const fetchUserRegister = (postData: any) => (dispatch: any) => {
   let callback: any = {};
 
@@ -130,6 +134,7 @@ const fetchUserRegister = (postData: any) => (dispatch: any) => {
       throw Error(err);
     });
 };
+
 const fetchUserLogout = () => {
   setIsAuth(false);
   window.localStorage.removeItem('token');

@@ -1,7 +1,7 @@
 .message-content {
   display: flex;
   flex-direction: column;
-  flex: 4;
+  width: 100%;
 
   @include element('join-room') {
     display: flex;
@@ -119,9 +119,66 @@
   height: 100%;
   padding: 1rem 1rem 0 1rem;
 
-  @include modifier('loading') {
+  .scrollarea {
+    height: 100%;
+  }
+
+  .messages--loading, .ant-empty {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  @include modifier('box') {
+    display: flex;
+
+    .ant-comment-inner {
+      padding: 8px;
+      margin-bottom: 8px;
+      background: #ffffff;
+      border: 1px solid #ececec;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.0220444);
+      border-radius: 12px 12px 0px 12px;
+
+      .ant-comment-avatar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem;
+      }
+
+      .ant-comment-actions {
+        margin-bottom: 0;
+      }
+    }
+
+    p {
+      // white-space: nowrap;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      margin: 0;
+    }
+  }
+
+  @include modifier('isme') {
+    display: flex;
+    flex-direction: row-reverse;
+
+    .ant-comment-inner {
+      background: #e5edff;
+      border: 1px solid #a6bdf0;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.0220444);
+      border-radius: 12px 12px 0px 12px;
+    }
+
+    .ant-comment-inner,
+    .ant-comment-content-author,
+    .ant-comment-content-detail,
+    .ant-comment-actions {
+      display: flex;
+      flex-direction: row-reverse;
+    }
   }
 }

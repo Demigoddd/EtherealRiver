@@ -5,11 +5,12 @@ import { Server } from "socket.io";
 
 import { updateLastSeen, checkAuth } from "../middlewares";
 import { loginValidation, registerValidation } from "../utils/validations";
-import { UserCtrl, RoomCtrl } from "../controllers";
+import { UserCtrl, RoomCtrl, MessageCtrl } from "../controllers";
 
 const createRoutes = (app: Express, io: Server) => {
   const UserController = new UserCtrl(io);
   const RoomController = new RoomCtrl(io);
+  const MessageController = new MessageCtrl(io);
 
   app.use(cors());
   app.use(bodyParser.json());
@@ -32,7 +33,15 @@ const createRoutes = (app: Express, io: Server) => {
 
   app.get("/room/getAll", RoomController.getAll);
   app.get("/room/:id", RoomController.index);
+  app.post("/room/updateRoom", RoomController.updateRoom);
+  app.post("/room/addUser", RoomController.addUser);
+  app.post("/room/removeUser", RoomController.removeUser);
+  app.post("/room", RoomController.create);
   app.delete("/room/:id", RoomController.delete);
+
+  app.get("/messages", MessageController.index);
+  app.post("/messages", MessageController.create);
+  app.delete("/messages/:id", MessageController.delete);
 };
 
 export default createRoutes;

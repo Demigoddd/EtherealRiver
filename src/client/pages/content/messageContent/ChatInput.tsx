@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import { Button, Input, Icon } from "antd";
 import { Picker } from "emoji-mart";
+import { MessageAction } from '../../../utils/state/actions';
 // @ts-ignore
 import { UploadField } from "@navjobs/upload";
 
 const isJoinRoom = false;
 
-const ChatInput: React.FC<any> = ({ onSendMessage, currentDialogId }) => {
+const ChatInput: React.FC<any> = ({ fetchSendMessage, currentRoom }) => {
   const [value, setValue] = useState("");
   const [emojiPickerVisible, setShowEmojiPicker] = useState(false);
 
@@ -22,7 +24,7 @@ const ChatInput: React.FC<any> = ({ onSendMessage, currentDialogId }) => {
 
   const handleSendMessage = (e: any) => {
     if (e.keyCode === 13 || e.type === 'click') {
-      // onSendMessage(value, currentDialogId);
+      fetchSendMessage(value, currentRoom._id);
       setValue("");
     }
   };
@@ -31,8 +33,8 @@ const ChatInput: React.FC<any> = ({ onSendMessage, currentDialogId }) => {
     <React.Fragment>
       {
         isJoinRoom
-        ? <></>
-        : <div className="chat-input">
+          ? <></>
+          : <div className="chat-input">
             <div className="chat-input__actions">
               {emojiPickerVisible && (
                 <div className="chat-input__actions--emoji-picker">
@@ -76,4 +78,8 @@ const ChatInput: React.FC<any> = ({ onSendMessage, currentDialogId }) => {
   );
 };
 
-export default ChatInput;
+const mapStateToProps = (state: any) => ({
+  currentRoom: state.rooms.currentRoom
+});
+
+export default connect(mapStateToProps, MessageAction)(ChatInput);

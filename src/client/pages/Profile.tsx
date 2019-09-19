@@ -23,7 +23,7 @@ const Profile: React.FC<any> = ({ match, history }: any) => {
         </div>
         <Divider />
         <div className="profile__container--content">
-          <Avatar shape="square" size={300} icon="user" />
+          <Avatar shape="square" size={300} icon="user" src={user.avatar} />
           <Descriptions bordered title="User Info" column={1}>
             <Descriptions.Item label="UserName">{user.fullname}</Descriptions.Item>
             <Descriptions.Item label="Email">{user.email}</Descriptions.Item>

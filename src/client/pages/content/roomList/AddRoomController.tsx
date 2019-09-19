@@ -2,7 +2,7 @@ import { withFormik } from 'formik';
 import AddRoomForm from './AddRoomForm';
 import { get } from 'lodash-es';
 import store from '../../../utils/state/store';
-import { roomsSocket } from "../../../utils/socket";
+import { RoomAction } from "../../../utils/state/actions";
 
 const AddRoomController = withFormik({
   enableReinitialize: true,
@@ -31,10 +31,11 @@ const AddRoomController = withFormik({
     const state = store.getState();
     values.userId = get(state, 'user.data._id');
 
-    roomsSocket.emit('Create', values);
-
-    resetForm();
-    setSubmitting(false);
+    store.dispatch(RoomAction.fetchCreateRoom(values))
+      .finally(() => {
+        resetForm();
+        setSubmitting(false);
+      });
   },
   displayName: "AddRoomForm"
 })(AddRoomForm);

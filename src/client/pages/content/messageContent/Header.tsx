@@ -1,19 +1,28 @@
 import React from 'react';
+import { connect } from "react-redux";
+import { RoomAction } from '../../../utils/state/actions';
 import { Popconfirm, Divider, Button, Typography } from 'antd';
-import { roomsSocket } from '../../../utils/socket';
 
-const MessageHeader: React.FC<any> = ({ userId, currentRoomName, currentRoomId, isUserRoomAdmin }) => {
+const MessageHeader: React.FC<any> = ({
+  userId,
+  currentRoomName,
+  currentRoomId,
+  isUserRoomAdmin,
+  fetchRemoveUserFromRoom,
+  fetchDeleteRoom,
+  fetchUpdateRoom
+}) => {
 
   const leaveTheRoom = () => {
-    roomsSocket.emit("Leave", currentRoomId, userId);
+    fetchRemoveUserFromRoom({ currentRoomId: currentRoomId, adminId: undefined, userId: userId });
   };
 
   const confirmDeleteRomm = () => {
-    roomsSocket.emit("Destroy", currentRoomId);
+    fetchDeleteRoom(currentRoomId);
   };
 
   const setRoomName = (newTitle: any) => {
-    roomsSocket.emit("Update", currentRoomId, 'name', newTitle);
+    fetchUpdateRoom({ roomId: currentRoomId, property: 'name', data: newTitle });
   };
 
   return (
@@ -61,4 +70,11 @@ const MessageHeader: React.FC<any> = ({ userId, currentRoomName, currentRoomId, 
   );
 };
 
-export default MessageHeader;
+const mapStateToProps = (state: any) => ({
+  userId: state.user.data._id,
+  currentRoomId: state.rooms.currentRoom._id,
+  currentRoomName: state.rooms.currentRoom.name,
+  isUserRoomAdmin: (state.rooms.currentRoom.authors || []).includes(state.user.data._id)
+});
+
+export default connect(mapStateToProps, RoomAction)(MessageHeader);

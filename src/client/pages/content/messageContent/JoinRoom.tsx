@@ -1,13 +1,21 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { Button } from 'antd';
+import { RoomAction } from '../../../utils/state/actions';
 
-const JoinRoom: React.FC<any> = ({ joinRoomCallback, roomTitle }) => {
+const JoinRoom: React.FC<any> = ({ fetchAddUserToRoom, currentRoomName, currentRoomId, userId }) => {
   return (
     <div className="message-content__join-room">
-      <p>{roomTitle}</p>
-      <Button type="primary" onClick={() => joinRoomCallback()}>Join Room</Button>
+      <p>{currentRoomName}</p>
+      <Button type="primary" onClick={() => fetchAddUserToRoom({ currentRoomId: currentRoomId, userId: userId })}>Join Room</Button>
     </div>
   );
 };
 
-export default JoinRoom;
+const mapStateToProps = (state: any) => ({
+  userId: state.user.data._id,
+  currentRoomId: state.rooms.currentRoom._id,
+  currentRoomName: state.rooms.currentRoom.name
+});
+
+export default connect(mapStateToProps, RoomAction)(JoinRoom);

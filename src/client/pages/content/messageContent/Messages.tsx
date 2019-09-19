@@ -1,84 +1,71 @@
-import React from "react";
-import { Empty, Spin, Button } from "antd";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Empty, Spin } from "antd";
 import ScrollArea from 'react-scrollbar';
 import Message from './messages/Message';
+import { MessageAction } from '../../../utils/state/actions';
+import rootSocket from '../../../utils/socket';
 
-const isJoinRoom = false;
+const Messages: React.FC<any> = ({
+  user,
+  items,
+  currentRoomId,
+  isLoading,
+  fetchMessages,
+  addMessage,
+  removeMessageById }) => {
 
-const isLoading = false;
+  const onNewMessage = (data: any) => {
+    console.log(data)
+    addMessage(data);
+  };
 
-const items: any[] = [
-  {
-    id: 1,
-    userId: 5,
-    author: 'NickName',
-    avatar: 'Link',
-    contet: 'Super Content',
-    likes: 5,
-    dislikes: 1,
-    emotions: [],
-    reaction: 'liked',
-    createdAt: '',
-    updatedAt: '',
-  },
-  {
-    id: 2,
-    userId: 3,
-    author: 'Super NickName',
-    avatar: 'Link',
-    contet: 'Super Content',
-    likes: 11,
-    dislikes: 2346,
-    emotions: [],
-    reaction: '',
-    createdAt: Date.now(),
-    updatedAt: '',
-  }
-];
+  useEffect((): any => {
+    if (currentRoomId) {
+      fetchMessages(currentRoomId);
+    }
 
-const Messages: React.FC<any> = ({ user }) => {
+    rootSocket.on("NewMessage", onNewMessage);
+
+    return () => {
+      rootSocket.off("NewMessage", onNewMessage);
+    };
+  }, [currentRoomId]);
+
   return (
-    <ScrollArea
-      speed={0.8}
-      horizontal={false}
-    >
+    <div className="messages">
       {
-        isJoinRoom
-        ? <Empty
-          description={
-              <span>
-                Do you want to join this room ?
-              </span>
-            }
+        isLoading ? (
+          <div className="messages--loading">
+            <Spin size="large" tip="Loading Messages..." />
+          </div>
+        ) : items.length > 0 && !isLoading ? (
+          <ScrollArea
+            speed={0.8}
+            horizontal={false}
           >
-          <Button type="primary">Join Now</Button>
-        </Empty>
-        : <div className="messages">
-          {
-            isLoading ? (
-              <div className="messages--loading">
-                <Spin size="large" tip="Loading Messages..." />
-              </div>
-            ) : items && !isLoading ? (
-              items.length > 0 ? (
-                items.map((item: any) => (
-                  <Message
-                    key={item.id}
-                    {...item}
-                    isMe={(user && user.id) === item.userId}
-                  />
-                ))
-              ) : (
-                  <Empty description="Messages is Empty" />
-                )
-            ) : (
-                  <Empty description="Open Rooms" />
-                )
-          }
-        </div>
+            {items.map((item: any) => (
+              <Message
+                key={item._id}
+                message={item}
+                isMe={(user && user._id) === item.user._id}
+                onRemoveMessage={removeMessageById}
+              />
+            ))}
+          </ScrollArea>
+        ) : (
+              <Empty description="Messages is Empty" />
+            )
       }
-    </ScrollArea >
+    </div>
   );
 };
 
-export default Messages;
+const mapStateToProps = (state: any) => ({
+  user: state.user.data,
+  items: state.message.items,
+  currentRoomId: state.rooms.currentRoom._id,
+  isLoading: state.message.isLoading
+});
+
+export default connect(mapStateToProps, MessageAction)(Messages);
