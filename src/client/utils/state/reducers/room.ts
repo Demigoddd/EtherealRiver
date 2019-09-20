@@ -1,14 +1,15 @@
 import {
   SET_ALL,
-  SET_CURRENT
+  SET_CURRENT,
+  SET_ROOM_LOADING
 } from '../constants/actionTypes';
 
 const initialState: InitialRoomState = {
   my: [],
   public: [],
   private: [],
-  currentRoom: window.sessionStorage.getItem('currentRoom') || {},
-  isLoading: false
+  currentRoom: {},
+  roomLoading: false
 };
 
 export default (state: any = initialState, action: any) => {
@@ -17,11 +18,18 @@ export default (state: any = initialState, action: any) => {
       return {
         ...state,
         ...action.payload,
+        roomLoading: false
       };
     case SET_CURRENT:
       return {
         ...state,
         currentRoom: action.payload,
+        roomLoading: false
+      };
+    case SET_ROOM_LOADING:
+      return {
+        ...state,
+        roomLoading: action.payload
       };
     default:
       return state;
@@ -33,12 +41,12 @@ interface InitialRoomState {
   public: Room[];
   private: Room[];
   currentRoom: any;
-  isLoading: Boolean;
+  roomLoading: Boolean;
 }
 interface Room {
   _id?: string;
   name?: string;
-  type?: 'my' | 'public' | 'private';
+  type?: 'public' | 'private';
   author?: string;
   password?: string;
   users?: string[];

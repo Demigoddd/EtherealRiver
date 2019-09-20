@@ -51,6 +51,13 @@
     }
   }
 
+  @include modifier('loading') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
   & > .scrollarea  {
     height: calc(100% - 130px);
   }

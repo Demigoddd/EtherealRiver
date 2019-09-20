@@ -2,7 +2,6 @@ import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { Empty, Spin } from "antd";
 import ScrollArea from 'react-scrollbar';
-import { result } from 'lodash-es';
 import Message from './messages/Message';
 import { MessageAction } from '../../../utils/state/actions';
 import rootSocket from '../../../utils/socket';
@@ -11,7 +10,7 @@ const Messages: React.FC<any> = ({
   user,
   items,
   currentRoomId,
-  isLoading,
+  messageLoading,
   fetchMessages,
   addMessage,
   removeMessageById }) => {
@@ -37,21 +36,24 @@ const Messages: React.FC<any> = ({
   }, []);
 
   useEffect((): any => {
-    result(ScrollAreaRef, 'current.scrollArea.scrollBottom');
+    if (ScrollAreaRef.current) {
+      ScrollAreaRef.current.scrollArea.scrollYTo(9999999);
+    }
   }, [items]);
 
   return (
     <div className="messages">
       {
-        isLoading ? (
+        messageLoading ? (
           <div className="messages--loading">
             <Spin size="large" tip="Loading Messages..." />
           </div>
-        ) : items.length > 0 && !isLoading ? (
+        ) : items.length > 0 && !messageLoading ? (
           <ScrollArea
             ref={ScrollAreaRef}
             speed={0.8}
             horizontal={false}
+            smoothScrolling={true}
           >
             {items.map((item: any) => (
               <Message
@@ -74,7 +76,7 @@ const mapStateToProps = (state: any) => ({
   user: state.user.data,
   items: state.message.items,
   currentRoomId: state.rooms.currentRoom._id,
-  isLoading: state.message.isLoading
+  messageLoading: state.message.messageLoading
 });
 
 export default connect(mapStateToProps, MessageAction)(Messages);

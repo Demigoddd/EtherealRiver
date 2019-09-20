@@ -122,9 +122,9 @@ class RoomController {
   getAll = (req: any, res: any) => {
     RoomModel.find({})
       .then((rooms: any) => {
-        const myRoom = rooms.filter((room: any) => room.type === 'my');
-        const publicRoom = rooms.filter((room: any) => room.type === 'public');
-        const privateRoom = rooms.filter((room: any) => room.type === 'private');
+        const myRoom = rooms.filter((room: any) => this.userExistInRoom(room.users, req.user._id));
+        const publicRoom = rooms.filter((room: any) => room.type === 'public' && !this.userExistInRoom(room.users, req.user._id));
+        const privateRoom = rooms.filter((room: any) => room.type === 'private' && !this.userExistInRoom(room.users, req.user._id));
 
         const allRoomsData = {
           my: myRoom,
@@ -189,7 +189,6 @@ class RoomController {
           message: "User already exist"
         });
       } else {
-        room.type = "my";
         room.users.push(req.user._id);
 
         room.save()
@@ -234,9 +233,8 @@ class RoomController {
       if (isUserExist) {
         const updatedUserIds = room.users.filter((id: any) => id != userId);
         const removedUserId = room.users.find((id: any) => id == userId);
-        const roomNewType = room.password ? "private" : "public";
 
-        Object.assign(room, { users: updatedUserIds, type: roomNewType });
+        Object.assign(room, { users: updatedUserIds });
 
         room.save()
           .then((room: any) => {

@@ -3,17 +3,15 @@ import { connect } from 'react-redux';
 import { UserAction, RoomAction } from '../utils/state/actions';
 import rootSocket from '../utils/socket';
 
-import RoomList from './content/RoomList';
+import Sidebar from './content/Sidebar';
 import MessageContent from './content/MessageContent';
 import UserList from './content/UserList';
 
 const Content: React.FC<any> = ({
   user,
-  rooms,
   currentRoom,
   fetchUserData,
   fetchAllRoom,
-  fetchFindRoomById,
   setCurrentRoom
 }) => {
   useEffect((): any => {
@@ -35,7 +33,7 @@ const Content: React.FC<any> = ({
   return (
     <div className="content">
       <div className="content__container">
-        <RoomList user={user} rooms={rooms} currentRoom={currentRoom} fetchFindRoomById={fetchFindRoomById} />
+        <Sidebar user={user} />
         <MessageContent currentRoom={currentRoom} userId={user._id} />
         <UserList />
       </div>
@@ -45,7 +43,6 @@ const Content: React.FC<any> = ({
 
 const mapStateToProps = (state: any) => ({
   user: state.user.data,
-  rooms: state.rooms,
   currentRoom: state.rooms.currentRoom,
 });
 

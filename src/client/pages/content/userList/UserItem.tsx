@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import { Popover, Avatar, Menu, Typography, Badge, Card, Skeleton } from 'antd';
 
-const UserItem: React.FC<any> = ({ user, currentUserId, currentRoomId, isAdmin, isUserRoomAdmin, isLoading, fetchRemoveUserFromRoom }) => {
+const UserItem: React.FC<any> = ({ user, currentUserId, currentRoomId, isAdmin, isUserRoomAdmin, roomLoading, fetchRemoveUserFromRoom }) => {
   const removeUser = (event: any) => {
     event.preventDefault();
     fetchRemoveUserFromRoom({ currentRoomId: currentRoomId, adminId: currentUserId, userId: user._id });
@@ -23,7 +23,7 @@ const UserItem: React.FC<any> = ({ user, currentUserId, currentRoomId, isAdmin, 
   );
 
   return (
-    <Skeleton loading={isLoading} avatar paragraph={{ rows: 0 }}>
+    <Skeleton loading={roomLoading} avatar paragraph={{ rows: 1 }}>
       <Popover placement="bottom" title="User Menu" trigger="click" content={userMenuContent}>
         <Card.Grid>
           <Badge dot status={user.isOnline ? 'success' : 'default'}>

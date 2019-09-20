@@ -7,11 +7,13 @@ import roomApi from '../../api/room';
 
 // Room Actions
 const fetchAllRoom = () => (dispatch: any) => {
+  setRoomLoading(true)(dispatch);
   roomApi.getAll()
     .then(({ data }: any) => {
       dispatch({ type: types.SET_ALL, payload: data });
     })
     .catch(({ response }: any) => {
+      setRoomLoading(false)(dispatch);
       if (response.status === 404) {
         openNotification({
           title: "Error.",
@@ -23,6 +25,7 @@ const fetchAllRoom = () => (dispatch: any) => {
 };
 
 const fetchCreateRoom = (data: any) => (dispatch: any) => {
+  setRoomLoading(true)(dispatch);
   return roomApi.create(data)
     .then((response: any) => {
       rootSocket.emit("JoinRoom", response.data._id, data.userId);
@@ -35,6 +38,7 @@ const fetchCreateRoom = (data: any) => (dispatch: any) => {
       });
     })
     .catch((error: any) => {
+      setRoomLoading(false)(dispatch);
       openNotification({
         title: "Error.",
         text: "Error when creating room.",
@@ -44,6 +48,7 @@ const fetchCreateRoom = (data: any) => (dispatch: any) => {
 };
 
 const fetchDeleteRoom = (roomId: any) => (dispatch: any) => {
+  setRoomLoading(true)(dispatch);
   roomApi.delete(roomId)
     .then((response: any) => {
       openNotification({
@@ -53,6 +58,7 @@ const fetchDeleteRoom = (roomId: any) => (dispatch: any) => {
       });
     })
     .catch((error: any) => {
+      setRoomLoading(false)(dispatch);
       openNotification({
         title: "Error.",
         text: "Error when removing room.",
@@ -62,6 +68,7 @@ const fetchDeleteRoom = (roomId: any) => (dispatch: any) => {
 };
 
 const fetchFindRoomById = (roomId: any, userId: any) => (dispatch: any) => {
+  setRoomLoading(true)(dispatch);
   roomApi.index(roomId)
     .then((response: any) => {
       setCurrentRoom(response.data.room)(dispatch);
@@ -71,6 +78,7 @@ const fetchFindRoomById = (roomId: any, userId: any) => (dispatch: any) => {
       }
     })
     .catch((error: any) => {
+      setRoomLoading(false)(dispatch);
       openNotification({
         title: "Error.",
         text: "Error when finding room.",
@@ -80,6 +88,7 @@ const fetchFindRoomById = (roomId: any, userId: any) => (dispatch: any) => {
 };
 
 const fetchUpdateRoom = (data: any) => (dispatch: any) => {
+  setRoomLoading(true)(dispatch);
   roomApi.updateRoom(data)
     .then((response: any) => {
       openNotification({
@@ -89,6 +98,7 @@ const fetchUpdateRoom = (data: any) => (dispatch: any) => {
       });
     })
     .catch((error: any) => {
+      setRoomLoading(false)(dispatch);
       openNotification({
         title: "Error.",
         text: "Error when updating room.",
@@ -98,6 +108,7 @@ const fetchUpdateRoom = (data: any) => (dispatch: any) => {
 };
 
 const fetchAddUserToRoom = (data: any) => (dispatch: any) => {
+  setRoomLoading(true)(dispatch);
   roomApi.addUser(data)
     .then((response: any) => {
       rootSocket.emit("JoinRoom", response.data._id, data.userId);
@@ -111,6 +122,7 @@ const fetchAddUserToRoom = (data: any) => (dispatch: any) => {
       });
     })
     .catch((error: any) => {
+      setRoomLoading(false)(dispatch);
       openNotification({
         title: "Error.",
         text: "Error when ading user to room.",
@@ -120,11 +132,13 @@ const fetchAddUserToRoom = (data: any) => (dispatch: any) => {
 };
 
 const fetchRemoveUserFromRoom = (data: any) => (dispatch: any) => {
+  setRoomLoading(true)(dispatch);
   roomApi.removeUser(data)
     .then((response: any) => {
       rootSocket.emit("LeaveRoom", response.data.roomId, response.data.socketId, data.adminId);
     })
     .catch((error: any) => {
+      setRoomLoading(false)(dispatch);
       openNotification({
         title: "Error.",
         text: "Error when removing user from room.",
@@ -136,7 +150,11 @@ const fetchRemoveUserFromRoom = (data: any) => (dispatch: any) => {
 const setCurrentRoom = (data: any) => (dispatch: any) => {
   dispatch({ type: types.SET_CURRENT, payload: data });
 
-  window.sessionStorage.setItem('currentRoom', data);
+  // window.sessionStorage.setItem('currentRoom', JSON.stringify(data));
+};
+
+const setRoomLoading = (bool: any) => (dispatch: any) => {
+  dispatch({ type: types.SET_ROOM_LOADING, payload: bool });
 };
 
 export default {
@@ -147,5 +165,6 @@ export default {
   fetchUpdateRoom,
   fetchAddUserToRoom,
   fetchRemoveUserFromRoom,
-  setCurrentRoom
+  setCurrentRoom,
+  setRoomLoading
 };

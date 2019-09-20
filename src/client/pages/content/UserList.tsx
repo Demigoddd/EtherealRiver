@@ -6,12 +6,11 @@ import { RoomAction } from '../../utils/state/actions';
 import UserItem from './userList/UserItem';
 import ScrollArea from 'react-scrollbar';
 
-const isLoading = false;
-
 const UserList: React.FC<any> = ({
   userId,
   currentRoomId,
   roomUsers,
+  roomLoading,
   isUserRoomAdmin,
   fetchRemoveUserFromRoom
 }) => {
@@ -40,7 +39,7 @@ const UserList: React.FC<any> = ({
                     currentRoomId={currentRoomId}
                     isAdmin={user._id === userId}
                     isUserRoomAdmin={isUserRoomAdmin}
-                    isLoading={isLoading}
+                    roomLoading={roomLoading}
                     fetchRemoveUserFromRoom={fetchRemoveUserFromRoom}
                   />
                 )
@@ -57,6 +56,7 @@ const mapStateToProps = (state: any) => ({
   userId: state.user.data._id,
   currentRoomId: state.rooms.currentRoom._id,
   roomUsers: (state.rooms.currentRoom.users || []),
+  roomLoading: state.rooms.roomLoading,
   isUserRoomAdmin: (state.rooms.currentRoom.authors || []).includes(state.user.data._id)
 });
 

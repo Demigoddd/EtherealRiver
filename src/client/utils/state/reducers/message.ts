@@ -2,12 +2,12 @@ import {
   ADD_MESSAGE,
   SET_ITEMS,
   REMOVE_MESSAGE,
-  SET_IS_LOADING
+  SET_MESSAGE_LOADING
 } from '../constants/actionTypes';
 
 const initialState: InitialMessageState = {
   items: [],
-  isLoading: false
+  messageLoading: false
 };
 
 export default (state = initialState, { type, payload }: any) => {
@@ -21,17 +21,17 @@ export default (state = initialState, { type, payload }: any) => {
       return {
         ...state,
         items: payload,
-        isLoading: false
+        messageLoading: false
       };
     case REMOVE_MESSAGE:
       return {
         ...state,
         items: state.items.filter((message: any) => message._id !== payload)
       };
-    case SET_IS_LOADING:
+    case SET_MESSAGE_LOADING:
       return {
         ...state,
-        isLoading: payload
+        messageLoading: payload
       };
     default:
       return state;
@@ -40,7 +40,7 @@ export default (state = initialState, { type, payload }: any) => {
 
 interface InitialMessageState {
   items: Message[];
-  isLoading: Boolean;
+  messageLoading: Boolean;
 }
 interface Message {
   text: String;

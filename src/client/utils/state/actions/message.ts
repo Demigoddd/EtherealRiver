@@ -8,8 +8,8 @@ const setMessages = (items: any) => (dispatch: any) => {
   dispatch({ type: types.SET_ITEMS, payload: items });
 };
 
-const setIsLoading = (bool: any) => (dispatch: any) => {
-  dispatch({ type: types.SET_IS_LOADING, payload: bool });
+const setMessageLoading = (bool: any) => (dispatch: any) => {
+  dispatch({ type: types.SET_MESSAGE_LOADING, payload: bool });
 };
 
 const addMessage = (message: any) => (dispatch: any, getState: any) => {
@@ -29,7 +29,7 @@ const fetchSendMessage = (text: any, roomId: any) => (dispatch: any) => {
 };
 
 const removeMessageById = (id: any) => (dispatch: any) => {
-  setIsLoading(true)(dispatch);
+  setMessageLoading(true)(dispatch);
   messagesApi.removeById(id)
     .then(({ data }: any) => {
       dispatch({
@@ -38,18 +38,18 @@ const removeMessageById = (id: any) => (dispatch: any) => {
       });
     })
     .catch(() => {
-      setIsLoading(false)(dispatch);
+      setMessageLoading(false)(dispatch);
     });
 };
 
 const fetchMessages = (roomId: any) => (dispatch: any) => {
-  setIsLoading(true)(dispatch);
+  setMessageLoading(true)(dispatch);
   messagesApi.getAllByRoomId(roomId)
     .then(({ data }: any) => {
       setMessages(data)(dispatch);
     })
     .catch(() => {
-      setIsLoading(false)(dispatch);
+      setMessageLoading(false)(dispatch);
     });
 };
 
@@ -57,7 +57,7 @@ export default {
   setMessages,
   addMessage,
   fetchSendMessage,
-  setIsLoading,
+  setMessageLoading,
   removeMessageById,
   fetchMessages
 };
