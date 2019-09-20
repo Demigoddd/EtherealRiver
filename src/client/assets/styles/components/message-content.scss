@@ -1,0 +1,53 @@
+.message-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @include element('join-room') {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  @include element('header') {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding: 0 0.5rem;
+
+    @include modifier('title') {
+      margin: 0 !important;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    & > button {
+      color: dodgerblue;
+      border-color: dodgerblue;
+    }
+  }
+
+  @include modifier('empty') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 100%;
+    font-size: 3rem;
+    text-shadow: 2px 2px lightsteelblue;
+    color:rgba(173,216,230, 0.5);
+    opacity: 0.5;
+    user-select: none;
+  }
+
+  .scrollarea {
+    margin-bottom: auto;
+  }
+}

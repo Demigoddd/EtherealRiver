@@ -13,6 +13,11 @@ const initConfig = (): any => {
         service: process.env.service,
         emailUsername: process.env.emailUsername,
         emailPassword: process.env.emailPassword
+      },
+      cloudinary: {
+        name: process.env.CLOUDINARY_NAME,
+        key: process.env.CLOUDINARY_API_KEY,
+        secret: process.env.CLOUDINARY_API_SECRET
       }
     }
   } else {
@@ -27,6 +32,11 @@ const initConfig = (): any => {
         service: 'gmail',
         emailUsername: 'etherealriversupp@gmail.com',
         emailPassword: '123456qwe!'
+      },
+      cloudinary: {
+        name: '',
+        key: '',
+        secret: ''
       }
     }
   }

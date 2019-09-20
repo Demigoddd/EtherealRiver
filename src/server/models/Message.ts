@@ -33,10 +33,12 @@ const MessageSchema = new Schema(
       other: [{
         type: Schema.Types.String
       }],
-    }
+    },
+    attachments: [{ type: Schema.Types.ObjectId, ref: "UploadFile" }]
   },
   {
-    timestamps: true
+    timestamps: true,
+    usePushEach: true
   }
 );
 

@@ -3,14 +3,16 @@ import cors from "cors";
 import { Express } from "express";
 import { Server } from "socket.io";
 
+import multer from "./multer";
 import { updateLastSeen, checkAuth } from "../middlewares";
 import { loginValidation, registerValidation } from "../utils/validations";
-import { UserCtrl, RoomCtrl, MessageCtrl } from "../controllers";
+import { UserCtrl, RoomCtrl, MessageCtrl, UploadCtrl } from "../controllers";
 
 const createRoutes = (app: Express, io: Server) => {
   const UserController = new UserCtrl(io);
   const RoomController = new RoomCtrl(io);
   const MessageController = new MessageCtrl(io);
+  const UploadFileController = new UploadCtrl();
 
   app.use(cors());
   app.use(bodyParser.json());
@@ -42,6 +44,9 @@ const createRoutes = (app: Express, io: Server) => {
   app.get("/messages", MessageController.index);
   app.post("/messages", MessageController.create);
   app.delete("/messages/:id", MessageController.delete);
+
+  app.post("/files", multer.single("file"), UploadFileController.create);
+  app.delete("/files", UploadFileController.delete);
 };
 
 export default createRoutes;

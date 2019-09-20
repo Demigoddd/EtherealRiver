@@ -8,7 +8,7 @@ import { UserAction } from '../../utils/state/actions';
 import RoomMenuItem from './roomList/RoomMenuItem';
 import AddRoomController from './roomList/AddRoomController';
 
-const RoomList: React.FC<any> = ({ user, rooms, fetchFindRoomById }) => {
+const RoomList: React.FC<any> = ({ user, rooms, currentRoom, fetchFindRoomById }) => {
   const delay: number = 100;
   const ScrollAreaRef = useRef<any>();
   const [visible, setVisible] = useState(false);
@@ -78,12 +78,12 @@ const RoomList: React.FC<any> = ({ user, rooms, fetchFindRoomById }) => {
               onOpenChange={() => onSubMenuChange()}
               subMenuOpenDelay={delay}
               subMenuCloseDelay={delay}
-              defaultSelectedKeys={['My Rooms']}
-              defaultOpenKeys={['My Rooms']}
+              selectedKeys={[currentRoom._id]}
+              openKeys={[currentRoom.type]}
             >
-              <RoomMenuItem title="My Rooms" icon="star" rooms={rooms.my}></RoomMenuItem>
-              <RoomMenuItem title="Public Rooms" icon="wechat" rooms={rooms.public}></RoomMenuItem>
-              <RoomMenuItem title="Private Rooms" icon="unlock" rooms={rooms.private}></RoomMenuItem>
+              <RoomMenuItem SubMenuKey={"my"} title="My Rooms" icon="star" rooms={rooms.my}></RoomMenuItem>
+              <RoomMenuItem SubMenuKey={"public"} title="Public Rooms" icon="wechat" rooms={rooms.public}></RoomMenuItem>
+              <RoomMenuItem SubMenuKey={"private"} title="Private Rooms" icon="unlock" rooms={rooms.private}></RoomMenuItem>
             </Menu>
         }
       </ScrollArea>

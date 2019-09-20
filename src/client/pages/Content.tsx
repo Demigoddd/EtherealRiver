@@ -29,12 +29,13 @@ const Content: React.FC<any> = ({
       rootSocket.off("UpdateRoomsList", UpdateRoomsListHandler);
       rootSocket.off("UpdateCurrentRoom", UpdateCurrentRoomHandler);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="content">
       <div className="content__container">
-        <RoomList user={user} rooms={rooms} fetchFindRoomById={fetchFindRoomById} />
+        <RoomList user={user} rooms={rooms} currentRoom={currentRoom} fetchFindRoomById={fetchFindRoomById} />
         <MessageContent currentRoom={currentRoom} userId={user._id} />
         <UserList />
       </div>

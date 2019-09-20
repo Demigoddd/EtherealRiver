@@ -135,6 +135,8 @@ const fetchRemoveUserFromRoom = (data: any) => (dispatch: any) => {
 
 const setCurrentRoom = (data: any) => (dispatch: any) => {
   dispatch({ type: types.SET_CURRENT, payload: data });
+
+  window.sessionStorage.setItem('currentRoom', data);
 };
 
 export default {

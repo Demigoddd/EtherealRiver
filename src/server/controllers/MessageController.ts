@@ -14,9 +14,9 @@ class MessageController {
     const roomId: string = req.query.room;
 
     MessageModel.find({ room: roomId })
-      .populate(["room", "user"])
-      .exec((err: any, messages: any) => {
-        if (err) {
+      .populate(["room", "user", "attachments"])
+      .exec((error: any, messages: any) => {
+        if (error) {
           return res.status(404).json({
             message: "Messages not found"
           });
@@ -30,13 +30,23 @@ class MessageController {
       text: req.body.text,
       room: req.body.roomId,
       user: req.user._id,
+      attachments: req.body.attachments,
     };
 
     new MessageModel(postData).save()
-      .then((message: any) => {
-        res.json(message);
+      .then((obj: any) => {
+        obj.populate(["dialog", "user", "attachments"], (error: any, message: any) => {
+          if (error) {
+            return res.status(500).json({
+              status: "error",
+              message: error
+            });
+          }
 
-        this.io.emit("NewMessage", message);
+          res.json(message);
+
+          this.io.emit("NewMessage", message);
+        });
       })
       .catch((reason: any) => {
         res.json(reason);

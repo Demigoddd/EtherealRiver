@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
 import { Empty, Spin } from "antd";
 import ScrollArea from 'react-scrollbar';
+import { result } from 'lodash-es';
 import Message from './messages/Message';
 import { MessageAction } from '../../../utils/state/actions';
 import rootSocket from '../../../utils/socket';
@@ -15,8 +16,10 @@ const Messages: React.FC<any> = ({
   addMessage,
   removeMessageById }) => {
 
+  const ScrollAreaRef = useRef<any>();
+
   const onNewMessage = (data: any) => {
-    console.log(data)
+    console.log(data);
     addMessage(data);
   };
 
@@ -30,7 +33,12 @@ const Messages: React.FC<any> = ({
     return () => {
       rootSocket.off("NewMessage", onNewMessage);
     };
-  }, [currentRoomId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect((): any => {
+    result(ScrollAreaRef, 'current.scrollArea.scrollBottom');
+  }, [items]);
 
   return (
     <div className="messages">
@@ -41,6 +49,7 @@ const Messages: React.FC<any> = ({
           </div>
         ) : items.length > 0 && !isLoading ? (
           <ScrollArea
+            ref={ScrollAreaRef}
             speed={0.8}
             horizontal={false}
           >

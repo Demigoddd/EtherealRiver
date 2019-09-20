@@ -7,7 +7,7 @@ const initialState: InitialRoomState = {
   my: [],
   public: [],
   private: [],
-  currentRoom: {},
+  currentRoom: window.sessionStorage.getItem('currentRoom') || {},
   isLoading: false
 };
 
@@ -32,13 +32,13 @@ interface InitialRoomState {
   my: Room[];
   public: Room[];
   private: Room[];
-  currentRoom: Room;
+  currentRoom: any;
   isLoading: Boolean;
 }
 interface Room {
   _id?: string;
   name?: string;
-  type?: 'all' | 'public' | 'private';
+  type?: 'my' | 'public' | 'private';
   author?: string;
   password?: string;
   users?: string[];
