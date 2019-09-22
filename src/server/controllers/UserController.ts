@@ -15,6 +15,9 @@ class UserController {
     this.io = io;
   }
 
+  /**
+   * REQUEST METHODS
+   */
   show = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
 
@@ -106,7 +109,7 @@ class UserController {
       return res.status(422).json({ errors: errors.array() });
     }
 
-    UserModel.findOne({email: req.body.email}, (err: any, user: any) => {
+    UserModel.findOne({ email: req.body.email }, (err: any, user: any) => {
       if (err) {
         res.status(500).json({
           status: "Error when creating New User."
@@ -115,7 +118,7 @@ class UserController {
 
       if (user) {
         if (!user.socialId) {
-          UserModel.findOne({_id: user._id}, (err: any, user: any) => {
+          UserModel.findOne({ _id: user._id }, (err: any, user: any) => {
             if (err || !user) {
               return res.status(404).json({
                 message: "User not found"
@@ -123,6 +126,7 @@ class UserController {
             }
 
             user.socialId = req.body.socialId;
+            user.avatar = req.body.avatar;
 
             user.save()
               .then((obj: any) => {
@@ -151,13 +155,13 @@ class UserController {
           email: req.body.email,
           fullname: req.body.fullname,
           socialId: req.body.socialId,
-          avatar: req.body.imageUrl,
+          avatar: req.body.avatar,
           confirmed: true,
         });
 
         newUser.save()
           .then((obj: any) => {
-            res.json({data: obj});
+            res.json({ data: obj });
           })
           .catch((reason: any) => {
             res.status(500).json({
@@ -185,7 +189,7 @@ class UserController {
         to: email,
         subject: "Ethereal River: Email Verification.",
         text: "Please click on this link" + confirmLink + " to activate your email.",
-        html: "<b>Please click on this <a href='"+ confirmLink +"'>Link</a> to activate your email.</b>"
+        html: "<b>Please click on this <a href='" + confirmLink + "'>Link</a> to activate your email.</b>"
       }
 
       sendEmail(emailBody)
@@ -300,6 +304,18 @@ class UserController {
         });
       }
     });
+  };
+
+  /**
+   * PUBLIC METHODS
+   */
+  updateSocketId = (userId: any, socketId: any) => {
+    if (userId && socketId) {
+      UserModel.findById(userId, (err: any, user: any) => {
+        user.socketId = socketId;
+        user.save();
+      });
+    }
   };
 }
 

@@ -34,6 +34,7 @@ interface InitialUserState {
   isAuth: boolean;
 }
 interface User {
+  _id?: string;
   email?: string;
   fullname?: string;
   password?: string;

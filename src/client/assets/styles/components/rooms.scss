@@ -1,8 +1,8 @@
 .rooms {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  border-right: 1px solid #e8e8e8;;
+  border-right: 1px solid #e8e8e8;
+  width: 20%;
 
   @include element('header') {
       display: flex;
@@ -49,6 +49,13 @@
     &:hover {
       opacity: 1;
     }
+  }
+
+  @include modifier('loading') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
 
   & > .scrollarea  {

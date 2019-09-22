@@ -1,66 +1,63 @@
-import React, { useState } from 'react';
-import { Card, Popover, Button, Input, Icon } from 'antd';
+import React from 'react';
+import { isEmpty } from 'lodash-es';
+import { connect } from 'react-redux';
+import { Card } from 'antd';
+import { RoomAction } from '../../utils/state/actions';
 import UserItem from './userList/UserItem';
 import ScrollArea from 'react-scrollbar';
 
-const users = [
-  {
-    id: 1,
-    firstName: 'first',
-    lastName: 'last',
-    userName: 'Super Username',
-    email: 'first@last.com',
-    isOnline: true,
-    image: ''
-  },
-  {
-    id: 2,
-    firstName: 'username',
-    lastName: 'last',
-    userName: 'Username',
-    email: 'first@last.com',
-    isOnline: false,
-    image: ''
-  }
-]
-
-const UserList: React.FC = () => {
-  const [username, setUsername] = useState('');
-
-  const addUser = (username: string) => {
-    console.log(username, "User add");
-  }
-
-  const addUserContent = (
-    <div className="users__add-user">
-      <Input
-        placeholder="Enter username"
-        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-        value={username || ''}
-        onChange={(e: any) => setUsername(e.target.value)} />
-      <Button onClick={() => addUser(username)} type="primary" block>Add user to room</Button>
-    </div>
-  );
-
+const UserList: React.FC<any> = ({
+  userId,
+  currentRoomId,
+  roomUsers,
+  roomLoading,
+  isUserRoomAdmin,
+  fetchRemoveUserFromRoom
+}) => {
   const cardHeader = (
     <div className="users--header">
-      <span className="user-header--title">User: {users.length}</span>
-      <Popover placement="leftTop" title="Add User" content={addUserContent} trigger="click">
-        <Button size="small" shape="circle" icon="plus" />
-      </Popover>
+      <span className="user-header--title">Users: {roomUsers.length}</span>
     </div>
   );
 
   return (
-    <Card title={cardHeader} className="users">
-      <ScrollArea
-        speed={0.8}
-        horizontal={false}
-      >
-        {users.map((user: any) => <UserItem key={user.id} user={user} />)}
-      </ScrollArea>
-    </Card>
+    <>
+      {
+        isEmpty(currentRoomId)
+          ? <></>
+          : <Card title={isEmpty(roomUsers) ? <></> : cardHeader} className="users">
+            <ScrollArea
+              speed={0.8}
+              horizontal={false}
+            >
+              {
+                roomUsers.map((user: any) =>
+                  <UserItem
+                    key={user._id}
+                    user={user}
+                    currentUserId={userId}
+                    currentRoomId={currentRoomId}
+                    isAdmin={user._id === userId}
+                    isUserRoomAdmin={isUserRoomAdmin}
+                    roomLoading={roomLoading}
+                    fetchRemoveUserFromRoom={fetchRemoveUserFromRoom}
+                  />
+                )
+              }
+            </ScrollArea>
+          </Card>
+      }
+    </>
   );
 };
 
-export default UserList;
+
+const mapStateToProps = (state: any) => ({
+  userId: state.user.data._id,
+  currentRoomId: state.rooms.currentRoom._id,
+  roomUsers: (state.rooms.currentRoom.users || []),
+  roomLoading: state.rooms.roomLoading,
+  isUserRoomAdmin: (state.rooms.currentRoom.authors || []).includes(state.user.data._id)
+});
+
+export default connect(mapStateToProps, RoomAction)(UserList);

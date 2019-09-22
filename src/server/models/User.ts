@@ -10,6 +10,7 @@ export interface IUser extends Document {
   confirmed?: boolean;
   socialId?: string;
   avatar?: string;
+  socketId?: string;
   confirm_hash?: string;
   last_seen?: Date;
 }
@@ -35,6 +36,9 @@ const UserSchema = new Schema(
     },
     socialId: String,
     avatar: String,
+    socketId: {
+      type: String,
+    },
     confirm_hash: String,
     last_seen: {
       type: Date,
@@ -46,34 +50,33 @@ const UserSchema = new Schema(
   }
 );
 
-UserSchema.virtual("isOnline").get(function(this: any) {
+UserSchema.virtual("isOnline").get(function (this: any) {
   return differenceInMinutes(new Date().toISOString(), this.last_seen) < 5;
 });
 
-UserSchema.set("toJSON", {
-  virtuals: true
-});
+UserSchema.set('toObject', { virtuals: true });
+UserSchema.set('toJSON', { virtuals: true });
 
-UserSchema.pre("save", function(next) {
+UserSchema.pre("save", function (next) {
   const user: IUser = this;
 
   if (user.socialId) return next();
 
   if (!user.isModified("password")) return next();
 
-    bcrypt.hash(user.password, 10)
-      .then((hash: string) => {
-        user.password = String(hash);
+  bcrypt.hash(user.password, 10)
+    .then((hash: string) => {
+      user.password = String(hash);
 
-        bcrypt.hash(user.password, 10)
-          .then((confirmHash: any) => {
-            user.confirm_hash = String(confirmHash);
-            next();
-          });
-      })
-      .catch((err: any) => {
-        next(err);
-      });
+      bcrypt.hash(user.password, 10)
+        .then((confirmHash: any) => {
+          user.confirm_hash = String(confirmHash);
+          next();
+        });
+    })
+    .catch((err: any) => {
+      next(err);
+    });
 });
 
 const UserModel = mongoose.model<IUser>("User", UserSchema);

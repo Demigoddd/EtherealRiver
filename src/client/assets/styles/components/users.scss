@@ -1,7 +1,7 @@
 .users {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  width: 20%;
 
   @include element('add-user') {
     display: flex;
@@ -14,7 +14,7 @@
 
   @include modifier('header') {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 
     @include modifier('title') {
@@ -28,6 +28,13 @@
       color: dodgerblue;
       border-color: dodgerblue;
     }
+  }
+
+  @include modifier('name') {
+    width: 8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .ant-card-body {

@@ -2,31 +2,34 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import { Popover, Avatar, Menu, Typography, Badge, Card, Skeleton } from 'antd';
 
-const isLoading = false;
+const UserItem: React.FC<any> = ({ user, currentUserId, currentRoomId, isAdmin, isUserRoomAdmin, roomLoading, fetchRemoveUserFromRoom }) => {
+  const removeUser = (event: any) => {
+    event.preventDefault();
+    fetchRemoveUserFromRoom({ currentRoomId: currentRoomId, adminId: currentUserId, userId: user._id });
+  };
 
-const UserItem: React.FC<any> = ({ user }) => {
   const userMenuContent = (
     <Menu>
       <Menu.Item>
-        <Link to="/">View Profile</Link>
+        <Link to={`/profile/${user._id}`}>View Profile</Link>
       </Menu.Item>
-      <Menu.Item>
-        <Link to="/">Send Personal Message</Link>
-      </Menu.Item>
-      <Menu.Item>
-        <Link to="/">Remove From Room</Link>
-      </Menu.Item>
+      {
+        (isUserRoomAdmin && !isAdmin)
+        && <Menu.Item>
+          <Link to="/" onClick={removeUser}>Remove From Room</Link>
+        </Menu.Item>
+      }
     </Menu>
   );
 
   return (
-    <Skeleton loading={isLoading} avatar paragraph={{ rows: 0 }}>
+    <Skeleton loading={roomLoading} avatar paragraph={{ rows: 1 }}>
       <Popover placement="bottom" title="User Menu" trigger="click" content={userMenuContent}>
         <Card.Grid>
           <Badge dot status={user.isOnline ? 'success' : 'default'}>
-            <Avatar size="large" icon={user.image} />
+            <Avatar size="large" icon="user" src={user.avatar} />
           </Badge>
-          <Typography.Text type="secondary" strong>{user.userName}</Typography.Text>
+          <Typography.Text type="secondary" strong className="users--name">{user.fullname}</Typography.Text>
         </Card.Grid>
       </Popover>
     </Skeleton>

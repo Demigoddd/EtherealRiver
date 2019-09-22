@@ -2,11 +2,15 @@ import { combineReducers } from 'redux';
 
 // Import Reducers
 import user from './user';
-import room from './room';
+import rooms from './room';
+import message from './message';
+import attachments from './attachments';
 
 const rootReducer = combineReducers({
   user,
-  room
+  rooms,
+  message,
+  attachments
 });
 
 export default rootReducer;

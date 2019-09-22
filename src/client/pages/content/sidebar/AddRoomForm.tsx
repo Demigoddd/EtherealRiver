@@ -37,7 +37,6 @@ const AddRoomForm = (props: any) => {
       <Radio.Group size="large" defaultValue={values.roomType} buttonStyle="solid" onChange={changeType}>
         <Radio.Button value="public">Public</Radio.Button>
         <Radio.Button value="private">Private</Radio.Button>
-        <Radio.Button value="personal">Personal</Radio.Button>
       </Radio.Group>
 
       {
@@ -67,19 +66,6 @@ const AddRoomForm = (props: any) => {
           errors={errors}
           values={values}
         />
-      }
-      {
-        (values.roomType === 'personal')
-        && <FormField
-        name="email"
-        icon="mail"
-        placeholder="E-Mail"
-        handleChange={handleChange}
-        handleBlur={handleBlur}
-        touched={touched}
-        errors={errors}
-        values={values}
-      />
       }
 
       <Divider />

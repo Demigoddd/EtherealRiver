@@ -1,7 +1,8 @@
 import { withFormik } from 'formik';
 import AddRoomForm from './AddRoomForm';
-import store from "../../../utils/state/store";
-import { createRoom } from '../../../utils/state/actions/index';
+import { get } from 'lodash-es';
+import store from '../../../utils/state/store';
+import { RoomAction } from "../../../utils/state/actions";
 
 const AddRoomController = withFormik({
   enableReinitialize: true,
@@ -13,13 +14,10 @@ const AddRoomController = withFormik({
   }),
   validate: values => {
     let errors: any = {};
-    let roomTypes: any[] = ['public', 'private', 'personal'];
+    let roomTypes: any[] = ['public', 'private'];
 
     if (!values.roomName && (values.roomType === 'public' || values.roomType === 'private')) {
       errors.roomName = 'Required';
-    }
-    if (!values.email && (values.roomType === 'personal')) {
-      errors.email = 'Required';
     }
     if (!values.password && (values.roomType === 'private')) {
       errors.password = 'Required';
@@ -29,15 +27,13 @@ const AddRoomController = withFormik({
     }
     return errors;
   },
-  handleSubmit: (values: any, { setSubmitting, props }: any) => {
-    store.dispatch(createRoom(values))
-      .then(({ status }: any) => {
-        if (status === "success") {
-          props.history.push("/");
-        }
-        setSubmitting(false);
-      })
-      .catch(() => {
+  handleSubmit: (values: any, { setSubmitting, resetForm, props }: any) => {
+    const state = store.getState();
+    values.userId = get(state, 'user.data._id');
+
+    store.dispatch(RoomAction.fetchCreateRoom(values))
+      .finally(() => {
+        resetForm();
         setSubmitting(false);
       });
   },

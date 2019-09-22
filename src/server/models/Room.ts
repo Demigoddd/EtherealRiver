@@ -25,10 +25,6 @@ export interface IRoom extends Document {
     type: Schema.Types.ObjectId;
     ref: string;
   }];
-  messages: [{
-    type: Schema.Types.ObjectId;
-    ref: string;
-  }];
 }
 
 const RoomSchema = new Schema(
@@ -42,23 +38,20 @@ const RoomSchema = new Schema(
     type: {
       type: Schema.Types.String,
       require: true,
-      enum: ['public', 'private', 'personal']
+      enum: ['public', 'private']
     },
     password: {
       type: Schema.Types.String
     },
     authors: [{
       type: Schema.Types.ObjectId,
-      require: true,
-      ref: "User"
+      ref: 'User',
+      require: true
     }],
     users: [{
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    }],
-    messages: [{
       type: Schema.Types.ObjectId,
-      ref: 'Message'
+      ref: 'User',
+      require: true
     }]
   },
   {

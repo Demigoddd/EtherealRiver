@@ -1,84 +1,103 @@
-import React from "react";
-import { Empty, Spin, Button } from "antd";
+import React, { useRef, useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { Empty, Spin, Modal } from "antd";
 import ScrollArea from 'react-scrollbar';
 import Message from './messages/Message';
+import { MessageAction } from '../../../utils/state/actions';
+import rootSocket from '../../../utils/socket';
 
-const isJoinRoom = false;
+const Messages: React.FC<any> = ({
+  user,
+  items,
+  currentRoomId,
+  messageLoading,
+  fetchMessages,
+  addMessage,
+  updateMessage,
+  removeMessageById,
+  setMessageEditMode,
+  fetchUpdateEmotion
+}) => {
+  const [previewImage, setPreviewImage] = useState<any>(null);
+  const ScrollAreaRef = useRef<any>();
 
-const isLoading = false;
+  const onNewMessage = (data: any) => {
+    addMessage(data);
 
-const items: any[] = [
-  {
-    id: 1,
-    userId: 5,
-    author: 'NickName',
-    avatar: 'Link',
-    contet: 'Super Content',
-    likes: 5,
-    dislikes: 1,
-    emotions: [],
-    reaction: 'liked',
-    createdAt: '',
-    updatedAt: '',
-  },
-  {
-    id: 2,
-    userId: 3,
-    author: 'Super NickName',
-    avatar: 'Link',
-    contet: 'Super Content',
-    likes: 11,
-    dislikes: 2346,
-    emotions: [],
-    reaction: '',
-    createdAt: Date.now(),
-    updatedAt: '',
-  }
-];
+    if (ScrollAreaRef.current) {
+      ScrollAreaRef.current.scrollArea.scrollYTo(9999999);
+    }
+  };
 
-const Messages: React.FC<any> = ({ user }) => {
+  const onUpdateMessage = (data: any) => {
+    updateMessage(data);
+  };
+
+  useEffect((): any => {
+    if (currentRoomId) {
+      fetchMessages(currentRoomId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentRoomId]);
+
+  useEffect((): any => {
+    rootSocket.on("NewMessage", onNewMessage);
+    rootSocket.on("UpdateMessage", onUpdateMessage);
+
+    return () => {
+      rootSocket.off("NewMessage", onNewMessage);
+      rootSocket.off("UpdateMessage", onUpdateMessage);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <ScrollArea
-      speed={0.8}
-      horizontal={false}
-    >
+    <div className="messages">
       {
-        isJoinRoom
-        ? <Empty
-          description={
-              <span>
-                Do you want to join this room ?
-              </span>
-            }
+        messageLoading ? (
+          <div className="messages--loading">
+            <Spin size="large" tip="Loading Messages..." />
+          </div>
+        ) : items.length > 0 && !messageLoading ? (
+          <ScrollArea
+            ref={ScrollAreaRef}
+            speed={0.8}
+            horizontal={false}
+            smoothScrolling={true}
           >
-          <Button type="primary">Join Now</Button>
-        </Empty>
-        : <div className="messages">
-          {
-            isLoading ? (
-              <div className="messages--loading">
-                <Spin size="large" tip="Loading Messages..." />
-              </div>
-            ) : items && !isLoading ? (
-              items.length > 0 ? (
-                items.map((item: any) => (
-                  <Message
-                    key={item.id}
-                    {...item}
-                    isMe={(user && user.id) === item.userId}
-                  />
-                ))
-              ) : (
-                  <Empty description="Messages is Empty" />
-                )
-            ) : (
-                  <Empty description="Open Rooms" />
-                )
-          }
-        </div>
+            {items.map((item: any) => (
+              <Message
+                key={item._id}
+                message={item}
+                isMe={(user && user._id) === item.user._id}
+                currentUserId={user._id}
+                onRemoveMessage={removeMessageById}
+                setMessageEditMode={setMessageEditMode}
+                fetchUpdateEmotion={fetchUpdateEmotion}
+                setPreviewImage={setPreviewImage}
+              />
+            ))}
+          </ScrollArea>
+        ) : (
+              <Empty description="Messages is Empty" />
+            )
       }
-    </ScrollArea >
+      <Modal
+        visible={!!previewImage}
+        onCancel={() => setPreviewImage(null)}
+        footer={null}
+      >
+        <img src={previewImage} style={{ width: "100%" }} alt="Preview" />
+      </Modal>
+    </div>
   );
 };
 
-export default Messages;
+const mapStateToProps = (state: any) => ({
+  user: state.user.data,
+  items: state.message.items,
+  currentRoomId: state.rooms.currentRoom._id,
+  messageLoading: state.message.messageLoading
+});
+
+export default connect(mapStateToProps, MessageAction)(Messages);

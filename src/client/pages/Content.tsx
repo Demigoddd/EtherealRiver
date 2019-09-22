@@ -1,22 +1,40 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchUserData, fetchAllRoom } from '../utils/state/actions/index';
+import { UserAction, RoomAction } from '../utils/state/actions';
+import rootSocket from '../utils/socket';
 
-import RoomList from './content/RoomList';
+import Sidebar from './content/Sidebar';
 import MessageContent from './content/MessageContent';
 import UserList from './content/UserList';
 
-const Content: React.FC<any> = ({ user, room, fetchUserData, fetchAllRoom }) => {
-  useEffect(() => {
+const Content: React.FC<any> = ({
+  user,
+  currentRoom,
+  fetchUserData,
+  fetchAllRoom,
+  setCurrentRoom
+}) => {
+  useEffect((): any => {
     fetchUserData();
     fetchAllRoom();
-  }, [fetchUserData, fetchAllRoom]);
+
+    const UpdateCurrentRoomHandler = ({ room }: any) => { setCurrentRoom(room) };
+    rootSocket.on("UpdateCurrentRoom", UpdateCurrentRoomHandler);
+    const UpdateRoomsListHandler = ({ status }: any) => { fetchAllRoom() };
+    rootSocket.on("UpdateRoomsList", UpdateRoomsListHandler);
+
+    return () => {
+      rootSocket.off("UpdateRoomsList", UpdateRoomsListHandler);
+      rootSocket.off("UpdateCurrentRoom", UpdateCurrentRoomHandler);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="content">
       <div className="content__container">
-        <RoomList user={user} room={room} />
-        <MessageContent />
+        <Sidebar user={user} />
+        <MessageContent currentRoom={currentRoom} userId={user._id} />
         <UserList />
       </div>
     </div>
@@ -25,12 +43,12 @@ const Content: React.FC<any> = ({ user, room, fetchUserData, fetchAllRoom }) => 
 
 const mapStateToProps = (state: any) => ({
   user: state.user.data,
-  room: state.room
+  currentRoom: state.rooms.currentRoom,
 });
 
 const mapDispatchToProps = {
-  fetchUserData,
-  fetchAllRoom
+  ...UserAction,
+  ...RoomAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Content);

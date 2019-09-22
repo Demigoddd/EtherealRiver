@@ -5,12 +5,13 @@
 @import './utils/override.scss';
 
 // Component Style
+@import './components/auth.scss';
+@import './components/profile.scss';
+@import './components/content.scss';
+@import './components/rooms.scss';
+@import './components/users.scss';
+@import './components/message-content.scss';
+@import './components/message-item.scss';
+@import './components/chat-input.scss';
 @import './components/social-icons.scss';
-
-// Page Style
-@import './page/content.scss';
-@import './page/profile.scss';
-@import './page/auth.scss';
-@import './page/content/rooms.scss';
-@import './page/content/messages.scss';
-@import './page/content/users.scss';
+@import './components/upload-file.scss';

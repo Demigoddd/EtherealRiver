@@ -1,20 +1,35 @@
 import {
-  ROOM_SET_ALL,
+  SET_ALL,
+  SET_CURRENT,
+  SET_ROOM_LOADING
 } from '../constants/actionTypes';
 
 const initialState: InitialRoomState = {
   my: [],
-  personal: [],
   public: [],
   private: [],
+  currentRoom: {},
+  roomLoading: false
 };
 
 export default (state: any = initialState, action: any) => {
   switch (action.type) {
-    case ROOM_SET_ALL:
+    case SET_ALL:
       return {
         ...state,
         ...action.payload,
+        roomLoading: false
+      };
+    case SET_CURRENT:
+      return {
+        ...state,
+        currentRoom: action.payload,
+        roomLoading: false
+      };
+    case SET_ROOM_LOADING:
+      return {
+        ...state,
+        roomLoading: action.payload
       };
     default:
       return state;
@@ -22,16 +37,17 @@ export default (state: any = initialState, action: any) => {
 };
 
 interface InitialRoomState {
-  my: Room[],
-  personal: Room[];
+  my: Room[];
   public: Room[];
   private: Room[];
+  currentRoom: any;
+  roomLoading: Boolean;
 }
 interface Room {
-  name: string;
-  type: 'all' | 'public' | 'private' | 'personal';
-  author: string;
-  password: string;
-  users: string[];
-  messages: string[];
+  _id?: string;
+  name?: string;
+  type?: 'public' | 'private';
+  author?: string;
+  password?: string;
+  users?: string[];
 }

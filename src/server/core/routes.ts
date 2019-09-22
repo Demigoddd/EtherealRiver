@@ -3,13 +3,16 @@ import cors from "cors";
 import { Express } from "express";
 import { Server } from "socket.io";
 
+import multer from "./multer";
 import { updateLastSeen, checkAuth } from "../middlewares";
 import { loginValidation, registerValidation } from "../utils/validations";
-import { UserCtrl, RoomCtrl } from "../controllers";
+import { UserCtrl, RoomCtrl, MessageCtrl, UploadCtrl } from "../controllers";
 
 const createRoutes = (app: Express, io: Server) => {
   const UserController = new UserCtrl(io);
   const RoomController = new RoomCtrl(io);
+  const MessageController = new MessageCtrl(io);
+  const UploadFileController = new UploadCtrl();
 
   app.use(cors());
   app.use(bodyParser.json());
@@ -32,8 +35,20 @@ const createRoutes = (app: Express, io: Server) => {
 
   app.get("/room/getAll", RoomController.getAll);
   app.get("/room/:id", RoomController.index);
+  app.post("/room/updateRoom", RoomController.updateRoom);
+  app.post("/room/addUser", RoomController.addUser);
+  app.post("/room/removeUser", RoomController.removeUser);
+  app.post("/room", RoomController.create);
   app.delete("/room/:id", RoomController.delete);
-  app.post("/room/create", RoomController.create);
+
+  app.get("/messages", MessageController.index);
+  app.post("/messages", MessageController.create);
+  app.post("/messages/updateMessage", MessageController.updateMessage);
+  app.post("/messages/updateEmotion", MessageController.updateEmotion);
+  app.delete("/messages/:id/:deleteForAll", MessageController.delete);
+
+  app.post("/files", multer.single("file"), UploadFileController.create);
+  app.delete("/files", UploadFileController.delete);
 };
 
 export default createRoutes;
