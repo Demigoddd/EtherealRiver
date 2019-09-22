@@ -12,9 +12,9 @@ const fetchAllRoom = () => (dispatch: any) => {
     .then(({ data }: any) => {
       dispatch({ type: types.SET_ALL, payload: data });
     })
-    .catch(({ response }: any) => {
+    .catch((error: any) => {
       setRoomLoading(false)(dispatch);
-      if (response.status === 404) {
+      if (error.response.status === 404) {
         openNotification({
           title: "Error.",
           text: "Error.",
@@ -123,11 +123,19 @@ const fetchAddUserToRoom = (data: any) => (dispatch: any) => {
     })
     .catch((error: any) => {
       setRoomLoading(false)(dispatch);
-      openNotification({
-        title: "Error.",
-        text: "Error when ading user to room.",
-        type: "error"
-      });
+      if (error.response.status === 400) {
+        openNotification({
+          title: "Error.",
+          text: "Incorrect Password.",
+          type: "error"
+        });
+      } else {
+        openNotification({
+          title: "Error.",
+          text: "Error when ading user to room.",
+          type: "error"
+        });
+      }
     });
 };
 

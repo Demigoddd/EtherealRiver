@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classNames from "classnames";
-import { Comment, Tooltip, Avatar, Divider, Popconfirm, Typography, Checkbox, Button, Modal } from "antd";
+import { Comment, Tooltip, Avatar, Divider, Popconfirm, Typography, Checkbox, Button, Modal, Icon } from "antd";
 import { Picker, Emoji } from "emoji-mart";
 import moment from 'moment';
 import Time from "../../../../components/Time";
@@ -65,7 +65,7 @@ const Message: React.FC<any> = ({
         type={message.emotions.likes.includes(currentUserId) ? "primary" : "default"}
         shape="round"
       >
-        <Emoji key="like" emoji="+1" set='apple' size={16} />
+        <Icon type="like" />
         <span>{message.emotions.likes.length}</span>
       </Button>
     </Tooltip>,
@@ -76,7 +76,7 @@ const Message: React.FC<any> = ({
         type={message.emotions.dislikes.includes(currentUserId) ? "primary" : "default"}
         shape="round"
       >
-        <Emoji key="dislike" emoji="-1" set='apple' size={16} />
+        <Icon type="dislike" />
         <span>{message.emotions.dislikes.length}</span>
       </Button>
     </Tooltip>,

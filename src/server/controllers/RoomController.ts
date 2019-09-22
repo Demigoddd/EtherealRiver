@@ -1,4 +1,5 @@
 import socket from "socket.io";
+import bcrypt from "bcrypt";
 
 import { RoomModel } from "../models";
 import { UserModel } from "../models";
@@ -89,7 +90,7 @@ class RoomController {
       postData = {
         name: req.body.roomName,
         type: req.body.roomType,
-        password: req.body.password,
+        password: bcrypt.hashSync(req.body.password, 10),
         users: [req.body.userId],
         authors: [req.body.userId]
       };
@@ -187,45 +188,35 @@ class RoomController {
   };
 
   addUser = (req: any, res: any) => {
-    RoomModel.findById(req.body.currentRoomId, (error: any, room: any) => {
+    const roomId = req.body.currentRoomId;
+    const userId = req.user._id;
+    const password = req.body.password;
+
+    RoomModel.findById(roomId, (error: any, room: any) => {
       if (error || !room) {
         return res.status(404).json({
           message: "Room not found"
         });
       }
 
-      const isUserExist = this.userExistInRoom(room.users, req.user._id);
+      const isUserExist = this.userExistInRoom(room.users, userId);
 
       if (isUserExist) {
         res.json({
           message: "User already exist"
         });
       } else {
-        room.users.push(req.user._id);
-
-        room.save()
-          .then((room: any) => {
-            RoomModel.findById(room._id)
-              .populate('users', 'email fullname avatar isOnline socketId last_seen')
-              .exec((err: any, room: any) => {
-                if (err || !room) {
-                  return res.status(404).json({
-                    message: "Room not found"
-                  });
-                }
-
-                // Update current room for Room Users
-                this.io.in(room._id).emit('UpdateCurrentRoom', { status: 'success', room: room });
-
-                res.json(room);
-              });
-          })
-          .catch((error: any) => {
-            res.status(500).json({
-              message: 'Room not updated',
-              error
+        if (room.type === 'private') {
+          if (bcrypt.compareSync(password, room.password)) {
+            this.addUserToRoom(room, userId, res);
+          } else {
+            res.status(400).json({
+              message: "Incorrect Password"
             });
-          });
+          }
+        } else {
+          this.addUserToRoom(room, userId, res);
+        }
       }
     });
   };
@@ -285,6 +276,34 @@ class RoomController {
 
   userExistInRoom = (users: any, userId: any) => {
     return (users || []).includes(userId);
+  };
+
+  addUserToRoom = (room: any, userId: any, res: any) => {
+    room.users.push(userId);
+
+    room.save()
+      .then((room: any) => {
+        RoomModel.findById(room._id)
+          .populate('users', 'email fullname avatar isOnline socketId last_seen')
+          .exec((err: any, room: any) => {
+            if (err || !room) {
+              return res.status(404).json({
+                message: "Room not found"
+              });
+            }
+
+            // Update current room for Room Users
+            this.io.in(room._id).emit('UpdateCurrentRoom', { status: 'success', room: room });
+
+            res.json(room);
+          });
+      })
+      .catch((error: any) => {
+        res.status(500).json({
+          message: 'Room not updated',
+          error
+        });
+      });
   };
 }
 

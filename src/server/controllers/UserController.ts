@@ -310,7 +310,7 @@ class UserController {
    * PUBLIC METHODS
    */
   updateSocketId = (userId: any, socketId: any) => {
-    if (userId || socketId) {
+    if (userId && socketId) {
       UserModel.findById(userId, (err: any, user: any) => {
         user.socketId = socketId;
         user.save();

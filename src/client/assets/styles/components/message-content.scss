@@ -13,6 +13,11 @@
     p {
       font-size: 1rem;
     }
+
+    input {
+      width: 25%;
+      margin-bottom: 0.5rem;
+    }
   }
 
   @include element('header') {
