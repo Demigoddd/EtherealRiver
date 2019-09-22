@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Empty, Spin } from "antd";
+import { Empty, Spin, Modal } from "antd";
 import ScrollArea from 'react-scrollbar';
 import Message from './messages/Message';
 import { MessageAction } from '../../../utils/state/actions';
@@ -18,7 +18,7 @@ const Messages: React.FC<any> = ({
   setMessageEditMode,
   fetchUpdateEmotion
 }) => {
-
+  const [previewImage, setPreviewImage] = useState<any>(null);
   const ScrollAreaRef = useRef<any>();
 
   const onNewMessage = (data: any) => {
@@ -74,6 +74,7 @@ const Messages: React.FC<any> = ({
                 onRemoveMessage={removeMessageById}
                 setMessageEditMode={setMessageEditMode}
                 fetchUpdateEmotion={fetchUpdateEmotion}
+                setPreviewImage={setPreviewImage}
               />
             ))}
           </ScrollArea>
@@ -81,6 +82,13 @@ const Messages: React.FC<any> = ({
               <Empty description="Messages is Empty" />
             )
       }
+      <Modal
+        visible={!!previewImage}
+        onCancel={() => setPreviewImage(null)}
+        footer={null}
+      >
+        <img src={previewImage} style={{ width: "100%" }} alt="Preview" />
+      </Modal>
     </div>
   );
 };

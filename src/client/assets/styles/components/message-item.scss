@@ -14,6 +14,56 @@
     height: 100%;
   }
 
+  @include modifier('text') {
+    display: flex;
+    align-items: center;
+  }
+
+  @include modifier('attachments') {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    &-item {
+      $item: &;
+      margin-right: 5px;
+      cursor: pointer;
+      position: relative;
+
+      img {
+        width: 45px;
+        height: 45px;
+        border-radius: 8px;
+      }
+
+      &:hover {
+        #{$item}-overlay {
+          opacity: 1;
+        }
+      }
+
+      .anticon-eye {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+      }
+
+      &-overlay {
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        transition: opacity 0.15s ease-in-out;
+        border-radius: 8px;
+      }
+    }
+  }
+
   @include modifier('action-emoji') {
     display: flex;
     justify-content: center;
@@ -70,11 +120,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 1rem;
+        margin-right: 0;
+        margin: 0.5rem;
+        cursor: default;
 
         .ant-avatar, .ant-avatar > img {
           width: 45px;
           height: 45px;
+          cursor: pointer;
         }
       }
 

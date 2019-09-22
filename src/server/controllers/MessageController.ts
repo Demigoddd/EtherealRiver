@@ -30,6 +30,7 @@ class MessageController {
   updateMessage = (req: any, res: Response) => {
     const messageId: string = req.body.messageId;
     const messageText: string = req.body.messageText;
+    const messageAttachments: string = req.body.attachments;
 
     MessageModel.findById(messageId, (error: any, message: any) => {
       if (error || !message) {
@@ -39,6 +40,7 @@ class MessageController {
       }
 
       message.text = messageText;
+      message.attachments = messageAttachments;
       message.save()
         .then((obj: any) => {
           obj.populate(["dialog", "user", "attachments"], (error: any, newMessage: any) => {

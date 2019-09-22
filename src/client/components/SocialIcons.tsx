@@ -31,7 +31,6 @@ const SocialIcons: React.FC<any> = (props: any) => {
   };
 
   const handleFacebookLogin = (user: any) => {
-    console.log('Facbook', user);
     const postData = {
       email: user._profile.email,
       socialId: user._profile.id,

@@ -1,7 +1,8 @@
 import * as types from '../constants/actionTypes';
 
 const initialState: InitialAttachmentState = {
-  items: []
+  items: [],
+  attachmentLoading: false
 };
 
 export default (state = initialState, { type, payload }: any) => {
@@ -9,12 +10,17 @@ export default (state = initialState, { type, payload }: any) => {
     case types.SET_ATTACHMENTS:
       return {
         ...state,
-        items: payload
+        items: payload,
       };
     case types.REMOVE_ATTACHMENTS:
       return {
         ...state,
         items: state.items.filter((item: any) => item.uid !== payload.uid)
+      };
+    case types.LOADING_ATTACHMENTS:
+      return {
+        ...state,
+        attachmentLoading: payload
       };
     default:
       return state;
@@ -23,6 +29,7 @@ export default (state = initialState, { type, payload }: any) => {
 
 interface InitialAttachmentState {
   items: Attachment[];
+  attachmentLoading: boolean;
 }
 
 interface Attachment {

@@ -72,4 +72,5 @@ interface EditMode {
   isEditMode?: Boolean;
   editMessageId?: String;
   editMessageText?: String;
+  editMessageAttachments?: any[];
 }

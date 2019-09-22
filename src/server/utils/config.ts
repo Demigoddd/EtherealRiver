@@ -6,7 +6,6 @@ const initConfig = (): any => {
       isProduction,
       db: process.env.MONGODB_URL,
       clientBaseUrl: process.env.clientBaseUrl,
-      sessionSecret: process.env.sessionSecret,
       secretJWT: process.env.JWT_SECRET,
       maxAgeJWT: process.env.JWT_MAX_AGE,
       email: {
@@ -25,7 +24,6 @@ const initConfig = (): any => {
       isProduction,
       db: process.env.MONGODB_URL || 'mongodb://localhost:27017/EtherealRiver',
       clientBaseUrl: 'http://localhost:3000',
-      sessionSecret: 'SECRET',
       secretJWT: 'UpFJfpWKYteH5rMHSxst',
       maxAgeJWT: 10080,
       email: {
@@ -34,12 +32,13 @@ const initConfig = (): any => {
         emailPassword: '123456qwe!'
       },
       cloudinary: {
-        name: '',
-        key: '',
-        secret: ''
+        name: 'dgfmy2vas',
+        key: '569193638815932',
+        secret: 'G9ZW9WssqUOtT1zrTogju--RHog'
       }
     }
   }
 };
 
 export default initConfig();
+"mongodb+srv://admin:Pass@123@cluster0-mwm1h.mongodb.net/test?retryWrites=true&w=majority"

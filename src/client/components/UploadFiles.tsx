@@ -10,18 +10,21 @@ function getBase64(file: any) {
   });
 }
 
-const UploadFiles: React.FC<any> = ({ attachments, removeAttachment }) => {
+const UploadFiles: React.FC<any> = ({ removeAttachment, attachments }) => {
   const [state, setState] = useState({
     previewVisible: false,
     previewImage: "",
-    fileList: attachments
+    fileList: attachments,
+    statusList: []
   });
 
   useEffect(() => {
     setState({
       ...state,
-      fileList: attachments
+      fileList: attachments,
+      statusList: attachments.map((att: any) => { return { uid: att.uid, status: att.status } })
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attachments]);
 
   const handleCancel = () => setState({ ...state, previewVisible: false });
@@ -45,14 +48,19 @@ const UploadFiles: React.FC<any> = ({ attachments, removeAttachment }) => {
     });
 
   return (
-    <div className="clearfix">
+    <div className="upload-file">
       <Upload
         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
         listType="picture-card"
         fileList={state.fileList}
         onPreview={handlePreview}
         onChange={handleChange}
-        onRemove={file => removeAttachment(file)}
+        onRemove={(file: any) => {
+          const statusObj: any = state.statusList.find((n: any) => n.uid === file.uid);
+          Object.assign(file, { status: statusObj.status });
+
+          removeAttachment(file)
+        }}
       />
       <Modal
         visible={state.previewVisible}

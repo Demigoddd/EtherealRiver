@@ -23,8 +23,8 @@ const updateMessage = (message: any) => (dispatch: any) => {
   dispatch({ type: types.UPDATE_MESSAGE, payload: message });
 };
 
-const fetchSendMessage = (text: any, roomId: any) => (dispatch: any) => {
-  messagesApi.send(text, roomId);
+const fetchSendMessage = (message: any) => (dispatch: any) => {
+  messagesApi.send(message);
 };
 
 const fetchUpdateMessage = (data: any) => (dispatch: any) => {
