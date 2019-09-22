@@ -12,7 +12,7 @@ const app = express();
 const http = createServer(app);
 const io = createSocket(http);
 
-if (config.isProduction) {
+if (process.env.NODE_ENV == 'production') {
   app.use(express.static(path.join(__dirname, '..', 'build')));
 
   app.get('*', (req: any, res: any) => {
