@@ -12,6 +12,8 @@ export const ADD_MESSAGE = 'ADD_MESSAGE';
 export const SET_ITEMS = 'SET_ITEMS';
 export const REMOVE_MESSAGE = 'REMOVE_MESSAGE';
 export const SET_MESSAGE_LOADING = 'SET_MESSAGE_LOADING';
+export const SET_MESSAGE_EDIT_MODE = 'SET_MESSAGE_EDIT_MODE';
+export const UPDATE_MESSAGE = 'UPDATE_MESSAGE';
 
 // attachments
 export const SET_ATTACHMENTS = 'SET_ATTACHMENTS';

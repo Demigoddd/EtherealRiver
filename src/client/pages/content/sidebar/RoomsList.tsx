@@ -9,7 +9,6 @@ const RoomsList: React.FC<any> = ({
   userId,
   rooms,
   currentRoomId,
-  currentRoomType,
   roomLoading,
   fetchFindRoomById
 }) => {
@@ -39,7 +38,7 @@ const RoomsList: React.FC<any> = ({
               onOpenChange={() => onSubMenuChange()}
               subMenuOpenDelay={delay}
               subMenuCloseDelay={delay}
-              defaultSelectedKeys={[currentRoomId]}
+              selectedKeys={[currentRoomId]}
               defaultOpenKeys={["my", "public", "private"]}
             >
               <Menu.SubMenu
@@ -95,7 +94,6 @@ const mapStateToProps = (state: any) => ({
   userId: state.user.data._id,
   rooms: state.rooms,
   currentRoomId: state.rooms.currentRoom._id,
-  currentRoomType: state.rooms.currentRoom.type,
   roomLoading: state.rooms.roomLoading
 });
 

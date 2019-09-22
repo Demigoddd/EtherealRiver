@@ -43,7 +43,9 @@ const createRoutes = (app: Express, io: Server) => {
 
   app.get("/messages", MessageController.index);
   app.post("/messages", MessageController.create);
-  app.delete("/messages/:id", MessageController.delete);
+  app.post("/messages/updateMessage", MessageController.updateMessage);
+  app.post("/messages/updateEmotion", MessageController.updateEmotion);
+  app.delete("/messages/:id/:deleteForAll", MessageController.delete);
 
   app.post("/files", multer.single("file"), UploadFileController.create);
   app.delete("/files", UploadFileController.delete);

@@ -2,6 +2,7 @@ import socket from "socket.io";
 
 import { RoomModel } from "../models";
 import { UserModel } from "../models";
+import { MessageModel } from "../models";
 
 class RoomController {
   io: socket.Server;
@@ -94,28 +95,36 @@ class RoomController {
       };
     }
 
-    new RoomModel(postData).save((error: any, room: any) => {
-      if (error || !room) {
-        res.status(500).json({
-          message: 'Room not created',
-          error
+    RoomModel.findOne({ name: req.body.roomName }, (error: any, findedRoom: any) => {
+      if (error || findedRoom) {
+        return res.status(500).json({
+          message: "Room Already exist"
         });
-      }
+      } else {
 
-      RoomModel.findById(room._id)
-        .populate('users', 'email fullname avatar isOnline socketId last_seen')
-        .exec((err: any, room: any) => {
-          if (err || !room) {
-            return res.status(404).json({
-              message: "Room not found"
+        new RoomModel(postData).save((error: any, obj: any) => {
+          if (error || !obj) {
+            res.status(500).json({
+              message: 'Room not created',
+              error
             });
           }
 
-          // Update Rooms List for All Users
-          this.io.emit('UpdateRoomsList', { status: 'success', message: 'Update Room List' });
+          obj.populate(['users', 'email fullname avatar isOnline socketId last_seen'], (error: any, room: any) => {
+            if (error) {
+              return res.status(500).json({
+                status: "error",
+                message: error
+              });
+            }
 
-          res.json(room);
+            // Update Rooms List for All Users
+            this.io.emit('UpdateRoomsList', { status: 'success', message: 'Update Room List' });
+
+            res.json(room);
+          });
         });
+      }
     });
   };
 
@@ -149,6 +158,9 @@ class RoomController {
           message: "Room not found"
         });
       }
+
+      // Remove all Messages from Room
+      MessageModel.find({ room: room._id }).remove().exec();
 
       // Remove room from db
       room.remove();

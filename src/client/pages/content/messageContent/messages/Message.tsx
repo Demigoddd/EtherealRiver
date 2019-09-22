@@ -1,60 +1,119 @@
-import React from "react";
+import React, { useState } from "react";
 import classNames from "classnames";
-import { Comment, Tooltip, Icon, Avatar, Divider, Popconfirm, Typography } from "antd";
+import { Comment, Tooltip, Avatar, Divider, Popconfirm, Typography, Checkbox, Button, Modal } from "antd";
+import { Picker, Emoji } from "emoji-mart";
+import moment from 'moment';
+import Time from "../../../../components/Time";
 
 const Message: React.FC<any> = ({
   message,
   isMe,
-  onRemoveMessage
+  currentUserId,
+  onRemoveMessage,
+  setMessageEditMode,
+  fetchUpdateEmotion
 }) => {
-  const like = () => {
-    console.log("like");
-  };
+  const [openEmoji, setOpenEmoji] = useState(false);
+  const [deleteForAll, setDeleteForAll] = useState(false);
 
-  const dislike = () => {
-    console.log("dislike");
+  const emotionHandler = (e?: any, type?: any) => {
+    console.log("asd")
+    const emojiType = (e && e.id) || type;
+    fetchUpdateEmotion({ type: emojiType, messageId: message._id });
   };
 
   const editMessage = () => {
-    console.log("edit message");
+    setMessageEditMode({ isEditMode: true, editMessageId: message._id, editMessageText: message.text });
   };
 
   const deleteMessage = () => {
-    console.log("remove message");
-    onRemoveMessage(message._id);
+    onRemoveMessage(message._id, deleteForAll);
   };
 
   const actions = [
-    <span onClick={editMessage}>Edit</span>,
-    <Popconfirm
-      title="Are you sure delete this message?"
-      onConfirm={deleteMessage}
-      okText="Yes"
-      cancelText="No"
+    <>
+      {
+        isMe
+          ? <span onClick={editMessage}>Edit</span>
+          : <></>
+      }
+    </>,
+    <>
+      {
+        isMe
+          ? <Popconfirm
+            title={
+              <div className="messages--delete-content">
+                <div>Are you sure delete this message?</div>
+                <div><Checkbox value={deleteForAll} onChange={(event: any) => setDeleteForAll(event.target.checked)}>Delete for all users.</Checkbox></div>
+              </div>
+            }
+            onConfirm={deleteMessage}
+            okText="Yes"
+            cancelText="No"
+          >
+            Delete
+          </Popconfirm>
+          : <></>
+      }
+    </>,
+    <Divider className="messages--action-divider" type="vertical" />,
+    <Tooltip title="Like">
+      <Button
+        className="messages--action-emoji"
+        onClick={() => emotionHandler(null, "like")}
+        type={message.emotions.likes.includes(currentUserId) ? "primary" : "default"}
+        shape="round"
+      >
+        <Emoji key="like" emoji="+1" set='apple' size={16} />
+        <span>{message.emotions.likes.length}</span>
+      </Button>
+    </Tooltip>,
+    <Tooltip title="Dislike">
+      <Button
+        className="messages--action-emoji"
+        onClick={() => emotionHandler(null, "dislike")}
+        type={message.emotions.dislikes.includes(currentUserId) ? "primary" : "default"}
+        shape="round"
+      >
+        <Emoji key="dislike" emoji="-1" set='apple' size={16} />
+        <span>{message.emotions.dislikes.length}</span>
+      </Button>
+    </Tooltip>,
+    <Divider className="messages--action-divider" type="vertical" />,
+    <Button onClick={() => setOpenEmoji(!openEmoji)} type="link" icon="smile" shape="circle" />,
+    <Modal
+      title="Pick Emoji"
+      width={330}
+      visible={openEmoji}
+      onCancel={() => setOpenEmoji(!openEmoji)}
+      footer={null}
     >
-      Delete
-    </Popconfirm>,
-    <Divider style={{ marginLeft: 0, marginRight: 8 }} type="vertical" />,
-    <span key="comment-like">
-      <Tooltip title="Like">
-        <Icon
-          type="like"
-          theme={message.emotions.likes.includes(message.user._id) ? 'filled' : 'outlined'}
-          onClick={like}
-        />
-      </Tooltip>
-      <span style={{ paddingLeft: 8, cursor: 'auto' }}>{message.emotions.likes.length}</span>
-    </span>,
-    <span key="comment-dislike">
-      <Tooltip title="Dislike">
-        <Icon
-          type="dislike"
-          theme={message.emotions.dislikes.includes(message.user._id) ? 'filled' : 'outlined'}
-          onClick={dislike}
-        />
-      </Tooltip>
-      <span style={{ paddingLeft: 8, cursor: 'auto' }}>{message.emotions.dislikes.length}</span>
-    </span>
+      <Picker
+        onSelect={(event: any) => emotionHandler(event)}
+        set="apple"
+        perLine={7}
+        showPreview={false}
+        showSkinTones={false}
+      />
+    </Modal>,
+    <Divider className="messages--action-divider" type="vertical" />,
+    <div className="messages--action-emoji-row">
+      {
+        message.emotions.others.map((item: any, index: any) => (
+          <Button
+            key={index}
+            className="messages--action-emoji"
+            onClick={() => emotionHandler(null, item.emotion)}
+            type={item.users.includes(currentUserId) ? "primary" : "default"}
+            shape="round"
+          >
+            <Emoji key={item._id} emoji={item.emotion} set='apple' size={16} />
+            <span>{item.users.length}</span>
+          </Button>
+        ))
+      }
+    </div>
   ];
 
   return (
@@ -66,7 +125,7 @@ const Message: React.FC<any> = ({
       author={<Typography.Text type={isMe ? "warning" : "secondary"}>{message.user.fullname}</Typography.Text>}
       avatar={<Avatar icon="user" src={message.user.avatar} />}
       content={<p>{message.text}</p>}
-      datetime={<Tooltip title={message.updatedAt}><Typography.Text type="secondary">{message.updatedAt}</Typography.Text></Tooltip>}
+      datetime={<Tooltip title={moment(message.createdAt).format('YYYY-MM-DD HH:mm:ss')}><div><Time date={message.createdAt} /></div></Tooltip>}
     />
   );
 };

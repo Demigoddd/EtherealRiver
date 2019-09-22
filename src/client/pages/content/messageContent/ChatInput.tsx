@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Button, Input, Icon } from "antd";
+import { Button, Input, Icon, Tooltip } from "antd";
 import { Picker } from "emoji-mart";
 import { MessageAction } from '../../../utils/state/actions';
 // @ts-ignore
@@ -8,9 +8,23 @@ import { UploadField } from "@navjobs/upload";
 
 const isJoinRoom = false;
 
-const ChatInput: React.FC<any> = ({ fetchSendMessage, currentRoom }) => {
+const ChatInput: React.FC<any> = ({
+  currentRoom,
+  isEditMode,
+  editMessageId,
+  editMessageText,
+  fetchSendMessage,
+  setMessageEditMode,
+  fetchUpdateMessage
+}) => {
   const [value, setValue] = useState("");
   const [emojiPickerVisible, setShowEmojiPicker] = useState(false);
+
+  useEffect((): any => {
+    if (editMessageText && isEditMode) {
+      setValue(editMessageText);
+    }
+  }, [editMessageText, isEditMode]);
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker(!emojiPickerVisible);
@@ -20,13 +34,23 @@ const ChatInput: React.FC<any> = ({ fetchSendMessage, currentRoom }) => {
     let emoji = e.native;
     let text = value + emoji;
     setValue(text);
-  }
+  };
 
   const handleSendMessage = (e: any) => {
     if (e.keyCode === 13 || e.type === 'click') {
-      fetchSendMessage(value, currentRoom._id);
-      setValue("");
+      if (isEditMode) {
+        fetchUpdateMessage({ messageId: editMessageId, messageText: value });
+        disableEditMode();
+      } else {
+        fetchSendMessage(value, currentRoom._id);
+        setValue("");
+      }
     }
+  };
+
+  const disableEditMode = () => {
+    setMessageEditMode({ isEditMode: false });
+    setValue("");
   };
 
   return (
@@ -38,7 +62,7 @@ const ChatInput: React.FC<any> = ({ fetchSendMessage, currentRoom }) => {
             <div className="chat-input__actions">
               {emojiPickerVisible && (
                 <div className="chat-input__actions--emoji-picker">
-                  <Picker onSelect={addEmoji} set="apple" />
+                  <Picker onSelect={addEmoji} set="apple" title="" />
                 </div>
               )}
               <Button
@@ -64,9 +88,19 @@ const ChatInput: React.FC<any> = ({ fetchSendMessage, currentRoom }) => {
               <Input
                 onChange={e => setValue(e.target.value)}
                 onKeyUp={handleSendMessage}
-                size="large"
-                placeholder="Write the Message…"
+                placeholder="Write the new Message…"
                 value={value}
+                suffix={
+                  <>
+                    {
+                      isEditMode
+                        ? <Tooltip title="Close edit mode.">
+                          <Icon onClick={disableEditMode} type="close" style={{ color: 'rgba(0,0,0,.45)' }} />
+                        </Tooltip>
+                        : <></>
+                    }
+                  </>
+                }
               />
               <Button onClick={handleSendMessage} type="primary">
                 Send<Icon type="right" />
@@ -79,7 +113,10 @@ const ChatInput: React.FC<any> = ({ fetchSendMessage, currentRoom }) => {
 };
 
 const mapStateToProps = (state: any) => ({
-  currentRoom: state.rooms.currentRoom
+  currentRoom: state.rooms.currentRoom,
+  isEditMode: state.message.editMode.isEditMode,
+  editMessageId: state.message.editMode.editMessageId,
+  editMessageText: state.message.editMode.editMessageText,
 });
 
 export default connect(mapStateToProps, MessageAction)(ChatInput);

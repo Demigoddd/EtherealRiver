@@ -50,5 +50,4 @@ interface Room {
   author?: string;
   password?: string;
   users?: string[];
-  messages?: string[];
 }

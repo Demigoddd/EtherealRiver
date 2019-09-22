@@ -14,6 +14,47 @@
     height: 100%;
   }
 
+  @include modifier('action-emoji') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  @include modifier('action-emoji-row') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  @include modifier('action-divider') {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  @include modifier('emoji-picker') {
+    position: absolute;
+    bottom: 4rem;
+    z-index: $zindex-default;
+  }
+
+  @include modifier('delete-content') {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .ant-checkbox-wrapper {
+      padding: 0.5rem 0;
+    }
+  }
+
   @include modifier('box') {
     display: flex;
 
@@ -30,6 +71,17 @@
         justify-content: center;
         align-items: center;
         margin: 1rem;
+
+        .ant-avatar, .ant-avatar > img {
+          width: 45px;
+          height: 45px;
+        }
+      }
+
+      .ant-comment-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
       }
 
       .ant-comment-actions {
@@ -51,7 +103,7 @@
 
     .ant-comment-inner {
       background: #ffffff;
-      border: 1px solid #a6bdf0;
+      border: 1px solid #1890ff40;
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.0220444);
       border-radius: 12px 12px 0px 12px;
     }

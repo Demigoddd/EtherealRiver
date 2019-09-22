@@ -13,33 +13,43 @@ const Messages: React.FC<any> = ({
   messageLoading,
   fetchMessages,
   addMessage,
-  removeMessageById }) => {
+  updateMessage,
+  removeMessageById,
+  setMessageEditMode,
+  fetchUpdateEmotion
+}) => {
 
   const ScrollAreaRef = useRef<any>();
 
   const onNewMessage = (data: any) => {
-    console.log(data);
     addMessage(data);
+
+    if (ScrollAreaRef.current) {
+      ScrollAreaRef.current.scrollArea.scrollYTo(9999999);
+    }
+  };
+
+  const onUpdateMessage = (data: any) => {
+    updateMessage(data);
   };
 
   useEffect((): any => {
     if (currentRoomId) {
       fetchMessages(currentRoomId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentRoomId]);
 
+  useEffect((): any => {
     rootSocket.on("NewMessage", onNewMessage);
+    rootSocket.on("UpdateMessage", onUpdateMessage);
 
     return () => {
       rootSocket.off("NewMessage", onNewMessage);
+      rootSocket.off("UpdateMessage", onUpdateMessage);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect((): any => {
-    if (ScrollAreaRef.current) {
-      ScrollAreaRef.current.scrollArea.scrollYTo(9999999);
-    }
-  }, [items]);
 
   return (
     <div className="messages">
@@ -60,7 +70,10 @@ const Messages: React.FC<any> = ({
                 key={item._id}
                 message={item}
                 isMe={(user && user._id) === item.user._id}
+                currentUserId={user._id}
                 onRemoveMessage={removeMessageById}
+                setMessageEditMode={setMessageEditMode}
+                fetchUpdateEmotion={fetchUpdateEmotion}
               />
             ))}
           </ScrollArea>
