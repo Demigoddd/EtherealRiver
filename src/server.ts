@@ -12,15 +12,15 @@ const app = express();
 const http = createServer(app);
 const io = createSocket(http);
 
+createRoutes(app, io);
+
 if (process.env.NODE_ENV == 'production') {
   app.use(express.static(path.join(__dirname, '..', 'build')));
 
-  app.get('*', (req: any, res: any) => {
+  app.get('/', (req: any, res: any) => {
     res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
   });
 }
-
-createRoutes(app, io);
 
 http.listen(port, () => {
   console.log(`Server: http://localhost:${port}`);
