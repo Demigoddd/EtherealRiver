@@ -41,4 +41,3 @@ const initConfig = (): any => {
 };
 
 export default initConfig();
-"mongodb+srv://admin:Pass@123@cluster0-mwm1h.mongodb.net/test?retryWrites=true&w=majority"
