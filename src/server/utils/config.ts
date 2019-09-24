@@ -5,7 +5,6 @@ const initConfig = (): any => {
     return {
       isProduction,
       db: process.env.MONGODB_URL,
-      clientBaseUrl: process.env.PUBLIC_URL,
       secretJWT: process.env.JWT_SECRET,
       maxAgeJWT: process.env.JWT_MAX_AGE,
       email: {
@@ -23,7 +22,6 @@ const initConfig = (): any => {
     return {
       isProduction,
       db: process.env.MONGODB_URL || 'mongodb://localhost:27017/EtherealRiver',
-      clientBaseUrl: 'http://localhost:3000',
       secretJWT: 'UpFJfpWKYteH5rMHSxst',
       maxAgeJWT: 10080,
       email: {

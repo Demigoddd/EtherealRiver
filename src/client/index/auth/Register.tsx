@@ -21,9 +21,11 @@ const Register = withFormik({
     return errors;
   },
   handleSubmit: (values: any, { setSubmitting, props }: any) => {
+    const clientBaseUrl = (process.env.NODE_ENV === 'production') ? window.location.origin : 'http://localhost:3000';
+
     store.dispatch(UserAction.fetchUserRegister(values))
       .then(() => {
-        userApi.sendVerifyEmail({ email: values.email }).then(() => {
+        userApi.sendVerifyEmail({ email: values.email, clientBaseUrl: clientBaseUrl }).then(() => {
           setTimeout(() => {
             props.history.push("/register/verify");
           }, 50);

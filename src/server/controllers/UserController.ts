@@ -6,7 +6,6 @@ import { validationResult } from "express-validator";
 import { UserModel } from "../models";
 import { createJWToken } from "../utils";
 import { sendEmail } from "../utils";
-import config from "../utils/config";
 
 class UserController {
   io: socket.Server;
@@ -175,6 +174,7 @@ class UserController {
 
   sendVerifyEmail = (req: express.Request, res: express.Response) => {
     const email = req.body.email;
+    const clientBaseUrl = req.body.clientBaseUrl;
 
     UserModel.findOne({ email: email }, (err, user: any) => {
       if (err || !user) {
@@ -183,7 +183,7 @@ class UserController {
         });
       }
 
-      const confirmLink = (config.clientBaseUrl + "/register/verify#hash=" + user.confirm_hash);
+      const confirmLink = (clientBaseUrl + "/register/verify#hash=" + user.confirm_hash);
 
       const emailBody = {
         to: email,

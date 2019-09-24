@@ -12,11 +12,14 @@ const app = express();
 const http = createServer(app);
 const io = createSocket(http);
 
-app.use('/', express.static(path.join(__dirname, '../build')));
 
-app.get('/*', (req: any, res: any) => {
-  res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use('/', express.static(path.join(__dirname, '../build')));
+
+  app.get('/*', (req: any, res: any) => {
+    res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+  });
+}
 
 createRoutes(app, io);
 
