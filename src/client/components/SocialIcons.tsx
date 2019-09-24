@@ -23,11 +23,12 @@ const SocialIcons: React.FC<any> = (props: any) => {
   };
 
   const handleGoogleLoginFailure = (err: any) => {
-    openNotification({
-      title: "Authorization Error.",
-      text: "Google Auth Error.",
-      type: "error"
-    });
+    console.log("Google Auth Error: ", err);
+    // openNotification({
+    //   title: "Authorization Error.",
+    //   text: "Google Auth Error.",
+    //   type: "error"
+    // });
   };
 
   const handleFacebookLogin = (user: any) => {
@@ -45,11 +46,12 @@ const SocialIcons: React.FC<any> = (props: any) => {
   };
 
   const handleFacebookLoginFailure = (err: any) => {
-    openNotification({
-      title: "Authorization Error.",
-      text: "Facebook Auth Error.",
-      type: "error"
-    });
+    console.log("Facebook Auth Error: ", err);
+    // openNotification({
+    //   title: "Authorization Error.",
+    //   text: "Facebook Auth Error.",
+    //   type: "error"
+    // });
   };
 
   return (
