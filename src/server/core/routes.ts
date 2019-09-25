@@ -57,10 +57,10 @@ const createRoutes = (app: Express, io: Server) => {
 
   // If prod send build React APP
   if (config.isProduction) {
-    app.use(express.static(path.join(__dirname, '../build')));
+    app.use(express.static(path.join(__dirname, '../../../build')));
 
     app.get('*', (req: any, res: any) => {
-      res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+      res.sendFile(path.resolve(__dirname, '../../../build', 'index.html'));
     });
   }
 };
