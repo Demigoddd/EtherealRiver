@@ -4,7 +4,6 @@ import SocialLogin from "./SocialLogin";
 
 import store from "../utils/state/store";
 import { UserAction } from "../utils/state/actions";
-import { openNotification } from "../utils/helpers/openNotification";
 
 const SocialIcons: React.FC<any> = (props: any) => {
 
@@ -24,11 +23,6 @@ const SocialIcons: React.FC<any> = (props: any) => {
 
   const handleGoogleLoginFailure = (err: any) => {
     console.log("Google Auth Error: ", err);
-    // openNotification({
-    //   title: "Authorization Error.",
-    //   text: "Google Auth Error.",
-    //   type: "error"
-    // });
   };
 
   const handleFacebookLogin = (user: any) => {
@@ -47,11 +41,6 @@ const SocialIcons: React.FC<any> = (props: any) => {
 
   const handleFacebookLoginFailure = (err: any) => {
     console.log("Facebook Auth Error: ", err);
-    // openNotification({
-    //   title: "Authorization Error.",
-    //   text: "Facebook Auth Error.",
-    //   type: "error"
-    // });
   };
 
   return (

@@ -27,14 +27,15 @@ const createRoutes = (app: Express, io: Server) => {
   app.post("/user/register", registerValidation, UserController.create);
   app.post("/user/socialRegister", registerValidation, UserController.socialRegister);
   app.post("/user/sendVerifyEmail", UserController.sendVerifyEmail);
-
-  // Other API
-  app.get("/user/me", UserController.getMe);
   app.get("/user/verify", UserController.verify);
+
+  // User API
+  app.get("/user/me", UserController.getMe);
   app.get("/user/find", UserController.findUsers);
   app.get("/user/:id", UserController.show);
   app.delete("/user/:id", UserController.delete);
 
+  // Room API
   app.get("/room/getAll", RoomController.getAll);
   app.get("/room/:id", RoomController.index);
   app.post("/room/updateRoom", RoomController.updateRoom);
@@ -43,15 +44,18 @@ const createRoutes = (app: Express, io: Server) => {
   app.post("/room", RoomController.create);
   app.delete("/room/:id", RoomController.delete);
 
+  // Message API
   app.get("/messages", MessageController.index);
   app.post("/messages", MessageController.create);
   app.post("/messages/updateMessage", MessageController.updateMessage);
   app.post("/messages/updateEmotion", MessageController.updateEmotion);
   app.delete("/messages/:id/:deleteForAll", MessageController.delete);
 
+  // File API
   app.post("/files", multer.single("file"), UploadFileController.create);
   app.delete("/files", UploadFileController.delete);
 
+  // If prod send build React APP
   if (config.isProduction) {
     app.use(express.static(path.join(__dirname, '../build')));
 

@@ -34,6 +34,7 @@ const ChatInput: React.FC<any> = ({
       // Call disable edit mode for reset input data.
       disableEditMode();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentRoom._id]);
 
   useEffect((): any => {
