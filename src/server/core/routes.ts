@@ -1,9 +1,11 @@
+import path from 'path';
 import bodyParser from "body-parser";
 import cors from "cors";
-import { Express } from "express";
+import express, { Express } from "express";
 import { Server } from "socket.io";
 
 import multer from "./multer";
+import config from '../utils/config';
 import { updateLastSeen, checkAuth } from "../middlewares";
 import { loginValidation, registerValidation } from "../utils/validations";
 import { UserCtrl, RoomCtrl, MessageCtrl, UploadCtrl } from "../controllers";
@@ -13,6 +15,10 @@ const createRoutes = (app: Express, io: Server) => {
   const RoomController = new RoomCtrl(io);
   const MessageController = new MessageCtrl(io);
   const UploadFileController = new UploadCtrl();
+
+  if (config.isProduction) {
+    app.use(express.static(path.resolve(__dirname, '../build')));
+  }
 
   app.use(cors());
   app.use(bodyParser.json());
@@ -49,6 +55,12 @@ const createRoutes = (app: Express, io: Server) => {
 
   app.post("/files", multer.single("file"), UploadFileController.create);
   app.delete("/files", UploadFileController.delete);
+
+  if (config.isProduction) {
+    app.get('*', (req: any, res: any) => {
+      res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+    });
+  }
 };
 
 export default createRoutes;
