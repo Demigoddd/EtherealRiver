@@ -5,9 +5,8 @@ import express, { Express } from "express";
 import { Server } from "socket.io";
 
 import multer from "./multer";
-import config from '../utils/config';
-import { checkAuth } from '../utils';
-import { updateLastSeen } from "../middlewares";
+import config from "../utils/config";
+import { checkAuth } from "../utils";
 import { loginValidation, registerValidation } from "../utils/validations";
 import { UserCtrl, RoomCtrl, MessageCtrl, UploadCtrl } from "../controllers";
 
@@ -19,7 +18,6 @@ const createRoutes = (app: Express, io: Server) => {
 
   app.use(cors());
   app.use(bodyParser.json());
-  app.use(updateLastSeen);
 
   // User Auth
   app.post("/user/login", loginValidation, UserController.login);
