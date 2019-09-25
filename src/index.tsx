@@ -7,7 +7,6 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { Main } from './client/index/Main';
 
 // Other Imports
-import * as serviceWorker from './client/utils/serviceWorker';
 import { history } from './client/utils/history';
 import { store } from './client/utils/state/store';
 

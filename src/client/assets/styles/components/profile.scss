@@ -1,9 +1,9 @@
 .profile {
-  display: flex;
+  display: grid;
   justify-content: center;
   align-items: center;
+  grid-gap: 15px;
   height: 100%;
-  padding: 3rem;
 
   @include element('container') {
     display: flex;

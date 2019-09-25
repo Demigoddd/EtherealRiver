@@ -1,4 +1,6 @@
 import io from "socket.io-client";
+// @ts-ignore
+import window from "global";
 
 const url = (process.env.NODE_ENV === 'production') ? window.location.origin : 'http://localhost:3003';
 

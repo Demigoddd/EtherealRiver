@@ -5,8 +5,8 @@ import {
 
 const initialState: InitialUserState = {
   data: {},
-  token: window.localStorage.token,
-  isAuth: !!window.localStorage.token
+  token: localStorage.getItem("token"),
+  isAuth: !!localStorage.getItem("token")
 };
 
 export default (state: any = initialState, action: any) => {
@@ -16,7 +16,7 @@ export default (state: any = initialState, action: any) => {
         ...state,
         data: action.payload,
         isAuth: true,
-        token: window.localStorage.token
+        token: localStorage.getItem("token")
       };
     case USER_SET_IS_AUTH:
       return {
@@ -30,7 +30,7 @@ export default (state: any = initialState, action: any) => {
 
 interface InitialUserState {
   data: User;
-  token: string;
+  token: string | null;
   isAuth: boolean;
 }
 interface User {

@@ -1,7 +1,8 @@
 .users {
   display: flex;
   flex-direction: column;
-  width: 20%;
+  flex: 1;
+  height: 600px;
 
   @include element('add-user') {
     display: flex;

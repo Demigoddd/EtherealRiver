@@ -33,6 +33,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.1.1",
     "formik": "^1.5.8",
+    "global": "^4.4.0",
     "history": "^4.9.0",
     "jsonwebtoken": "^8.5.1",
     "lodash-es": "^4.17.11",

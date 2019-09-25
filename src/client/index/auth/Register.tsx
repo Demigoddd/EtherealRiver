@@ -1,5 +1,7 @@
 import { withFormik } from "formik";
 import store from "../../utils/state/store";
+// @ts-ignore
+import window from "global";
 
 import RegisterForm from "./register/RegisterForm";
 
