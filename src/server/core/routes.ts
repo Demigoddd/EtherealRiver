@@ -16,10 +16,6 @@ const createRoutes = (app: Express, io: Server) => {
   const MessageController = new MessageCtrl(io);
   const UploadFileController = new UploadCtrl();
 
-  if (config.isProduction) {
-    app.use(express.static(path.resolve(__dirname, '../build')));
-  }
-
   app.use(cors());
   app.use(bodyParser.json());
   app.use(checkAuth);
@@ -57,6 +53,8 @@ const createRoutes = (app: Express, io: Server) => {
   app.delete("/files", UploadFileController.delete);
 
   if (config.isProduction) {
+    app.use(express.static(path.join(__dirname, '../build')));
+
     app.get('*', (req: any, res: any) => {
       res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
     });
