@@ -6,7 +6,8 @@ import { Server } from "socket.io";
 
 import multer from "./multer";
 import config from '../utils/config';
-import { updateLastSeen, checkAuth } from "../middlewares";
+import { checkAuth } from '../utils';
+import { updateLastSeen } from "../middlewares";
 import { loginValidation, registerValidation } from "../utils/validations";
 import { UserCtrl, RoomCtrl, MessageCtrl, UploadCtrl } from "../controllers";
 
@@ -18,7 +19,6 @@ const createRoutes = (app: Express, io: Server) => {
 
   app.use(cors());
   app.use(bodyParser.json());
-  app.use(checkAuth);
   app.use(updateLastSeen);
 
   // User Auth
@@ -30,30 +30,30 @@ const createRoutes = (app: Express, io: Server) => {
   app.get("/user/verify", UserController.verify);
 
   // User API
-  app.get("/user/me", UserController.getMe);
-  app.get("/user/find", UserController.findUsers);
-  app.get("/user/:id", UserController.show);
-  app.delete("/user/:id", UserController.delete);
+  app.get("/user/me", checkAuth, UserController.getMe);
+  app.get("/user/find", checkAuth, UserController.findUsers);
+  app.get("/user/:id", checkAuth, UserController.show);
+  app.delete("/user/:id", checkAuth, UserController.delete);
 
   // Room API
-  app.get("/room/getAll", RoomController.getAll);
-  app.get("/room/:id", RoomController.index);
-  app.post("/room/updateRoom", RoomController.updateRoom);
-  app.post("/room/addUser", RoomController.addUser);
-  app.post("/room/removeUser", RoomController.removeUser);
-  app.post("/room", RoomController.create);
-  app.delete("/room/:id", RoomController.delete);
+  app.get("/room/getAll", checkAuth, RoomController.getAll);
+  app.get("/room/:id", checkAuth, RoomController.index);
+  app.post("/room/updateRoom", checkAuth, RoomController.updateRoom);
+  app.post("/room/addUser", checkAuth, RoomController.addUser);
+  app.post("/room/removeUser", checkAuth, RoomController.removeUser);
+  app.post("/room", checkAuth, RoomController.create);
+  app.delete("/room/:id", checkAuth, RoomController.delete);
 
   // Message API
-  app.get("/messages", MessageController.index);
-  app.post("/messages", MessageController.create);
-  app.post("/messages/updateMessage", MessageController.updateMessage);
-  app.post("/messages/updateEmotion", MessageController.updateEmotion);
-  app.delete("/messages/:id/:deleteForAll", MessageController.delete);
+  app.get("/messages", checkAuth, MessageController.index);
+  app.post("/messages", checkAuth, MessageController.create);
+  app.post("/messages/updateMessage", checkAuth, MessageController.updateMessage);
+  app.post("/messages/updateEmotion", checkAuth, MessageController.updateEmotion);
+  app.delete("/messages/:id/:deleteForAll", checkAuth, MessageController.delete);
 
   // File API
-  app.post("/files", multer.single("file"), UploadFileController.create);
-  app.delete("/files", UploadFileController.delete);
+  app.post("/files", checkAuth, multer.single("file"), UploadFileController.create);
+  app.delete("/files", checkAuth, UploadFileController.delete);
 
   // If prod send build React APP
   if (config.isProduction) {
