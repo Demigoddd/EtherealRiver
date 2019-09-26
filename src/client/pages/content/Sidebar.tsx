@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
-import { Popover, Avatar, Button, Menu, Divider, Icon, Modal, Spin } from 'antd';
+import { Popover, Avatar, Button, Menu, Icon, Modal, Spin } from 'antd';
 import { isEmpty } from 'lodash-es';
 
 import { UserAction } from '../../utils/state/actions';
@@ -51,11 +51,15 @@ const Sidebar: React.FC<any> = ({ user }) => {
             }
           </Button>
         </Popover>
+        {/* <Divider orientation="left">
+          <span>Rooms</span>
+          <Icon className="rooms__header--add-icon" type="plus-circle" onClick={() => setVisible(!visible)} />
+        </Divider> */}
+        <div className="rooms__header__divider">
+          <span className="rooms__header__divider--title">Rooms</span>
+          <Icon className="rooms__header__divider--add-icon" type="plus-circle" onClick={() => setVisible(!visible)} />
+        </div>
       </div>
-      <Divider orientation="left">
-        <span>Rooms</span>
-        <Icon className="rooms--add-icon" type="plus-circle" onClick={() => setVisible(!visible)} />
-      </Divider>
       <RoomsList />
       {addRoomModal}
     </div >

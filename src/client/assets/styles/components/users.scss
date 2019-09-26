@@ -1,8 +1,17 @@
 .users {
+  background-color: $background-color;
+  box-shadow: 0px 25px 25px -25px rgba(0, 0, 0, 0.04),
+              0px -25px 25px -25px rgba(0, 0, 0, 0.04),
+              25px 0px 25px -25px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   flex: 1;
-  height: 600px;
+  height: 100%;
+  border-radius: 0px;
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+  border-left: 1px solid #e8e8e8;
 
   @include element('add-user') {
     display: flex;

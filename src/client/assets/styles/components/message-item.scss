@@ -1,17 +1,41 @@
 .messages {
   height: 100%;
-  padding: 1rem 1rem 0 1rem;
+  padding: 0rem 1rem;
 
-  .scrollarea {
+  .scrollarea-content {
     height: 100%;
   }
 
-  .messages--loading, .ant-empty {
+  .messages--loading, .scrollarea-content > .ant-empty {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 100%;
+  }
+
+  @include element('main-action') {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+
+    @include modifier('text-action') {
+      margin: 0px 5px;
+      transition: all 0.5s ease;
+      cursor: pointer;
+
+      &:hover {
+        color: black;
+      }
+    }
+
+    @include modifier('like-dislike-action') {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+    }
   }
 
   @include modifier('text') {
@@ -167,7 +191,8 @@
     .ant-comment-inner,
     .ant-comment-content-author,
     .ant-comment-content-detail,
-    .ant-comment-actions {
+    .ant-comment-actions,
+    .messages__main-action {
       display: flex;
       flex-direction: row-reverse;
     }

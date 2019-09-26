@@ -62,73 +62,77 @@ const Message: React.FC<any> = ({
   };
 
   const actions = [
-    <>
+    <div className="messages__main-action">
       {
         isMe
-          ? <span onClick={editMessage}>Edit</span>
+          ? <>
+            <div className="messages__main-action--text-action">
+              <span onClick={editMessage}>Edit</span>
+            </div>
+            <div className="messages__main-action--text-action">
+              <Popconfirm
+                title={
+                  <div className="messages--delete-content">
+                    <div>Are you sure delete this message?</div>
+                    <div><Checkbox value={deleteForAll} onChange={(event: any) => setDeleteForAll(event.target.checked)}>Delete for all users.</Checkbox></div>
+                  </div>
+                }
+                onConfirm={deleteMessage}
+                okText="Yes"
+                cancelText="No"
+              >
+                Delete
+            </Popconfirm>
+            </div>
+            <Divider className="messages--action-divider" type="vertical" />
+          </>
           : <></>
       }
-    </>,
-    <>
-      {
-        isMe
-          ? <Popconfirm
-            title={
-              <div className="messages--delete-content">
-                <div>Are you sure delete this message?</div>
-                <div><Checkbox value={deleteForAll} onChange={(event: any) => setDeleteForAll(event.target.checked)}>Delete for all users.</Checkbox></div>
-              </div>
-            }
-            onConfirm={deleteMessage}
-            okText="Yes"
-            cancelText="No"
+      <div className="messages__main-action--like-dislike-action">
+        <Tooltip title="Like">
+          <Button
+            className="messages--action-emoji"
+            onClick={() => emotionHandler(null, "like")}
+            type={message.emotions.likes.includes(currentUserId) ? "primary" : "default"}
+            shape="round"
           >
-            Delete
-          </Popconfirm>
-          : <></>
-      }
-    </>,
-    <Divider className="messages--action-divider" type="vertical" />,
-    <Tooltip title="Like">
-      <Button
-        className="messages--action-emoji"
-        onClick={() => emotionHandler(null, "like")}
-        type={message.emotions.likes.includes(currentUserId) ? "primary" : "default"}
-        shape="round"
-      >
-        <Icon type="like" />
-        <span>{message.emotions.likes.length}</span>
-      </Button>
-    </Tooltip>,
-    <Tooltip title="Dislike">
-      <Button
-        className="messages--action-emoji"
-        onClick={() => emotionHandler(null, "dislike")}
-        type={message.emotions.dislikes.includes(currentUserId) ? "primary" : "default"}
-        shape="round"
-      >
-        <Icon type="dislike" />
-        <span>{message.emotions.dislikes.length}</span>
-      </Button>
-    </Tooltip>,
-    <Divider className="messages--action-divider" type="vertical" />,
-    <Button onClick={() => setOpenEmoji(!openEmoji)} type="link" icon="smile" shape="circle" />,
-    <Modal
-      title="Pick Emoji"
-      width={330}
-      visible={openEmoji}
-      onCancel={() => setOpenEmoji(!openEmoji)}
-      footer={null}
-    >
-      <Picker
-        onSelect={(event: any) => emotionHandler(event)}
-        set="apple"
-        perLine={7}
-        showPreview={false}
-        showSkinTones={false}
-      />
-    </Modal>,
-    <Divider className="messages--action-divider" type="vertical" />,
+            <Icon type="like" />
+            <span>{message.emotions.likes.length}</span>
+          </Button>
+        </Tooltip>
+        <Tooltip title="Dislike">
+          <Button
+            className="messages--action-emoji"
+            onClick={() => emotionHandler(null, "dislike")}
+            type={message.emotions.dislikes.includes(currentUserId) ? "primary" : "default"}
+            shape="round"
+          >
+            <Icon type="dislike" />
+            <span>{message.emotions.dislikes.length}</span>
+          </Button>
+        </Tooltip>
+      </div>
+      <Divider className="messages--action-divider" type="vertical" />
+      <div>
+        <Button onClick={() => setOpenEmoji(!openEmoji)} type="link" icon="smile" shape="circle" />
+        <Modal
+          title="Pick Emoji"
+          width={330}
+          visible={openEmoji}
+          onCancel={() => setOpenEmoji(!openEmoji)}
+          footer={null}
+        >
+          <Picker
+            onSelect={(event: any) => emotionHandler(event)}
+            set="apple"
+            perLine={7}
+            showPreview={false}
+            showSkinTones={false}
+          />
+        </Modal>
+      </div>
+      <Divider className="messages--action-divider" type="vertical" />
+    </div>,
     <div className="messages--action-emoji-row">
       {
         message.emotions.others.map((item: any, index: any) => (

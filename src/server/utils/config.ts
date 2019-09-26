@@ -23,7 +23,7 @@ const initConfig = (): any => {
       isProduction,
       db: process.env.MONGODB_URL || 'mongodb://localhost:27017/EtherealRiver',
       secretJWT: 'UpFJfpWKYteH5rMHSxst',
-      maxAgeJWT: 10080,
+      maxAgeJWT: 21600,
       email: {
         service: 'gmail',
         emailUsername: 'etherealriversupp@gmail.com',

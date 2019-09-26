@@ -32,11 +32,9 @@ const Content: React.FC<any> = ({
 
   return (
     <div className="content">
-      <div className="content__container">
-        <Sidebar user={user} />
-        <MessageContent currentRoom={currentRoom} userId={user._id} />
-        <UserList />
-      </div>
+      <Sidebar user={user} />
+      <MessageContent currentRoom={currentRoom} userId={user._id} />
+      <UserList />
     </div>
   );
 };
