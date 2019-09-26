@@ -6,7 +6,7 @@ const initConfig = (): any => {
       isProduction,
       db: process.env.MONGODB_URL,
       secretJWT: process.env.JWT_SECRET,
-      maxAgeJWT: process.env.JWT_MAX_AGE,
+      maxAgeJWT: Number(process.env.JWT_MAX_AGE),
       email: {
         service: process.env.service,
         emailUsername: process.env.emailUsername,
