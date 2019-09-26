@@ -1,6 +1,5 @@
 import * as types from '../constants/actionTypes';
-// @ts-ignore
-import window from "global";
+import { history } from '../../history';
 
 // Other Imports
 import { openNotification } from '../../helpers/openNotification';
@@ -40,7 +39,7 @@ const fetchUserData = () => (dispatch: any) => {
     .catch((err: any) => {
       setIsAuth(false);
       localStorage.removeItem("token");
-      window.location.href = '/';
+      history.replace('/');
     });
 };
 
@@ -70,7 +69,6 @@ const fetchUserLogin = (postData: any) => (dispatch: any) => {
         type: "success"
       });
 
-      (window as any).axios.defaults.headers.common["token"] = token;
       localStorage.setItem("token", token);
       fetchUserData()(dispatch);
       setIsAuth(true);
@@ -139,7 +137,7 @@ const fetchUserRegister = (postData: any) => (dispatch: any) => {
 const fetchUserLogout = () => {
   setIsAuth(false);
   localStorage.removeItem("token");
-  window.location.href = '/';
+  history.replace('/');
 };
 
 export default {

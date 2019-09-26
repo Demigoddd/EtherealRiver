@@ -1,13 +1,39 @@
-import axios from "axios";
-// @ts-ignore
-import window from "global";
+import Axios, { AxiosError } from 'axios';
 
-const url = (process.env.NODE_ENV === 'production') ? window.location.origin : 'http://localhost:3003';
+import { UserAction } from './state/actions';
 
-axios.defaults.baseURL = url;
+enum HTTP_STATUS_CODES {
+  UNAUTHORIZED = 401
+}
 
-axios.defaults.headers.common["token"] = localStorage.getItem("token");
+const axios = Axios.create({
+  baseURL: (window as any).appConfig.URL
+});
 
-(window as any).axios = axios;
+// Request Interceptors
+axios.interceptors.request.use(
+  (config) => {
+    try {
+      let token = localStorage.getItem("token");
+      config.headers["token"] = token;
+
+      return config;
+    } catch(e) {
+      console.error(e);
+      return config;
+    }
+  }
+);
+
+// Response Interceptors
+axios.interceptors.response.use(
+  response => response,
+  (err: AxiosError) => {
+    if (err.response && ( err.response.status === HTTP_STATUS_CODES.UNAUTHORIZED )) {
+      UserAction.fetchUserLogout();
+    }
+    return Promise.reject(err);
+  }
+);
 
 export default axios;

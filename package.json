@@ -2,6 +2,7 @@
   "name": "ethereal-river",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3003",
   "scripts": {
     "build": "react-scripts build",
     "start:react": "react-scripts start",
