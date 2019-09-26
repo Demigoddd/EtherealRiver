@@ -1,9 +1,9 @@
 .auth {
-  display: flex;
+  display: grid;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  height: 100%;
+  grid-auto-flow: row;
+  height: 100vh;
 
   @include element('top') {
     text-align: center;
