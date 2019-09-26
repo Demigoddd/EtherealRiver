@@ -11,6 +11,9 @@ export default (req: any, res: any, next: any) => {
       next();
     })
     .catch((err: any) => {
-      res.status(403).json({ message: "Invalid auth token provided." });
+      res.status(401).json({
+        error: err,
+        message: "Invalid auth token provided."
+      });
     });
 };
