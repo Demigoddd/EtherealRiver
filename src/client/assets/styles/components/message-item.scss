@@ -16,16 +16,23 @@
 
   @include element('main-action') {
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 
     @include modifier('text-action') {
-      margin: 0px 5px;
-      transition: all 0.5s ease;
-      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: nowrap;
 
-      &:hover {
+      & > div {
+        margin: 0px 5px;
+        transition: all 0.5s ease;
+        cursor: pointer;
+      }
+
+      & > div:hover {
         color: black;
       }
     }
@@ -35,12 +42,45 @@
       justify-content: center;
       align-items: center;
       flex-direction: row;
+      flex-wrap: nowrap;
+    }
+  }
+
+  @include element('emoji') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+    @include modifier('content') {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      padding-left: 8px;
+      padding-right: 8px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    @include modifier('row') {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
     }
   }
 
   @include modifier('text') {
     display: flex;
     align-items: center;
+  }
+
+  @include modifier('author-name') {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   @include modifier('attachments') {
@@ -88,28 +128,10 @@
     }
   }
 
-  @include modifier('action-emoji') {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    padding-left: 8px;
-    padding-right: 8px;
-    margin: 0 5px;
-    cursor: pointer;
-  }
-
-  @include modifier('action-emoji-row') {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
   @include modifier('action-divider') {
     margin-left: 5px;
     margin-right: 5px;
+    cursor: pointer;
   }
 
   @include modifier('emoji-picker') {
@@ -192,7 +214,10 @@
     .ant-comment-content-author,
     .ant-comment-content-detail,
     .ant-comment-actions,
-    .messages__main-action {
+    .messages__main-action,
+    .messages__main-action--text-action,
+    .messages__main-action--like-dislike-action,
+    .messages__emoji {
       display: flex;
       flex-direction: row-reverse;
     }
