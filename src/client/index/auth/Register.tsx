@@ -1,10 +1,7 @@
 import { withFormik } from "formik";
 import store from "../../utils/state/store";
-// @ts-ignore
-import window from "global";
 
 import RegisterForm from "./register/RegisterForm";
-
 import { Validate } from "../../utils/helpers/validate";
 import { UserAction } from "../../utils/state/actions";
 import userApi from "../../utils/api/user";

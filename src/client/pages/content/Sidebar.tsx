@@ -51,10 +51,6 @@ const Sidebar: React.FC<any> = ({ user }) => {
             }
           </Button>
         </Popover>
-        {/* <Divider orientation="left">
-          <span>Rooms</span>
-          <Icon className="rooms__header--add-icon" type="plus-circle" onClick={() => setVisible(!visible)} />
-        </Divider> */}
         <div className="rooms__header__divider">
           <span className="rooms__header__divider--title">Rooms</span>
           <Icon className="rooms__header__divider--add-icon" type="plus-circle" onClick={() => setVisible(!visible)} />
