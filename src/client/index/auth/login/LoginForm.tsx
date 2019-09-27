@@ -17,7 +17,7 @@ const LoginForm = (props: any) => {
     isSubmitting
   } = props;
   return (
-    <>
+    <div>
       <div className="auth__top">
         <h2>Login to account</h2>
         <p>Please log in to your account.</p>
@@ -64,7 +64,7 @@ const LoginForm = (props: any) => {
           </Link>
         </Form>
       </div>
-    </>
+    </div>
   );
 };
 

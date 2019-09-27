@@ -5,7 +5,7 @@ export default {
   socialLogin: (postData: any) => axios.post("/user/socialLogin", postData),
   register: (postData: any) => axios.post("/user/register", postData),
   socialRegister: (postData: any) => axios.post("/user/socialRegister", postData),
-  sendVerifyEmail: (email: any) => axios.post("/user/sendVerifyEmail", email),
+  sendVerifyEmail: (postData: any) => axios.post("/user/sendVerifyEmail", postData),
   verifyHash: (hash: any) => axios.get("/user/verify?hash=" + hash),
   getMe: () => axios.get("/user/me"),
   show: (id: any) => axios.get(`/user/${id}`),

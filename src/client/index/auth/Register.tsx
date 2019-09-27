@@ -2,7 +2,6 @@ import { withFormik } from "formik";
 import store from "../../utils/state/store";
 
 import RegisterForm from "./register/RegisterForm";
-
 import { Validate } from "../../utils/helpers/validate";
 import { UserAction } from "../../utils/state/actions";
 import userApi from "../../utils/api/user";
@@ -23,7 +22,7 @@ const Register = withFormik({
   handleSubmit: (values: any, { setSubmitting, props }: any) => {
     store.dispatch(UserAction.fetchUserRegister(values))
       .then(() => {
-        userApi.sendVerifyEmail({ email: values.email }).then(() => {
+        userApi.sendVerifyEmail({ email: values.email, clientBaseUrl: (window as any).appConfig.URL }).then(() => {
           setTimeout(() => {
             props.history.push("/register/verify");
           }, 50);

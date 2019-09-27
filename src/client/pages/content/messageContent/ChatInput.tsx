@@ -30,6 +30,14 @@ const ChatInput: React.FC<any> = ({
   const closeSend = (!(value || attachments.length) || attachmentLoading);
 
   useEffect((): any => {
+    if (currentRoom._id) {
+      // Call disable edit mode for reset input data.
+      disableEditMode();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentRoom._id]);
+
+  useEffect((): any => {
     if (isEditMode) {
       setValue(editMessageText);
       setAttachments(editMessageAttachments);

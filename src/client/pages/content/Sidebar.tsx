@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
-import { Popover, Avatar, Button, Menu, Divider, Icon, Modal } from 'antd';
+import { Popover, Avatar, Button, Menu, Icon, Modal, Spin } from 'antd';
+import { isEmpty } from 'lodash-es';
 
 import { UserAction } from '../../utils/state/actions';
 import RoomsList from './sidebar/RoomsList';
@@ -37,18 +38,24 @@ const Sidebar: React.FC<any> = ({ user }) => {
       <div className="rooms__header">
         <Popover placement="bottom" title="Menu" trigger="click" content={profileContent}>
           <Button className="rooms__avatar">
-            <Avatar size="large" icon="user" src={user.avatar} />
-            <div>
-              <p><strong>{user.fullname}</strong></p>
-              <p>{user.email}</p>
-            </div>
+            {
+              isEmpty(user)
+                ? <Spin size="large" />
+                : <>
+                  <Avatar size="large" icon="user" src={user.avatar} />
+                  <div>
+                    <p><strong>{user.fullname}</strong></p>
+                    <p>{user.email}</p>
+                  </div>
+                </>
+            }
           </Button>
         </Popover>
+        <div className="rooms__header__divider">
+          <span className="rooms__header__divider--title">Rooms</span>
+          <Icon className="rooms__header__divider--add-icon" type="plus-circle" onClick={() => setVisible(!visible)} />
+        </div>
       </div>
-      <Divider orientation="left">
-        <span>Rooms</span>
-        <Icon className="rooms--add-icon" type="plus-circle" onClick={() => setVisible(!visible)} />
-      </Divider>
       <RoomsList />
       {addRoomModal}
     </div >

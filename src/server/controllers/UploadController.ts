@@ -9,7 +9,10 @@ class UserController {
     cloudinary.v2.uploader
       .upload_stream({ resource_type: "auto" }, (error: any, result: any) => {
         if (error) {
-          throw new Error(error);
+          return res.json({
+            status: "error",
+            file: error.message
+          });
         }
 
         const fileData = {

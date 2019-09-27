@@ -1,12 +1,12 @@
 .messages {
   height: 100%;
-  padding: 1rem 1rem 0 1rem;
+  padding: 0rem 1rem;
 
-  .scrollarea {
+  .scrollarea-content {
     height: 100%;
   }
 
-  .messages--loading, .ant-empty {
+  .messages--loading, .scrollarea-content > .ant-empty {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,9 +14,73 @@
     height: 100%;
   }
 
+  @include element('main-action') {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    @include modifier('text-action') {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: nowrap;
+
+      & > div {
+        margin: 0px 5px;
+        transition: all 0.5s ease;
+        cursor: pointer;
+      }
+
+      & > div:hover {
+        color: black;
+      }
+    }
+
+    @include modifier('like-dislike-action') {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+  }
+
+  @include element('emoji') {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+    @include modifier('content') {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      padding-left: 8px;
+      padding-right: 8px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    @include modifier('row') {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
   @include modifier('text') {
     display: flex;
     align-items: center;
+  }
+
+  @include modifier('author-name') {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   @include modifier('attachments') {
@@ -64,28 +128,10 @@
     }
   }
 
-  @include modifier('action-emoji') {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    padding-left: 8px;
-    padding-right: 8px;
-    margin: 0 5px;
-    cursor: pointer;
-  }
-
-  @include modifier('action-emoji-row') {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
   @include modifier('action-divider') {
     margin-left: 5px;
     margin-right: 5px;
+    cursor: pointer;
   }
 
   @include modifier('emoji-picker') {
@@ -125,6 +171,9 @@
         cursor: default;
 
         .ant-avatar, .ant-avatar > img {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           width: 45px;
           height: 45px;
           cursor: pointer;
@@ -164,7 +213,11 @@
     .ant-comment-inner,
     .ant-comment-content-author,
     .ant-comment-content-detail,
-    .ant-comment-actions {
+    .ant-comment-actions,
+    .messages__main-action,
+    .messages__main-action--text-action,
+    .messages__main-action--like-dislike-action,
+    .messages__emoji {
       display: flex;
       flex-direction: row-reverse;
     }

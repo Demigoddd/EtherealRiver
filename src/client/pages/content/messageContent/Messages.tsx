@@ -52,32 +52,31 @@ const Messages: React.FC<any> = ({
   }, []);
 
   return (
-    <div className="messages">
+    <ScrollArea
+      className="messages"
+      ref={ScrollAreaRef}
+      speed={0.8}
+      horizontal={false}
+      smoothScrolling={true}
+    >
       {
         messageLoading ? (
           <div className="messages--loading">
             <Spin size="large" tip="Loading Messages..." />
           </div>
         ) : items.length > 0 && !messageLoading ? (
-          <ScrollArea
-            ref={ScrollAreaRef}
-            speed={0.8}
-            horizontal={false}
-            smoothScrolling={true}
-          >
-            {items.map((item: any) => (
-              <Message
-                key={item._id}
-                message={item}
-                isMe={(user && user._id) === item.user._id}
-                currentUserId={user._id}
-                onRemoveMessage={removeMessageById}
-                setMessageEditMode={setMessageEditMode}
-                fetchUpdateEmotion={fetchUpdateEmotion}
-                setPreviewImage={setPreviewImage}
-              />
-            ))}
-          </ScrollArea>
+          items.map((item: any) => (
+            <Message
+              key={item._id}
+              message={item}
+              isMe={(user && user._id) === item.user._id}
+              currentUserId={user._id}
+              onRemoveMessage={removeMessageById}
+              setMessageEditMode={setMessageEditMode}
+              fetchUpdateEmotion={fetchUpdateEmotion}
+              setPreviewImage={setPreviewImage}
+            />
+          ))
         ) : (
               <Empty description="Messages is Empty" />
             )
@@ -89,7 +88,7 @@ const Messages: React.FC<any> = ({
       >
         <img src={previewImage} style={{ width: "100%" }} alt="Preview" />
       </Modal>
-    </div>
+    </ScrollArea>
   );
 };
 

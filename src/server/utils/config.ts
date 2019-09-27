@@ -5,9 +5,8 @@ const initConfig = (): any => {
     return {
       isProduction,
       db: process.env.MONGODB_URL,
-      clientBaseUrl: process.env.clientBaseUrl,
       secretJWT: process.env.JWT_SECRET,
-      maxAgeJWT: process.env.JWT_MAX_AGE,
+      maxAgeJWT: Number(process.env.JWT_MAX_AGE),
       email: {
         service: process.env.service,
         emailUsername: process.env.emailUsername,
@@ -23,9 +22,8 @@ const initConfig = (): any => {
     return {
       isProduction,
       db: process.env.MONGODB_URL || 'mongodb://localhost:27017/EtherealRiver',
-      clientBaseUrl: 'http://localhost:3000',
       secretJWT: 'UpFJfpWKYteH5rMHSxst',
-      maxAgeJWT: 10080,
+      maxAgeJWT: 21600,
       email: {
         service: 'gmail',
         emailUsername: 'etherealriversupp@gmail.com',
@@ -41,4 +39,3 @@ const initConfig = (): any => {
 };
 
 export default initConfig();
-"mongodb+srv://admin:Pass@123@cluster0-mwm1h.mongodb.net/test?retryWrites=true&w=majority"

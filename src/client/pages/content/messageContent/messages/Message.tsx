@@ -62,88 +62,94 @@ const Message: React.FC<any> = ({
   };
 
   const actions = [
-    <>
+    <div className="messages__main-action">
       {
         isMe
-          ? <span onClick={editMessage}>Edit</span>
-          : <></>
-      }
-    </>,
-    <>
-      {
-        isMe
-          ? <Popconfirm
-            title={
-              <div className="messages--delete-content">
-                <div>Are you sure delete this message?</div>
-                <div><Checkbox value={deleteForAll} onChange={(event: any) => setDeleteForAll(event.target.checked)}>Delete for all users.</Checkbox></div>
+          ? <div className="messages__main-action--text-action">
+              <div>
+                <span onClick={editMessage}>Edit</span>
               </div>
-            }
-            onConfirm={deleteMessage}
-            okText="Yes"
-            cancelText="No"
-          >
-            Delete
-          </Popconfirm>
+              <div>
+                <Popconfirm
+                  title={
+                    <div className="messages--delete-content">
+                      <div>Are you sure delete this message?</div>
+                      <div><Checkbox value={deleteForAll} onChange={(event: any) => setDeleteForAll(event.target.checked)}>Delete for all users.</Checkbox></div>
+                    </div>
+                  }
+                  onConfirm={deleteMessage}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  Delete
+                </Popconfirm>
+              </div>
+              <Divider className="messages--action-divider" type="vertical" />
+            </div>
           : <></>
       }
-    </>,
-    <Divider className="messages--action-divider" type="vertical" />,
-    <Tooltip title="Like">
-      <Button
-        className="messages--action-emoji"
-        onClick={() => emotionHandler(null, "like")}
-        type={message.emotions.likes.includes(currentUserId) ? "primary" : "default"}
-        shape="round"
-      >
-        <Icon type="like" />
-        <span>{message.emotions.likes.length}</span>
-      </Button>
-    </Tooltip>,
-    <Tooltip title="Dislike">
-      <Button
-        className="messages--action-emoji"
-        onClick={() => emotionHandler(null, "dislike")}
-        type={message.emotions.dislikes.includes(currentUserId) ? "primary" : "default"}
-        shape="round"
-      >
-        <Icon type="dislike" />
-        <span>{message.emotions.dislikes.length}</span>
-      </Button>
-    </Tooltip>,
-    <Divider className="messages--action-divider" type="vertical" />,
-    <Button onClick={() => setOpenEmoji(!openEmoji)} type="link" icon="smile" shape="circle" />,
-    <Modal
-      title="Pick Emoji"
-      width={330}
-      visible={openEmoji}
-      onCancel={() => setOpenEmoji(!openEmoji)}
-      footer={null}
-    >
-      <Picker
-        onSelect={(event: any) => emotionHandler(event)}
-        set="apple"
-        perLine={7}
-        showPreview={false}
-        showSkinTones={false}
-      />
-    </Modal>,
-    <Divider className="messages--action-divider" type="vertical" />,
-    <div className="messages--action-emoji-row">
-      {
-        message.emotions.others.map((item: any, index: any) => (
+      <div className="messages__main-action--like-dislike-action">
+        <Tooltip title="Like">
           <Button
-            key={index}
-            className="messages--action-emoji"
-            onClick={() => emotionHandler(null, item.emotion)}
-            type={item.users.includes(currentUserId) ? "primary" : "default"}
+            className="messages__emoji--content"
+            onClick={() => emotionHandler(null, "like")}
+            type={message.emotions.likes.includes(currentUserId) ? "primary" : "default"}
             shape="round"
           >
-            <Emoji key={item._id} emoji={item.emotion} set='apple' size={16} />
-            <span>{item.users.length}</span>
+            <Icon type="like" />
+            <span>{message.emotions.likes.length}</span>
           </Button>
-        ))
-      }
+        </Tooltip>
+        <Tooltip title="Dislike">
+          <Button
+            className="messages__emoji--content"
+            onClick={() => emotionHandler(null, "dislike")}
+            type={message.emotions.dislikes.includes(currentUserId) ? "primary" : "default"}
+            shape="round"
+          >
+            <Icon type="dislike" />
+            <span>{message.emotions.dislikes.length}</span>
+          </Button>
+        </Tooltip>
+        <Divider className="messages--action-divider" type="vertical" />
+      </div>
+    </div>,
+    <div className="messages__emoji">
+      <div>
+        <Button onClick={() => setOpenEmoji(!openEmoji)} type="link" icon="smile" shape="circle" />
+        <Modal
+          title="Pick Emoji"
+          width={330}
+          visible={openEmoji}
+          onCancel={() => setOpenEmoji(!openEmoji)}
+          footer={null}
+        >
+          <Picker
+            onSelect={(event: any) => emotionHandler(event)}
+            set="apple"
+            perLine={7}
+            showPreview={false}
+            showSkinTones={false}
+          />
+        </Modal>
+      </div>
+      <Divider className="messages--action-divider" type="vertical" />
+      <div className="messages__emoji--row">
+        {
+          message.emotions.others.map((item: any, index: any) => (
+            <Button
+              key={index}
+              className="messages__emoji--content"
+              onClick={() => emotionHandler(null, item.emotion)}
+              type={item.users.includes(currentUserId) ? "primary" : "default"}
+              shape="round"
+            >
+              <Emoji key={item._id} emoji={item.emotion} set='apple' size={16} />
+              <span>{item.users.length}</span>
+            </Button>
+          ))
+        }
+      </div>
     </div>
   ];
 
@@ -153,7 +159,7 @@ const Message: React.FC<any> = ({
         "messages--isme": isMe
       })}
       actions={actions}
-      author={<Typography.Text type={isMe ? "warning" : "secondary"}>{message.user.fullname}</Typography.Text>}
+      author={<Typography.Text className="messages--author-name" type={isMe ? "warning" : "secondary"}>{message.user.fullname}</Typography.Text>}
       avatar={<Avatar icon="user" src={message.user.avatar} />}
       content={
         <div className="messages--text">

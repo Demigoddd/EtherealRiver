@@ -1,8 +1,6 @@
 import io from "socket.io-client";
 
-const publicUrl = process.env.PUBLIC_URL || 'http://localhost:3003';
-
-const rootSocket = io(publicUrl, { transports: ['websocket'] });
+const rootSocket = io((window as any).appConfig.URL, { transports: ['websocket'] });
 
 rootSocket.on('reconnect_attempt', () => {
   rootSocket.io.opts.transports = ['polling', 'websocket'];
