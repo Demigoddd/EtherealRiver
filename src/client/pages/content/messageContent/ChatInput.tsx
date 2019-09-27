@@ -123,7 +123,7 @@ const ChatInput: React.FC<any> = ({
               <div className="chat-input__actions">
                 {emojiPickerVisible && (
                   <div className="chat-input__actions--emoji-picker">
-                    <Picker onSelect={addEmoji} set="apple" title="" />
+                    <Picker onSelect={addEmoji} title="" />
                   </div>
                 )}
                 <Button

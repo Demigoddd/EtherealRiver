@@ -14,13 +14,11 @@ const fetchAllRoom = () => (dispatch: any) => {
     })
     .catch((error: any) => {
       setRoomLoading(false)(dispatch);
-      if (error.response.status === 404) {
-        openNotification({
-          title: "Error.",
-          text: "Error.",
-          type: "error"
-        });
-      }
+      openNotification({
+        title: "Error.",
+        text: "Error.",
+        type: "error"
+      });
     });
 };
 

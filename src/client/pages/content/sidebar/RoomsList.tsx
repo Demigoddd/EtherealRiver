@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
 import { isEmpty, result } from "lodash-es"
-import { Menu, Icon, Empty, Spin } from "antd";
-import ScrollArea from 'react-scrollbar';
-import { RoomAction } from '../../../utils/state/actions';
+import { Menu, Icon, Empty } from "antd";
+import ScrollArea from "react-scrollbar";
+import { RoomAction } from "../../../utils/state/actions";
+import Loading from "../../../components/Loading";
 
 const RoomsList: React.FC<any> = ({
   userId,
@@ -25,7 +26,7 @@ const RoomsList: React.FC<any> = ({
     <>
       {
         isEmpty(rooms) && roomLoading
-          ? <Spin size="large" className="rooms--loading" />
+          ? <Loading className="rooms--loading" tip="Loading Rooms..." />
           : <ScrollArea
             ref={ScrollAreaRef}
             speed={0.8}

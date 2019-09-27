@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Empty, Spin, Modal } from "antd";
+import { Empty, Modal } from "antd";
 import ScrollArea from 'react-scrollbar';
 import Message from './messages/Message';
 import { MessageAction } from '../../../utils/state/actions';
 import rootSocket from '../../../utils/socket';
+import Loading from "../../../components/Loading";
 
 const Messages: React.FC<any> = ({
   user,
@@ -62,7 +63,7 @@ const Messages: React.FC<any> = ({
       {
         messageLoading ? (
           <div className="messages--loading">
-            <Spin size="large" tip="Loading Messages..." />
+            <Loading tip="Loading Messages..." />
           </div>
         ) : items.length > 0 && !messageLoading ? (
           items.map((item: any) => (

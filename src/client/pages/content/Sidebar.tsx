@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
-import { Popover, Avatar, Button, Menu, Icon, Modal, Spin } from 'antd';
+import { Popover, Avatar, Button, Menu, Icon, Modal } from 'antd';
 import { isEmpty } from 'lodash-es';
 
 import { UserAction } from '../../utils/state/actions';
+import Loading from '../../components/Loading';
 import RoomsList from './sidebar/RoomsList';
 import AddRoomController from './sidebar/AddRoomController';
 
@@ -40,7 +41,7 @@ const Sidebar: React.FC<any> = ({ user }) => {
           <Button className="rooms__avatar">
             {
               isEmpty(user)
-                ? <Spin size="large" />
+                ? <Loading />
                 : <>
                   <Avatar size="large" icon="user" src={user.avatar} />
                   <div>
