@@ -2,10 +2,6 @@
   height: 100%;
   padding: 0rem 1rem;
 
-  .scrollarea-content {
-    height: 100%;
-  }
-
   .messages--loading, .scrollarea-content > .ant-empty {
     display: flex;
     justify-content: center;
@@ -14,12 +10,18 @@
     height: 100%;
   }
 
+  @include modifier('content-center') {
+    .scrollarea-content {
+      height: 100%;
+    }
+  }
+
   @include element('main-action') {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
 
-    @include modifier('text-action') {
+    @include modifier('text') {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -36,14 +38,6 @@
         color: black;
       }
     }
-
-    @include modifier('like-dislike-action') {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: row;
-      flex-wrap: nowrap;
-    }
   }
 
   @include element('emoji') {
@@ -57,10 +51,21 @@
       justify-content: center;
       align-items: center;
       flex-direction: row;
-      padding-left: 8px;
-      padding-right: 8px;
-      margin: 0 5px;
-      cursor: pointer;
+      flex-wrap: nowrap;
+
+      & > .ant-badge {
+        padding: 0px 5px;
+
+        .ant-badge-count {
+          min-width: 15px;
+          height: 15px;
+          padding: 0px 3px;
+          font-size: 12px;
+          line-height: 15px;
+          top: -6px;
+          right: 6px;
+        }
+      }
     }
 
     @include modifier('row') {
@@ -70,17 +75,6 @@
       flex-direction: row;
       flex-wrap: wrap;
     }
-  }
-
-  @include modifier('text') {
-    display: flex;
-    align-items: center;
-  }
-
-  @include modifier('author-name') {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   @include modifier('attachments') {
@@ -131,13 +125,7 @@
   @include modifier('action-divider') {
     margin-left: 5px;
     margin-right: 5px;
-    cursor: pointer;
-  }
-
-  @include modifier('emoji-picker') {
-    position: absolute;
-    bottom: 4rem;
-    z-index: $zindex-default;
+    cursor: default;
   }
 
   @include modifier('delete-content') {
@@ -151,11 +139,22 @@
     }
   }
 
-  @include modifier('box') {
+  @include modifier('text') {
+    display: flex;
+    align-items: center;
+  }
+
+  @include modifier('author-name') {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @include element('default') {
     display: flex;
 
     .ant-comment-inner {
-      padding: 8px;
+      padding: 0px 8px;
       margin-bottom: 8px;
       background: #ffffff;
       border: 1px solid #ececec;
@@ -176,17 +175,20 @@
           justify-content: center;
           width: 45px;
           height: 45px;
-          cursor: pointer;
+          cursor: default;
         }
       }
 
-      .ant-comment-actions {
+      .ant-comment-content .ant-comment-content-author {
         display: flex;
         align-items: center;
         flex-wrap: wrap;
       }
 
       .ant-comment-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
         margin-bottom: 0;
       }
     }
@@ -199,7 +201,7 @@
     }
   }
 
-  @include modifier('isme') {
+  @include element('isme') {
     display: flex;
     flex-direction: row-reverse;
 
@@ -215,8 +217,8 @@
     .ant-comment-content-detail,
     .ant-comment-actions,
     .messages__main-action,
-    .messages__main-action--text-action,
-    .messages__main-action--like-dislike-action,
+    .messages__main-action--text,
+    .messages__emoji--content,
     .messages__emoji {
       display: flex;
       flex-direction: row-reverse;

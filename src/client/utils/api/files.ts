@@ -10,5 +10,6 @@ export default {
         "Content-Type": "multipart/form-data"
       }
     });
-  }
+  },
+  destroy: (filePublicId: any) => axios.delete(`/files/${filePublicId}`)
 };

@@ -14,7 +14,7 @@ const createRoutes = (app: Express, io: Server) => {
   const UserController = new UserCtrl(io);
   const RoomController = new RoomCtrl(io);
   const MessageController = new MessageCtrl(io);
-  const UploadFileController = new UploadCtrl();
+  const UploadFileController = new UploadCtrl(io);
 
   app.use(cors());
   app.use(bodyParser.json());
@@ -51,7 +51,7 @@ const createRoutes = (app: Express, io: Server) => {
 
   // File API
   app.post("/files", checkAuth, multer.single("file"), UploadFileController.create);
-  app.delete("/files", checkAuth, UploadFileController.delete);
+  app.delete("/files/:id", checkAuth, UploadFileController.delete);
 
   // If prod send build React APP
   if (config.isProduction) {

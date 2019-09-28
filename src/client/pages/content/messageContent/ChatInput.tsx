@@ -102,7 +102,8 @@ const ChatInput: React.FC<any> = ({
               status: "done",
               uid: data.file._id,
               name: data.file.filename,
-              url: data.file.url
+              url: data.file.url,
+              public_id: data.file.public_id
             };
           }
           return item;
@@ -123,7 +124,7 @@ const ChatInput: React.FC<any> = ({
               <div className="chat-input__actions">
                 {emojiPickerVisible && (
                   <div className="chat-input__actions--emoji-picker">
-                    <Picker onSelect={addEmoji} set="apple" title="" />
+                    <Picker onSelect={addEmoji} title="" />
                   </div>
                 )}
                 <Button

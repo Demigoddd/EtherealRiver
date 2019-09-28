@@ -36,6 +36,7 @@ interface Attachment {
   filename: string;
   size: number;
   ext: string;
+  public_id: string;
   url: string;
   message: string;
   user: string;

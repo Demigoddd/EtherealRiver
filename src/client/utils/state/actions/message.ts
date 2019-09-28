@@ -23,6 +23,10 @@ const updateMessage = (message: any) => (dispatch: any) => {
   dispatch({ type: types.UPDATE_MESSAGE, payload: message });
 };
 
+const removeMessage = (id: any) => (dispatch: any) => {
+  dispatch({ type: types.REMOVE_MESSAGE, payload: id });
+};
+
 const fetchSendMessage = (message: any) => (dispatch: any) => {
   messagesApi.send(message);
 };
@@ -38,10 +42,7 @@ const fetchUpdateEmotion = (data: any) => (dispatch: any) => {
 const removeMessageById = (id: any, deleteForAll: boolean) => (dispatch: any) => {
   messagesApi.removeById(id, deleteForAll)
     .then(({ data }: any) => {
-      dispatch({
-        type: types.REMOVE_MESSAGE,
-        payload: id
-      });
+      removeMessage(id)(dispatch);
     })
 };
 
@@ -61,6 +62,7 @@ export default {
   setMessages,
   addMessage,
   updateMessage,
+  removeMessage,
   fetchSendMessage,
   fetchUpdateMessage,
   fetchUpdateEmotion,

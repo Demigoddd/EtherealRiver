@@ -172,17 +172,6 @@ class RoomController {
       // Update Rooms List for All Users
       this.io.emit('UpdateRoomsList', { status: 'success', message: 'Update Room List' });
 
-      // Leave all sockets from current room
-      // this.io.in(room._id).clients((error: any, clients: any) => {
-      //   if (error) throw error;
-      //   for (let i = 0; i < clients.length; i++) {
-      //     let clientId = clients[i];
-      //     // load the socket of your namespace
-      //     let socket = this.io.in(room._id).connected[clientId]
-      //     socket.leave(room._id);
-      //   }
-      // });
-
       res.json(room);
     });
   };

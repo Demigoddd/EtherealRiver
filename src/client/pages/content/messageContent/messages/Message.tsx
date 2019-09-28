@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classNames from "classnames";
-import { Comment, Tooltip, Avatar, Divider, Popconfirm, Typography, Checkbox, Button, Modal, Icon } from "antd";
+import { Comment, Tooltip, Avatar, Divider, Popconfirm, Typography, Checkbox, Button, Modal, Icon, Badge } from "antd";
 import { Picker, Emoji } from "emoji-mart";
 import { isEmpty } from "lodash-es";
 import moment from 'moment';
@@ -29,7 +29,8 @@ const Message: React.FC<any> = ({
         status: "done",
         uid: item._id,
         name: item.filename,
-        url: item.url
+        url: item.url,
+        public_id: item.public_id
       };
     });
 
@@ -65,52 +66,54 @@ const Message: React.FC<any> = ({
     <div className="messages__main-action">
       {
         isMe
-          ? <div className="messages__main-action--text-action">
-              <div>
-                <span onClick={editMessage}>Edit</span>
-              </div>
-              <div>
-                <Popconfirm
-                  title={
-                    <div className="messages--delete-content">
-                      <div>Are you sure delete this message?</div>
-                      <div><Checkbox value={deleteForAll} onChange={(event: any) => setDeleteForAll(event.target.checked)}>Delete for all users.</Checkbox></div>
-                    </div>
-                  }
-                  onConfirm={deleteMessage}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  Delete
-                </Popconfirm>
-              </div>
-              <Divider className="messages--action-divider" type="vertical" />
+          ? <div className="messages__main-action--text">
+            <div>
+              <span onClick={editMessage}>Edit</span>
             </div>
+            <div>
+              <Popconfirm
+                title={
+                  <div className="messages--delete-content">
+                    <div>Are you sure delete this message?</div>
+                    <div><Checkbox value={deleteForAll} onChange={(event: any) => setDeleteForAll(event.target.checked)}>Delete for all users.</Checkbox></div>
+                  </div>
+                }
+                onConfirm={deleteMessage}
+                okText="Yes"
+                cancelText="No"
+              >
+                Delete
+                </Popconfirm>
+            </div>
+            <Divider className="messages--action-divider" type="vertical" />
+          </div>
           : <></>
       }
-      <div className="messages__main-action--like-dislike-action">
-        <Tooltip title="Like">
-          <Button
-            className="messages__emoji--content"
+      <div className="messages__emoji--content">
+        <Badge
+          style={{ backgroundColor: message.emotions.likes.includes(currentUserId) ? "dodgerblue" : "lightsteelblue" }}
+          count={message.emotions.likes.length}
+          overflowCount={99999}
+        >
+          <Icon
             onClick={() => emotionHandler(null, "like")}
-            type={message.emotions.likes.includes(currentUserId) ? "primary" : "default"}
-            shape="round"
-          >
-            <Icon type="like" />
-            <span>{message.emotions.likes.length}</span>
-          </Button>
-        </Tooltip>
-        <Tooltip title="Dislike">
-          <Button
-            className="messages__emoji--content"
+            type="like"
+            theme={message.emotions.likes.includes(currentUserId) ? "twoTone" : "outlined"}
+            style={{ fontSize: 20 }}
+          />
+        </Badge>
+        <Badge
+          style={{ backgroundColor: message.emotions.dislikes.includes(currentUserId) ? "dodgerblue" : "lightsteelblue" }}
+          count={message.emotions.dislikes.length}
+          overflowCount={99999}
+        >
+          <Icon
             onClick={() => emotionHandler(null, "dislike")}
-            type={message.emotions.dislikes.includes(currentUserId) ? "primary" : "default"}
-            shape="round"
-          >
-            <Icon type="dislike" />
-            <span>{message.emotions.dislikes.length}</span>
-          </Button>
-        </Tooltip>
+            theme={message.emotions.dislikes.includes(currentUserId) ? "twoTone" : "outlined"}
+            type="dislike"
+            style={{ fontSize: 20 }}
+          />
+        </Badge>
         <Divider className="messages--action-divider" type="vertical" />
       </div>
     </div>,
@@ -126,7 +129,6 @@ const Message: React.FC<any> = ({
         >
           <Picker
             onSelect={(event: any) => emotionHandler(event)}
-            set="apple"
             perLine={7}
             showPreview={false}
             showSkinTones={false}
@@ -137,16 +139,15 @@ const Message: React.FC<any> = ({
       <div className="messages__emoji--row">
         {
           message.emotions.others.map((item: any, index: any) => (
-            <Button
-              key={index}
-              className="messages__emoji--content"
-              onClick={() => emotionHandler(null, item.emotion)}
-              type={item.users.includes(currentUserId) ? "primary" : "default"}
-              shape="round"
-            >
-              <Emoji key={item._id} emoji={item.emotion} set='apple' size={16} />
-              <span>{item.users.length}</span>
-            </Button>
+            <div key={index} className="messages__emoji--content">
+              <Badge
+                style={{ backgroundColor: item.users.includes(currentUserId) ? "dodgerblue" : "lightsteelblue" }}
+                count={item.users.length}
+                overflowCount={99999}
+              >
+                <Emoji key={item._id} onClick={() => emotionHandler(null, item.emotion)} emoji={item.emotion} size={18} />
+              </Badge>
+            </div>
           ))
         }
       </div>
@@ -155,8 +156,8 @@ const Message: React.FC<any> = ({
 
   return (
     <Comment
-      className={classNames("messages--box", {
-        "messages--isme": isMe
+      className={classNames("messages__default", {
+        "messages__isme": isMe
       })}
       actions={actions}
       author={<Typography.Text className="messages--author-name" type={isMe ? "warning" : "secondary"}>{message.user.fullname}</Typography.Text>}

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
-import { Button, Divider, Avatar, Descriptions, Spin } from 'antd';
+import { Button, Divider, Avatar, Descriptions } from 'antd';
+import Loading from '../components/Loading';
 import { UserAction } from '../utils/state/actions';
 import { isEmpty } from 'lodash-es';
 
@@ -26,7 +27,7 @@ const Profile: React.FC<any> = ({ match, history }: any) => {
         <div className="profile__container--content">
           {
             isEmpty(user)
-              ? <Spin size="large" />
+              ? <Loading />
               : <>
                 <Avatar shape="square" size={300} icon="user" src={user.avatar} />
                 <Descriptions bordered title="User Info" column={1}>

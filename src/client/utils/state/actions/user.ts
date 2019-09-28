@@ -20,13 +20,11 @@ const fetchUserDataById = (id: any) => {
       return data;
     })
     .catch((err: any) => {
-      if (err.response.status === 404) {
-        openNotification({
-          title: "Error.",
-          text: "User is not found.",
-          type: "error"
-        });
-      }
+      openNotification({
+        title: "Error.",
+        text: "User is not found.",
+        type: "error"
+      });
       throw Error(err);
     });
 };
@@ -39,7 +37,7 @@ const fetchUserData = () => (dispatch: any) => {
     .catch((err: any) => {
       setIsAuth(false);
       localStorage.removeItem("token");
-      history.replace('/');
+      history.go("/");
     });
 };
 
@@ -137,7 +135,7 @@ const fetchUserRegister = (postData: any) => (dispatch: any) => {
 const fetchUserLogout = () => {
   setIsAuth(false);
   localStorage.removeItem("token");
-  history.replace('/');
+  history.go("/");
 };
 
 export default {

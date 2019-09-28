@@ -1,10 +1,13 @@
 import React, { useRef, useEffect, useState } from "react";
+import classNames from "classnames";
 import { connect } from "react-redux";
-import { Empty, Spin, Modal } from "antd";
+import { Empty, Modal } from "antd";
+import { isEmpty } from "lodash-es";
 import ScrollArea from 'react-scrollbar';
 import Message from './messages/Message';
 import { MessageAction } from '../../../utils/state/actions';
 import rootSocket from '../../../utils/socket';
+import Loading from "../../../components/Loading";
 
 const Messages: React.FC<any> = ({
   user,
@@ -14,6 +17,7 @@ const Messages: React.FC<any> = ({
   fetchMessages,
   addMessage,
   updateMessage,
+  removeMessage,
   removeMessageById,
   setMessageEditMode,
   fetchUpdateEmotion
@@ -33,6 +37,10 @@ const Messages: React.FC<any> = ({
     updateMessage(data);
   };
 
+  const onRemoveMessage = (data: any) => {
+    removeMessage(data._id);
+  }
+
   useEffect((): any => {
     if (currentRoomId) {
       fetchMessages(currentRoomId);
@@ -43,17 +51,21 @@ const Messages: React.FC<any> = ({
   useEffect((): any => {
     rootSocket.on("NewMessage", onNewMessage);
     rootSocket.on("UpdateMessage", onUpdateMessage);
+    rootSocket.on("RemoveMessage", onRemoveMessage);
 
     return () => {
       rootSocket.off("NewMessage", onNewMessage);
       rootSocket.off("UpdateMessage", onUpdateMessage);
+      rootSocket.off("RemoveMessage", onRemoveMessage);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <ScrollArea
-      className="messages"
+      className={classNames("messages", {
+        "messages--content-center": (messageLoading || isEmpty(items))
+      })}
       ref={ScrollAreaRef}
       speed={0.8}
       horizontal={false}
@@ -62,23 +74,23 @@ const Messages: React.FC<any> = ({
       {
         messageLoading ? (
           <div className="messages--loading">
-            <Spin size="large" tip="Loading Messages..." />
+            <Loading tip="Loading Messages..." />
           </div>
-        ) : items.length > 0 && !messageLoading ? (
-          items.map((item: any) => (
-            <Message
-              key={item._id}
-              message={item}
-              isMe={(user && user._id) === item.user._id}
-              currentUserId={user._id}
-              onRemoveMessage={removeMessageById}
-              setMessageEditMode={setMessageEditMode}
-              fetchUpdateEmotion={fetchUpdateEmotion}
-              setPreviewImage={setPreviewImage}
-            />
-          ))
+        ) : isEmpty(items) ? (
+          <Empty description="Messages is Empty" />
         ) : (
-              <Empty description="Messages is Empty" />
+              items.map((item: any) => (
+                <Message
+                  key={item._id}
+                  message={item}
+                  isMe={(user && user._id) === item.user._id}
+                  currentUserId={user._id}
+                  onRemoveMessage={removeMessageById}
+                  setMessageEditMode={setMessageEditMode}
+                  fetchUpdateEmotion={fetchUpdateEmotion}
+                  setPreviewImage={setPreviewImage}
+                />
+              ))
             )
       }
       <Modal

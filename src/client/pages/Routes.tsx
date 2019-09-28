@@ -23,4 +23,8 @@ const Routes: React.FC<any> = ({ isAuth }) => {
   );
 };
 
-export default connect(({ user }: any) => ({ isAuth: (user.isAuth || false) }))(Routes);
+export default connect(({
+  user
+}: any) => ({
+  isAuth: (user.isAuth || false)
+}))(Routes);
