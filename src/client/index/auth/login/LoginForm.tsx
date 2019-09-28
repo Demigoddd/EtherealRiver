@@ -51,6 +51,7 @@ const LoginForm = (props: any) => {
             {isSubmitting && !isValid && <span>Error!</span>}
             <Button
               disabled={isSubmitting}
+              loading={isSubmitting}
               onClick={handleSubmit}
               type="primary"
               size="large"
