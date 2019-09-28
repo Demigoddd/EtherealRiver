@@ -29,7 +29,8 @@ const Message: React.FC<any> = ({
         status: "done",
         uid: item._id,
         name: item.filename,
-        url: item.url
+        url: item.url,
+        public_id: item.public_id
       };
     });
 
@@ -90,7 +91,7 @@ const Message: React.FC<any> = ({
       }
       <div className="messages__emoji--content">
         <Badge
-          style={{ backgroundColor: message.emotions.likes.includes(currentUserId) ? "dodgerblue" : "#fff" }}
+          style={{ backgroundColor: message.emotions.likes.includes(currentUserId) ? "dodgerblue" : "lightsteelblue" }}
           count={message.emotions.likes.length}
           overflowCount={99999}
         >
@@ -102,7 +103,7 @@ const Message: React.FC<any> = ({
           />
         </Badge>
         <Badge
-          style={{ backgroundColor: message.emotions.dislikes.includes(currentUserId) ? "dodgerblue" : "#fff" }}
+          style={{ backgroundColor: message.emotions.dislikes.includes(currentUserId) ? "dodgerblue" : "lightsteelblue" }}
           count={message.emotions.dislikes.length}
           overflowCount={99999}
         >
@@ -140,7 +141,7 @@ const Message: React.FC<any> = ({
           message.emotions.others.map((item: any, index: any) => (
             <div key={index} className="messages__emoji--content">
               <Badge
-                style={{ backgroundColor: item.users.includes(currentUserId) ? "dodgerblue" : "#fff" }}
+                style={{ backgroundColor: item.users.includes(currentUserId) ? "dodgerblue" : "lightsteelblue" }}
                 count={item.users.length}
                 overflowCount={99999}
               >

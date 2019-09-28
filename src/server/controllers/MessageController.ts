@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Server } from "socket.io";
 
-import { MessageModel, RoomModel } from "../models";
+import { MessageModel, UploadFileModel } from "../models";
 
 class MessageController {
   io: Server;
@@ -185,8 +185,13 @@ class MessageController {
         });
       } else {
         if (deleteForAll == "true") {
+          // Remove all Attachments from Room
+          UploadFileModel.find({ message: message._id }).remove().exec();
+
           message.remove()
             .then((obj: any) => {
+              this.io.in(message.room._id).emit("RemoveMessage", message);
+
               res.json({
                 message: 'Message deleted'
               });

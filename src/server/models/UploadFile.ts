@@ -4,6 +4,7 @@ export interface IUploadFile extends Document {
   filename: string;
   size: number;
   ext: string;
+  public_id: string;
   url: string;
   message: string;
   user: string;
@@ -14,6 +15,7 @@ const UploadFileSchema = new Schema(
     filename: String,
     size: Number,
     ext: String,
+    public_id: String,
     url: String,
     message: { type: Schema.Types.ObjectId, ref: "Message", require: true },
     user: { type: Schema.Types.ObjectId, ref: "User", require: true }

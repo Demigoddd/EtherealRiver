@@ -102,7 +102,8 @@ const ChatInput: React.FC<any> = ({
               status: "done",
               uid: data.file._id,
               name: data.file.filename,
-              url: data.file.url
+              url: data.file.url,
+              public_id: data.file.public_id
             };
           }
           return item;

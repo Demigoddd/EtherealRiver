@@ -59,7 +59,7 @@ const UploadFiles: React.FC<any> = ({ removeAttachment, attachments }) => {
           const statusObj: any = state.statusList.find((n: any) => n.uid === file.uid);
           Object.assign(file, { status: statusObj.status });
 
-          removeAttachment(file)
+          removeAttachment(file);
         }}
       />
       <Modal

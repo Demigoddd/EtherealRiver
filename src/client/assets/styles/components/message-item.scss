@@ -2,16 +2,18 @@
   height: 100%;
   padding: 0rem 1rem;
 
-  .scrollarea-content {
-    height: 100%;
-  }
-
   .messages--loading, .scrollarea-content > .ant-empty {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 100%;
+  }
+
+  @include modifier('content-center') {
+    .scrollarea-content {
+      height: 100%;
+    }
   }
 
   @include element('main-action') {

@@ -1,4 +1,6 @@
 import * as types from '../constants/actionTypes';
+import { filesApi } from '../../../utils/api';
+import { openNotification } from '../../helpers/openNotification';
 
 const setAttachments = (items: any) => (dispatch: any) => {
   dispatch({ type: types.SET_ATTACHMENTS, payload: items });
@@ -8,6 +10,21 @@ const removeAttachment = (file: any) => (dispatch: any) => {
   dispatch({ type: types.REMOVE_ATTACHMENTS, payload: file });
 }
 
+// not used
+const destroyAttachment = (file: any) => (dispatch: any) => {
+  filesApi.destroy(file.public_id)
+    .then(() => {
+      removeAttachment(file)(dispatch);
+    })
+    .catch(() => {
+      openNotification({
+        title: "Error.",
+        text: "Error when removing file.",
+        type: "error"
+      });
+    });
+}
+
 const setAttachmentLoading = (isLoading: boolean) => (dispatch: any) => {
   dispatch({ type: types.LOADING_ATTACHMENTS, payload: isLoading });
 }
@@ -15,5 +32,6 @@ const setAttachmentLoading = (isLoading: boolean) => (dispatch: any) => {
 export default {
   setAttachments,
   removeAttachment,
+  destroyAttachment,
   setAttachmentLoading
 };

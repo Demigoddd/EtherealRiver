@@ -39,7 +39,7 @@ const fetchUserData = () => (dispatch: any) => {
     .catch((err: any) => {
       setIsAuth(false);
       localStorage.removeItem("token");
-      history.replace('/');
+      history.go("/");
     });
 };
 
@@ -137,7 +137,7 @@ const fetchUserRegister = (postData: any) => (dispatch: any) => {
 const fetchUserLogout = () => {
   setIsAuth(false);
   localStorage.removeItem("token");
-  history.replace('/');
+  history.go("/");
 };
 
 export default {
