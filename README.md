@@ -24,6 +24,19 @@ cd Ethereal-River
 npm install
 ```
 
+### App Start
+
+This app have two part, Frontend and Backend. For run this app need to use above instruction.
+
+#### Frontend
+```
+npm run start:react
+```
+#### Backend
+```
+npm run start:server
+```
+
 ## Authors
 
 * **GOD** - *Initial work* - [Deathlive](https://github.com/Deathlive)
