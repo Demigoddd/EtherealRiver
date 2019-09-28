@@ -11,11 +11,5 @@ export default {
       }
     });
   },
-  destroy: (filePublicId: any) => {
-    return axios.delete(`/files/${filePublicId}`, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    });
-  }
+  destroy: (filePublicId: any) => axios.delete(`/files/${filePublicId}`)
 };

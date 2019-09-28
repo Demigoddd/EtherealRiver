@@ -20,13 +20,11 @@ const fetchUserDataById = (id: any) => {
       return data;
     })
     .catch((err: any) => {
-      if (err.response.status === 404) {
-        openNotification({
-          title: "Error.",
-          text: "User is not found.",
-          type: "error"
-        });
-      }
+      openNotification({
+        title: "Error.",
+        text: "User is not found.",
+        type: "error"
+      });
       throw Error(err);
     });
 };
