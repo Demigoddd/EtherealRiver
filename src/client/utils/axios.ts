@@ -1,4 +1,5 @@
 import Axios, { AxiosError } from 'axios';
+import { get } from 'lodash-es';
 
 import { UserAction } from './state/actions';
 
@@ -7,7 +8,7 @@ enum HTTP_STATUS_CODES {
 }
 
 const axios = Axios.create({
-  baseURL: (window as any).appConfig.URL
+  baseURL: get(window, "appConfig.URL")
 });
 
 // Request Interceptors
@@ -18,7 +19,7 @@ axios.interceptors.request.use(
       config.headers["token"] = token;
 
       return config;
-    } catch(e) {
+    } catch (e) {
       console.error(e);
       return config;
     }
@@ -29,7 +30,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   response => response,
   (err: AxiosError) => {
-    if (err.response && ( err.response.status === HTTP_STATUS_CODES.UNAUTHORIZED )) {
+    if (err.response && (err.response.status === HTTP_STATUS_CODES.UNAUTHORIZED)) {
       UserAction.fetchUserLogout();
     }
     return Promise.reject(err);

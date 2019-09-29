@@ -27,6 +27,7 @@ const Sidebar: React.FC<any> = ({ user }) => {
       title="Add New Room"
       visible={visible}
       onCancel={() => setVisible(!visible)}
+      destroyOnClose={true}
       maskClosable={false}
       footer=""
     >

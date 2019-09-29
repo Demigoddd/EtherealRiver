@@ -15,8 +15,7 @@ const JoinRoom: React.FC<any> = ({ fetchAddUserToRoom, currentRoomType, currentR
       <p>{currentRoomName}</p>
       {
         (currentRoomType === 'private')
-          ? <Input placeholder="Write Room Password" onChange={passwordHandler} />
-          : null
+        && <div><Input.Password placeholder="Write Room Password" onChange={passwordHandler} /></div>
       }
       <Button type="primary" onClick={() => fetchAddUserToRoom({ currentRoomId: currentRoomId, userId: userId, password: password })}>Join Room</Button>
     </div>

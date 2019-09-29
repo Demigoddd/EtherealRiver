@@ -214,12 +214,13 @@
 
     .ant-comment-inner,
     .ant-comment-content-author,
-    .ant-comment-content-detail,
     .ant-comment-actions,
+    .messages--text,
     .messages__main-action,
     .messages__main-action--text,
+    .messages__emoji,
     .messages__emoji--content,
-    .messages__emoji {
+    .messages__emoji--row {
       display: flex;
       flex-direction: row-reverse;
     }

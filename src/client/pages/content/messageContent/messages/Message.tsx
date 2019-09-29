@@ -164,15 +164,15 @@ const Message: React.FC<any> = ({
       avatar={<Avatar icon="user" src={message.user.avatar} />}
       content={
         <div className="messages--text">
+          <p>{message.text}</p>
           {!isEmpty(message.attachments) && (
             <>
+              <Divider type="vertical" />
               <div className="messages--attachments">
                 {message.attachments.map((item: any) => renderAttachment(item))}
               </div>
-              <Divider type="vertical" />
             </>
           )}
-          <p>{message.text}</p>
         </div>
       }
       datetime={<Tooltip title={moment(message.createdAt).format('YYYY-MM-DD HH:mm:ss')}><div><Time date={message.createdAt} /></div></Tooltip>}

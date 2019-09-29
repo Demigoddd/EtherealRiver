@@ -8,9 +8,9 @@ const initConfig = (): any => {
       secretJWT: process.env.JWT_SECRET,
       maxAgeJWT: Number(process.env.JWT_MAX_AGE),
       email: {
-        service: process.env.service,
-        emailUsername: process.env.emailUsername,
-        emailPassword: process.env.emailPassword
+        service: process.env.EMAIL_SERVICE,
+        emailUsername: process.env.EMAIL_USERNAME,
+        emailPassword: process.env.EMAIL_PASSWORD
       },
       cloudinary: {
         name: process.env.CLOUDINARY_NAME,
@@ -21,7 +21,7 @@ const initConfig = (): any => {
   } else {
     return {
       isProduction,
-      db: process.env.MONGODB_URL || 'mongodb://localhost:27017/EtherealRiver',
+      db: 'mongodb://localhost:27017/EtherealRiver',
       secretJWT: 'UpFJfpWKYteH5rMHSxst',
       maxAgeJWT: 21600,
       email: {

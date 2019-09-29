@@ -226,19 +226,19 @@ class UserController {
 
       user.confirmed = true;
 
-      user.save(err => {
-        if (err) {
-          return res.status(404).json({
+      user.save()
+        .then((user: any) => {
+          res.json({
+            status: "success",
+            message: "Account Confirmed!"
+          });
+        })
+        .catch((error: any) => {
+          res.status(404).json({
             status: "error",
             message: err
           });
-        }
-
-        res.json({
-          status: "success",
-          message: "Account Confirmed!"
         });
-      });
     });
   };
 

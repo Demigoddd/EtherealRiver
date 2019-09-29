@@ -10,11 +10,11 @@ export default (emailBody: any) =>
         pass: config.email.emailPassword
       }
     })
-    .sendMail(emailBody, (error: any, info: any) => {
-      if (error) {
-        return reject(error);
-      }
+      .sendMail(emailBody, (error: any, info: any) => {
+        if (error) {
+          return reject(error);
+        }
 
-      resolve(info);
-    });
+        return resolve(info);
+      });
   });

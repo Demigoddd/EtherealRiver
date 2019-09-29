@@ -1,4 +1,5 @@
 import { withFormik } from "formik";
+import { get } from "lodash-es";
 import store from "../../utils/state/store";
 
 import RegisterForm from "./register/RegisterForm";
@@ -20,14 +21,19 @@ const Register = withFormik({
     return errors;
   },
   handleSubmit: (values: any, { setSubmitting, props }: any) => {
+    const isDevelopment = get(window, "appConfig.DEVELOPMENT");
+    const baseUrl = get(window, "appConfig.URL");
+    const clientBaseUrl = isDevelopment ? baseUrl.replace(':3003', ':3000') : baseUrl;
+
     store.dispatch(UserAction.fetchUserRegister(values))
       .then(() => {
-        userApi.sendVerifyEmail({ email: values.email, clientBaseUrl: (window as any).appConfig.URL }).then(() => {
-          setTimeout(() => {
-            props.history.push("/register/verify");
-          }, 50);
-          setSubmitting(false);
-        })
+        userApi.sendVerifyEmail({ email: values.email, clientBaseUrl: clientBaseUrl })
+          .then(() => {
+            setTimeout(() => {
+              props.history.push("/register/verify");
+            }, 50);
+            setSubmitting(false);
+          })
           .catch(() => {
             setSubmitting(false);
           });
