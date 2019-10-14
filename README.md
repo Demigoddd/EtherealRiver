@@ -39,6 +39,6 @@ npm run start:server
 
 ## Authors
 
-* **GOD** - *Initial work* - [Deathlive](https://github.com/Deathlive)
+* [Deathlive](https://github.com/Deathlive) - *Initial worker*
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
