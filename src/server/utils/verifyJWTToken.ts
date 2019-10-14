@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { config } from './';
+import { config } from '../utils';
 
 export default (token: string) =>
   new Promise((resolve, reject) => {

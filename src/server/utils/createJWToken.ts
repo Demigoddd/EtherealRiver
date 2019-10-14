@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { reduce } from 'lodash';
-import { config } from './';
+import { config } from '../utils';
 
 export default (user: any) => {
   let token = jwt.sign(

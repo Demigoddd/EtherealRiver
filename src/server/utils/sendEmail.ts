@@ -1,6 +1,6 @@
 import nodeMailer from "nodemailer";
 import smtpTransport from "nodemailer-smtp-transport";
-import { config } from "./";
+import { config } from "../utils";
 
 export default (emailBody: any) =>
   new Promise((resolve, reject) => {

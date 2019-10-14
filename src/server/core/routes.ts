@@ -5,8 +5,7 @@ import express, { Express } from "express";
 import { Server } from "socket.io";
 
 import multer from "./multer";
-import { config } from "../utils";
-import { checkAuth } from "../utils";
+import { checkAuth, config } from "../utils";
 import { loginValidation, registerValidation } from "../utils/validations";
 import { UserCtrl, RoomCtrl, MessageCtrl, UploadCtrl } from "../controllers";
 
