@@ -6,6 +6,8 @@ import store from "../utils/state/store";
 import { UserAction } from "../utils/state/actions";
 
 const SocialIcons: React.FC<any> = (props: any) => {
+  const googleAuthApi = process.env.REACT_APP_GOOGLE_AUTH_API;
+  const facebookAuthApi = process.env.REACT_APP_FACEBOOK_AUTH_API;
 
   const handleGoogleLogin = (user: any) => {
     const postData = {
@@ -52,7 +54,7 @@ const SocialIcons: React.FC<any> = (props: any) => {
             className="social-icons--google"
             type="google"
             provider="google"
-            appId="91060208258-vu7ji6pjn39ge5c6c3lpup2d8o7og2un.apps.googleusercontent.com"
+            appId={googleAuthApi}
             onLoginSuccess={handleGoogleLogin}
             onLoginFailure={handleGoogleLoginFailure}
           >
@@ -64,7 +66,7 @@ const SocialIcons: React.FC<any> = (props: any) => {
             className="social-icons--facebook"
             type="facebook"
             provider="facebook"
-            appId="2354301384840712"
+            appId={facebookAuthApi}
             onLoginSuccess={handleFacebookLogin}
             onLoginFailure={handleFacebookLoginFailure}
           >

@@ -31,7 +31,7 @@ const Sidebar: React.FC<any> = ({ user }) => {
       maskClosable={false}
       footer=""
     >
-      <AddRoomController />
+      <AddRoomController hideModal={() => setVisible(false)} />
     </Modal>
   );
 

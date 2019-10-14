@@ -1,5 +1,8 @@
 import express from "express";
+import dotenv from 'dotenv';
 import { createServer } from "http";
+
+dotenv.config();
 
 import "./server/core/db";
 import createRoutes from "./server/core/routes";

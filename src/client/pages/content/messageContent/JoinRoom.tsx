@@ -3,7 +3,14 @@ import { connect } from "react-redux";
 import { Button, Input } from 'antd';
 import { RoomAction } from '../../../utils/state/actions';
 
-const JoinRoom: React.FC<any> = ({ fetchAddUserToRoom, currentRoomType, currentRoomName, currentRoomId, userId }) => {
+const JoinRoom: React.FC<any> = ({
+  fetchAddUserToRoom,
+  roomLoading,
+  currentRoomType,
+  currentRoomName,
+  currentRoomId,
+  userId
+}) => {
   const [password, setPassword] = useState("");
 
   const passwordHandler = (event: any) => {
@@ -17,7 +24,7 @@ const JoinRoom: React.FC<any> = ({ fetchAddUserToRoom, currentRoomType, currentR
         (currentRoomType === 'private')
         && <div><Input.Password placeholder="Write Room Password" onChange={passwordHandler} /></div>
       }
-      <Button type="primary" onClick={() => fetchAddUserToRoom({ currentRoomId: currentRoomId, userId: userId, password: password })}>Join Room</Button>
+      <Button type="primary" disabled={roomLoading} onClick={() => fetchAddUserToRoom({ currentRoomId: currentRoomId, userId: userId, password: password })}>Join Room</Button>
     </div>
   );
 };
@@ -26,7 +33,8 @@ const mapStateToProps = (state: any) => ({
   userId: state.user.data._id,
   currentRoomId: state.rooms.currentRoom._id,
   currentRoomName: state.rooms.currentRoom.name,
-  currentRoomType: state.rooms.currentRoom.type
+  currentRoomType: state.rooms.currentRoom.type,
+  roomLoading: state.rooms.roomLoading
 });
 
 export default connect(mapStateToProps, RoomAction)(JoinRoom);

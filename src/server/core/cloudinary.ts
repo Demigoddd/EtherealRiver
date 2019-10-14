@@ -1,5 +1,5 @@
 const cloudinary = require("cloudinary");
-import config from "../utils/config";
+import { config } from "../utils";
 
 cloudinary.config({
   cloud_name: config.cloudinary.name,

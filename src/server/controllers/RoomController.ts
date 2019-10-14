@@ -189,6 +189,7 @@ class RoomController {
       }
 
       const isUserExist = this.userExistInRoom(room.users, userId);
+      debugger
 
       if (isUserExist) {
         res.json({
