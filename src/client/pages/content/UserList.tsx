@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Card } from 'antd';
 import { RoomAction } from '../../utils/state/actions';
 import UserItem from './userList/UserItem';
+import Loading from "../../components/Loading";
 import ScrollArea from 'react-scrollbar';
 
 const UserList: React.FC<any> = ({
@@ -26,25 +27,28 @@ const UserList: React.FC<any> = ({
         isEmpty(currentRoomId)
           ? <></>
           : <Card title={isEmpty(roomUsers) ? <></> : cardHeader} className="users">
-            <ScrollArea
-              speed={0.8}
-              horizontal={false}
-            >
-              {
-                roomUsers.map((user: any) =>
-                  <UserItem
-                    key={user._id}
-                    user={user}
-                    currentUserId={userId}
-                    currentRoomId={currentRoomId}
-                    isAdmin={user._id === userId}
-                    isUserRoomAdmin={isUserRoomAdmin}
-                    roomLoading={roomLoading}
-                    fetchRemoveUserFromRoom={fetchRemoveUserFromRoom}
-                  />
-                )
-              }
-            </ScrollArea>
+            {
+              roomLoading
+                ? <Loading className="users--loading" tip="Loading Users..." />
+                : <ScrollArea
+                  speed={0.8}
+                  horizontal={false}
+                >
+                  {
+                    roomUsers.map((user: any) =>
+                      <UserItem
+                        key={user._id}
+                        user={user}
+                        currentUserId={userId}
+                        currentRoomId={currentRoomId}
+                        isAdmin={user._id === userId}
+                        isUserRoomAdmin={isUserRoomAdmin}
+                        fetchRemoveUserFromRoom={fetchRemoveUserFromRoom}
+                      />
+                    )
+                  }
+                </ScrollArea>
+            }
           </Card>
       }
     </>
