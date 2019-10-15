@@ -25,7 +25,6 @@ const fetchUserDataById = (id: any) => {
         text: "User is not found.",
         type: "error"
       });
-      throw Error(err);
     });
 };
 

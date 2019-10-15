@@ -35,7 +35,7 @@ const RoomsList: React.FC<any> = ({
             <Menu
               className="rooms--menu"
               mode="inline"
-              onClick={(event) => fetchFindRoomById(event.key, userId)}
+              onClick={(event) => fetchFindRoomById(event.key, userId, currentRoomId)}
               onOpenChange={() => onSubMenuChange()}
               subMenuOpenDelay={delay}
               subMenuCloseDelay={delay}

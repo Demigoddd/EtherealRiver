@@ -18,7 +18,7 @@ export default (http: http.Server) => {
       UserController.updateSocketId(userId, socket.id);
     });
 
-    socket.on('LeaveRoom', (roomId: any, socketId: any, adminId: any) => {
+    socket.on('LeaveRoom', (roomId: any, socketId: any, adminId: any, updateRooms: boolean) => {
       if (adminId) {
         // Find specific User.
         const leaveSocket = io.of("/").connected[socketId];
@@ -37,11 +37,14 @@ export default (http: http.Server) => {
         // Leave user to room
         socket.leave(roomId);
 
-        // Update Rooms List for All Users
-        socket.emit('UpdateRoomsList', { status: 'success', message: 'Update Room List' });
+        // Update Rooms List and Current Room if needed.
+        if (updateRooms) {
+          // Update Rooms List for All Users
+          socket.emit('UpdateRoomsList', { status: 'success', message: 'Update Room List' });
 
-        // Updated current room for user
-        socket.emit('UpdateCurrentRoom', { status: 'success', room: {} });
+          // Updated current room for user
+          socket.emit('UpdateCurrentRoom', { status: 'success', room: {} });
+        }
       }
     });
 

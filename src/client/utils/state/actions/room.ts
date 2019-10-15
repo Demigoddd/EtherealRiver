@@ -65,10 +65,11 @@ const fetchDeleteRoom = (roomId: any) => (dispatch: any) => {
     });
 };
 
-const fetchFindRoomById = (roomId: any, userId: any) => (dispatch: any) => {
+const fetchFindRoomById = (roomId: any, userId: any, currentRoomId: any) => (dispatch: any) => {
   setRoomLoading(true)(dispatch);
   roomApi.index(roomId)
     .then((response: any) => {
+      rootSocket.emit("LeaveRoom", currentRoomId);
       setCurrentRoom(response.data.room)(dispatch);
 
       if (response.data.userExistInRoom) {
@@ -141,7 +142,7 @@ const fetchRemoveUserFromRoom = (data: any) => (dispatch: any) => {
   setRoomLoading(true)(dispatch);
   roomApi.removeUser(data)
     .then((response: any) => {
-      rootSocket.emit("LeaveRoom", response.data.roomId, response.data.socketId, data.adminId);
+      rootSocket.emit("LeaveRoom", response.data.roomId, response.data.socketId, data.adminId, true);
     })
     .catch((error: any) => {
       setRoomLoading(false)(dispatch);

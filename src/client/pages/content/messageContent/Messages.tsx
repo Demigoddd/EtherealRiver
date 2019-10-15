@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import classNames from "classnames";
 import { connect } from "react-redux";
 import { Empty, Modal } from "antd";
-import { isEmpty } from "lodash-es";
+import { get, isEmpty } from "lodash-es";
 import ScrollArea from 'react-scrollbar';
 import Message from './messages/Message';
 import { MessageAction } from '../../../utils/state/actions';
@@ -28,7 +28,7 @@ const Messages: React.FC<any> = ({
   const onNewMessage = (data: any) => {
     addMessage(data);
 
-    if (ScrollAreaRef.current) {
+    if (ScrollAreaRef.current && isMe(data.user._id)) {
       ScrollAreaRef.current.scrollArea.scrollYTo(9999999);
     }
   };
@@ -40,6 +40,10 @@ const Messages: React.FC<any> = ({
   const onRemoveMessage = (data: any) => {
     removeMessage(data._id);
   }
+
+  const isMe = (messageUserId: any) => {
+    return get(user, '_id') === messageUserId;
+  };
 
   useEffect((): any => {
     if (currentRoomId) {
@@ -83,7 +87,7 @@ const Messages: React.FC<any> = ({
                 <Message
                   key={item._id}
                   message={item}
-                  isMe={(user && user._id) === item.user._id}
+                  isMe={isMe(item.user._id)}
                   currentUserId={user._id}
                   onRemoveMessage={removeMessageById}
                   setMessageEditMode={setMessageEditMode}
