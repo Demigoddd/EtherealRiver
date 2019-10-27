@@ -21,4 +21,4 @@ The project is documented [here](https://github.com/Deathlive/EtherealRiver/wiki
 
 * [Deathlive](https://github.com/Deathlive) - *Initial worker*
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/Deathlive/EtherealRiver/graphs/contributors) who participated in this project.
