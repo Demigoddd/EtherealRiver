@@ -11,7 +11,7 @@
 * Free registration, with the ability to login via Google and Facebook.
 * Two types of rooms Public and Private.
 * A very fast as React…
-* An easy to use web user interface.
+* An easy to use web UI.
 
 ## Documentation and Examples
 
