@@ -5,21 +5,17 @@
   <img src="https://funkyimg.com/i/2Y9Yg.png" alt="Ethereal River screenshot">
 </p>
 
-## Getting Started
+## Main Features
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+* Open chat for the whole world.
+* Free registration, with the ability to login via Google and Facebook.
+* Two types of rooms Public and Private.
+* A very fast as React…
+* An easy to use web user interface.
 
-### Prerequisites
+## Documentation and Examples
 
-* A Unix-like operating system: macOS, Linux, BSD. On Windows: WSL is preferred.
-* `git, NodeJS, npm` should be installed.
-
-### Installing
-
-* Clone this repo.
-* `npm install` to install all req'd dependencies.
-* `npm start:react` to start the FE  (this project uses create-react-app).
-* `npm start:server` to start the local server.
+The project is documented [here](https://github.com/Deathlive/EtherealRiver/wiki/1.-Introduction).
 
 ## Authors
 
