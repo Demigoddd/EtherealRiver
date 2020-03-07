@@ -1,6 +1,6 @@
 import { withFormik } from "formik";
 import { get } from "lodash-es";
-import store from "../../utils/state/store";
+import { store } from "../../utils/state/store";
 
 import RegisterForm from "./register/RegisterForm";
 import { Validate } from "../../utils/helpers/validate";

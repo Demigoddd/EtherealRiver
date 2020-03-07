@@ -22,6 +22,10 @@ const RoomsList: React.FC<any> = ({
     }, (delay + 100));
   };
 
+  const customRoomName = (name: string): string => {
+    return name.length < 23 ? name : `${name.slice(0, 22)}...`;
+  }
+
   return (
     <>
       {
@@ -33,7 +37,6 @@ const RoomsList: React.FC<any> = ({
             horizontal={false}
           >
             <Menu
-              className="rooms--menu"
               mode="inline"
               onClick={(event) => fetchFindRoomById(event.key, userId, currentRoomId)}
               onOpenChange={() => onSubMenuChange()}
@@ -52,7 +55,7 @@ const RoomsList: React.FC<any> = ({
               >
                 {
                   rooms.my.length
-                    ? rooms.my.map((room: any) => <Menu.Item key={room._id}>{room.name}</Menu.Item>)
+                    ? rooms.my.map((room: any) => <Menu.Item key={room._id}>{customRoomName(room.name)}</Menu.Item>)
                     : <> <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> </>
                 }
               </Menu.SubMenu>
@@ -66,7 +69,7 @@ const RoomsList: React.FC<any> = ({
               >
                 {
                   rooms.public.length
-                    ? rooms.public.map((room: any) => <Menu.Item key={room._id}>{room.name}</Menu.Item>)
+                    ? rooms.public.map((room: any) => <Menu.Item key={room._id}>{customRoomName(room.name)}</Menu.Item>)
                     : <> <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> </>
                 }
               </Menu.SubMenu>
@@ -80,7 +83,7 @@ const RoomsList: React.FC<any> = ({
               >
                 {
                   rooms.private.length
-                    ? rooms.private.map((room: any) => <Menu.Item key={room._id}>{room.name}</Menu.Item>)
+                    ? rooms.private.map((room: any) => <Menu.Item key={room._id}>{customRoomName(room.name)}</Menu.Item>)
                     : <> <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> </>
                 }
               </Menu.SubMenu>

@@ -32,7 +32,7 @@ const MessageHeader: React.FC<any> = ({
           isUserRoomAdmin
             ? <Typography.Paragraph
               className="message-content__header--title"
-              editable={{ onChange: (newTitle) => setRoomName(newTitle) }}
+              editable={{ onChange: (newTitle) => setRoomName(newTitle.slice(0, 60)) }}
             >
               {currentRoomName}
             </Typography.Paragraph>

@@ -27,7 +27,7 @@ const ChatInput: React.FC<any> = ({
 }) => {
   const [value, setValue] = useState("");
   const [emojiPickerVisible, setShowEmojiPicker] = useState(false);
-  const closeSend = (!(value || attachments.length) || attachmentLoading);
+  const closeSend = (!(value.trim() || attachments.length) || attachmentLoading);
 
   useEffect((): any => {
     if (currentRoom._id) {
@@ -145,24 +145,22 @@ const ChatInput: React.FC<any> = ({
                 >
                   <Button type="link" shape="circle" icon="camera" />
                 </UploadField>
+                {
+                  isEditMode
+                    ? <Tooltip title="Close edit mode.">
+                      <Button onClick={disableEditMode} type="link" shape="circle" icon="close" />
+                    </Tooltip>
+                    : <div>{value.length}<span>/</span>1000</div>
+                }
               </div>
               <div className="chat-input__input-box">
-                <Input
+                <Input.TextArea
                   onChange={e => setValue(e.target.value)}
-                  onKeyUp={handleSendMessage}
                   placeholder="Write the new Message…"
                   value={value}
-                  suffix={
-                    <>
-                      {
-                        isEditMode
-                          ? <Tooltip title="Close edit mode.">
-                            <Icon onClick={disableEditMode} type="close" style={{ color: 'rgba(0,0,0,.45)' }} />
-                          </Tooltip>
-                          : <></>
-                      }
-                    </>
-                  }
+                  maxLength={1000}
+                  rows={3}
+                  autosize={{ minRows: 3, maxRows: 3 }}
                 />
                 <Button disabled={closeSend} onClick={handleSendMessage} type="primary">
                   Send<Icon type="right" />

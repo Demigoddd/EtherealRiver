@@ -2,7 +2,7 @@ import React from "react";
 import { Divider } from "antd";
 import SocialLogin from "./SocialLogin";
 
-import store from "../utils/state/store";
+import { store } from "../utils/state/store";
 import { UserAction } from "../utils/state/actions";
 
 const SocialIcons: React.FC<any> = (props: any) => {

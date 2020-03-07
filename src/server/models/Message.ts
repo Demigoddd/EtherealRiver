@@ -22,7 +22,7 @@ export interface IMessage extends Document {
 
 const MessageSchema = new Schema(
   {
-    text: { type: Schema.Types.String, require: true },
+    text: { type: Schema.Types.String, require: true, maxlength: 1000 },
     room: { type: Schema.Types.ObjectId, ref: "Room", require: true },
     user: { type: Schema.Types.ObjectId, ref: "User", require: true },
     hideForUsers: [{ type: Schema.Types.ObjectId, ref: "User" }],

@@ -1,9 +1,9 @@
 # Ethereal-River
 
-<p align="center">
-  Real Time chat application.
+<div>
+  <p align="center">Real Time chat application.</p>
   <img src="https://funkyimg.com/i/2Y9Yg.png" alt="Ethereal River screenshot">
-</p>
+</div>
 
 ## Main Features
 
@@ -19,6 +19,6 @@ The project is documented [here](https://github.com/Deathlive/EtherealRiver/wiki
 
 ## Authors
 
-* [Deathlive](https://github.com/Deathlive) - *Initial worker*
+* [I](https://github.com/Deathlive) - *Initial worker*
 
 See also the list of [contributors](https://github.com/Deathlive/EtherealRiver/graphs/contributors) who participated in this project.

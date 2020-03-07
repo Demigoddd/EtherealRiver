@@ -6,11 +6,11 @@ import { openNotification } from '../../helpers/openNotification';
 import userApi from '../../api/user';
 
 // User Actions
-const setUserData = (payload: any) => (dispatch: any) => {
+const setUserData = (payload: any): any => (dispatch: any) => {
   dispatch({ type: types.USER_SET_DATA, payload });
 };
 
-const setIsAuth = (setIsAuth: boolean) => (dispatch: any) => {
+const setIsAuth = (setIsAuth: boolean): any => (dispatch: any) => {
   dispatch({ type: types.USER_SET_IS_AUTH, setIsAuth });
 };
 
@@ -28,7 +28,7 @@ const fetchUserDataById = (id: any) => {
     });
 };
 
-const fetchUserData = () => (dispatch: any) => {
+const fetchUserData = (): any => (dispatch: any) => {
   userApi.getMe()
     .then(({ data }: any) => {
       setUserData(data)(dispatch);
@@ -40,7 +40,7 @@ const fetchUserData = () => (dispatch: any) => {
     });
 };
 
-const fetchUserLogin = (postData: any) => (dispatch: any) => {
+const fetchUserLogin = (postData: any): any => (dispatch: any) => {
   let callback: any = {};
 
   if (postData.password) {
@@ -101,7 +101,7 @@ const fetchUserLogin = (postData: any) => (dispatch: any) => {
     });
 };
 
-const fetchUserRegister = (postData: any) => (dispatch: any) => {
+const fetchUserRegister = (postData: any): any => (dispatch: any) => {
   let callback: any = {};
 
   if (postData.password) {

@@ -1,5 +1,5 @@
 import { withFormik } from "formik";
-import store from "../../utils/state/store";
+import { store } from "../../utils/state/store";
 
 import LoginForm from "./login/LoginForm";
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { withFormik } from 'formik';
 import AddRoomForm from './AddRoomForm';
 import { get } from 'lodash-es';
-import store from '../../../utils/state/store';
+import { store } from '../../../utils/state/store';
 import { RoomAction } from '../../../utils/state/actions';
 
 const AddRoomController: React.FC<any> = ({ hideModal }) => {

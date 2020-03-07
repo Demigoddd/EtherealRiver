@@ -1,8 +1,9 @@
 import React from 'react';
 import { get } from 'lodash-es';
-import { Form, Radio, Button, Divider } from 'antd';
+import { Form, Radio, Button, Divider, Icon, Input } from 'antd';
 
 import FormField from "../../../components/FormField";
+import { validateField } from "../../../utils/helpers/validateField";
 
 const AddRoomForm = (props: any) => {
   const {
@@ -41,17 +42,24 @@ const AddRoomForm = (props: any) => {
 
       {
         (values.roomType === 'public' || values.roomType === 'private')
-        && <FormField
-          name="roomName"
-          icon="home"
-          placeholder="Room Name"
-          type="text"
-          handleChange={handleChange}
-          handleBlur={handleBlur}
-          touched={touched}
-          errors={errors}
-          values={values}
-        />
+        && <Form.Item
+          validateStatus={validateField("roomName", touched, errors)}
+          help={!touched["roomName"] ? "" : errors["roomName"]}
+          hasFeedback
+        >
+          <Input
+            id="roomName"
+            prefix={<Icon type="home" style={{ color: "rgba(0,0,0,.25)" }} />}
+            size="large"
+            placeholder="Room Name"
+            value={values["roomName"]}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            type="text"
+            maxLength={60}
+            addonBefore={<>{values["roomName"].length}<span>/</span>60</>}
+          />
+        </Form.Item>
       }
       {
         (values.roomType === 'private')

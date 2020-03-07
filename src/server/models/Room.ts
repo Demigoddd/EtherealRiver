@@ -33,7 +33,8 @@ const RoomSchema = new Schema(
       type: Schema.Types.String,
       require: true,
       unique: true,
-      dropDups: true
+      dropDups: true,
+      maxlength: 60
     },
     type: {
       type: Schema.Types.String,

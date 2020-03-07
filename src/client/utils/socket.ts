@@ -8,7 +8,7 @@ rootSocket.on('reconnect_attempt', () => {
 });
 
 rootSocket.on('connect', () => {
-  console.log('Socket Connected!');
+  // console.log('Socket Connected!');
 });
 
 export default rootSocket;

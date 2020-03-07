@@ -6,7 +6,7 @@ import { openNotification } from '../../helpers/openNotification';
 import roomApi from '../../api/room';
 
 // Room Actions
-const fetchAllRoom = () => (dispatch: any) => {
+const fetchAllRoom = (): any => (dispatch: any) => {
   setRoomLoading(true)(dispatch);
   roomApi.getAll()
     .then(({ data }: any) => {
@@ -22,7 +22,7 @@ const fetchAllRoom = () => (dispatch: any) => {
     });
 };
 
-const fetchCreateRoom = (data: any) => (dispatch: any) => {
+const fetchCreateRoom = (data: any): any => (dispatch: any) => {
   setRoomLoading(true)(dispatch);
   return roomApi.create(data)
     .then((response: any) => {
@@ -45,7 +45,7 @@ const fetchCreateRoom = (data: any) => (dispatch: any) => {
     });
 };
 
-const fetchDeleteRoom = (roomId: any) => (dispatch: any) => {
+const fetchDeleteRoom = (roomId: any): any => (dispatch: any) => {
   setRoomLoading(true)(dispatch);
   roomApi.delete(roomId)
     .then((response: any) => {
@@ -65,7 +65,7 @@ const fetchDeleteRoom = (roomId: any) => (dispatch: any) => {
     });
 };
 
-const fetchFindRoomById = (roomId: any, userId: any, currentRoomId: any) => (dispatch: any) => {
+const fetchFindRoomById = (roomId: any, userId: any, currentRoomId: any): any => (dispatch: any) => {
   setRoomLoading(true)(dispatch);
   roomApi.index(roomId)
     .then((response: any) => {
@@ -86,7 +86,7 @@ const fetchFindRoomById = (roomId: any, userId: any, currentRoomId: any) => (dis
     });
 };
 
-const fetchUpdateRoom = (data: any) => (dispatch: any) => {
+const fetchUpdateRoom = (data: any): any => (dispatch: any) => {
   setRoomLoading(true)(dispatch);
   roomApi.updateRoom(data)
     .then((response: any) => {
@@ -106,7 +106,7 @@ const fetchUpdateRoom = (data: any) => (dispatch: any) => {
     });
 };
 
-const fetchAddUserToRoom = (data: any) => (dispatch: any) => {
+const fetchAddUserToRoom = (data: any): any => (dispatch: any) => {
   setRoomLoading(true)(dispatch);
   roomApi.addUser(data)
     .then((response: any) => {
@@ -138,7 +138,7 @@ const fetchAddUserToRoom = (data: any) => (dispatch: any) => {
     });
 };
 
-const fetchRemoveUserFromRoom = (data: any) => (dispatch: any) => {
+const fetchRemoveUserFromRoom = (data: any): any => (dispatch: any) => {
   setRoomLoading(true)(dispatch);
   roomApi.removeUser(data)
     .then((response: any) => {
@@ -154,13 +154,13 @@ const fetchRemoveUserFromRoom = (data: any) => (dispatch: any) => {
     });
 };
 
-const setCurrentRoom = (data: any) => (dispatch: any) => {
+const setCurrentRoom = (data: any): any => (dispatch: any) => {
   dispatch({ type: types.SET_CURRENT, payload: data });
 
   // window.sessionStorage.setItem('currentRoom', JSON.stringify(data));
 };
 
-const setRoomLoading = (bool: any) => (dispatch: any) => {
+const setRoomLoading = (bool: any): any => (dispatch: any) => {
   dispatch({ type: types.SET_ROOM_LOADING, payload: bool });
 };
 
