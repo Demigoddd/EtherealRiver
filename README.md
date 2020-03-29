@@ -2,7 +2,7 @@
 
 <div>
   <p align="center">Real Time chat application.</p>
-  <img src="https://funkyimg.com/i/2Y9Yg.png" alt="Ethereal River screenshot">
+  <img src="https://camo.githubusercontent.com/e6c4ab858c02714a9d2d417d8281547af3f4dc06/68747470733a2f2f66756e6b79696d672e636f6d2f692f32593959672e706e67" alt="Ethereal River screenshot">
 </div>
 
 ## Main Features
