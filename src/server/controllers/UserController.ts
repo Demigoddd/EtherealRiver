@@ -1,5 +1,5 @@
 import express from "express";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import socket from "socket.io";
 import { validationResult } from "express-validator";
 

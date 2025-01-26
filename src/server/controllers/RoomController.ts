@@ -1,5 +1,5 @@
 import socket from "socket.io";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import { RoomModel } from "../models";
 import { UserModel } from "../models";

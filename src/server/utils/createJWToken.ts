@@ -7,7 +7,7 @@ export default (user: any) => {
     {
       data: reduce(
         user,
-        (result: any, value, key) => {
+        (result: any, value: any, key: any) => {
           if (key !== 'password') {
             result[key] = value;
           }

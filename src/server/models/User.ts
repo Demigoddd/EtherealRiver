@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { isEmail } from "validator";
 import differenceInMinutes from "date-fns/difference_in_minutes";
 
@@ -64,19 +64,19 @@ UserSchema.pre("save", function (next) {
 
   if (!user.isModified("password")) return next();
 
-  bcrypt.hash(user.password, 10)
-    .then((hash: string) => {
-      user.password = String(hash);
+    bcrypt.hash(user.password as string, 10, (err, hash) => {
+      if (err) {
+        next(err);
+      } else {
+        user.password = String(hash);
 
-      bcrypt.hash(user.password, 10)
-        .then((confirmHash: any) => {
-          user.confirm_hash = String(confirmHash);
-          next();
-        });
+        bcrypt.hash(user.password, 10)
+          .then((confirmHash: any) => {
+            user.confirm_hash = String(confirmHash);
+            next();
+          });
+      }
     })
-    .catch((err: any) => {
-      next(err);
-    });
 });
 
 const UserModel = mongoose.model<IUser>("User", UserSchema);
